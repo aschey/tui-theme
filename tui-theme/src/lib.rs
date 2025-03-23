@@ -16,7 +16,7 @@ use ratatui::{
 use regex::{Captures, Regex};
 use serde::{Deserialize, Serialize};
 use term_color_support::colors::ColorSupportLevel;
-use tui_theme_derive::Theme;
+pub use tui_theme_derive::*;
 
 enum ThemeChoice {
     Dark,
@@ -865,9 +865,6 @@ impl From<Color> for ratatui::style::Color {
         adapt_color(tui_color)
     }
 }
-
-#[derive(Clone, Default)]
-struct Borders;
 
 // #[derive(Theme, Default, Clone)]
 // #[variants("a", "b")]
