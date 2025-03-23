@@ -1,0 +1,13 @@
+[package]
+name = "tui-theme"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ratatui = { workspace = true, features = ["palette"] }
+tui-theme-derive = { workspace = true }
+palette = { workspace = true, features = ["serializing"] }
+serde = { workspace = true, features = ["derive"] }
+term_color_support = { workspace = true }
+serde_json = { workspace = true }
+regex = { workspace = true }
