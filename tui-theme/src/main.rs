@@ -11,7 +11,7 @@ use tui_theme::{Color, ColorTheme, SetTheme, Theme};
 #[derive(Clone, Default, Debug)]
 struct Borders(String);
 
-#[derive(ColorTheme, Default, Clone, Debug)]
+#[derive(ColorTheme, SetTheme, Default, Clone, Debug)]
 #[variants("a", "b")]
 struct AppColorTheme {
     #[variants("a", "b")]
@@ -19,7 +19,7 @@ struct AppColorTheme {
     secondary: Color,
 }
 
-#[derive(SubTheme, Default, Clone, Debug)]
+#[derive(SubTheme, SetTheme, Default, Clone, Debug)]
 struct BorderTheme {
     primary: Borders,
     secondary: Borders,
@@ -34,6 +34,8 @@ struct AppTheme {
 fn main() {
     let col: Color = "lab(50.0 100% 40%)".parse().unwrap();
     println!("{col:?}");
+    BorderTheme::primary();
+
     let theme = AppTheme {
         color: AppColorTheme {
             primary: Color::Red,

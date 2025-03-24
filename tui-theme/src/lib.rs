@@ -11,22 +11,32 @@ use palette::{
 };
 use ratatui::{
     palette::Darken,
-    style::{Style, Stylize},
+    style::{Modifier, Stylize},
 };
 use regex::{Captures, Regex};
 use serde::{Deserialize, Serialize};
 use term_color_support::colors::ColorSupportLevel;
 pub use tui_theme_derive::*;
 
-enum ThemeChoice {
+pub enum ThemeChoice {
     Dark,
     Light,
 }
 
-struct AdaptiveTheme<T> {
+pub struct AdaptiveTheme<T> {
     dark: T,
     light: T,
     choice: ThemeChoice,
+}
+
+impl<T> AdaptiveTheme<T> {
+    pub fn new(dark: T, light: T, default_choice: ThemeChoice) -> Self {
+        Self {
+            dark,
+            light,
+            choice: default_choice,
+        }
+    }
 }
 
 impl<T> SetTheme for AdaptiveTheme<T>
@@ -64,7 +74,83 @@ where
     fn current() -> Self::Theme {
         T::current()
     }
+
+    fn with_theme<F, R>(f: F) -> R
+    where
+        F: FnOnce(&Self::Theme) -> R,
+    {
+        T::with_theme(f)
+    }
 }
+
+// #[derive(Clone, Default, Debug)]
+// pub struct Style {
+//     fg: Option<Color>,
+//     bg: Option<Color>,
+//     underline_color: Option<Color>,
+//     modifier: Modifier,
+// }
+//
+// impl From<Style> for ratatui::style::Style {
+//     fn from(value: Style) -> Self {
+//         let mut style = ratatui::style::Style::new();
+//         if let Some(fg) = value.fg {
+//             style = style.fg(fg.into());
+//         }
+//         if let Some(bg) = value.bg {
+//             style = style.bg(bg.into());
+//         }
+//         if let Some(underline) = value.underline_color {
+//             style = style.underline_color(underline.into());
+//         }
+//
+//         style = style.add_modifier(value.modifier);
+//         style
+//     }
+// }
+//
+// impl From<ratatui::style::Style> for Style {
+//     fn from(value: ratatui::style::Style) -> Self {
+//         let mut style = Style::default();
+//         if let Some(fg) = value.fg {
+//             style = style.fg(fg.into());
+//         }
+//         if let Some(bg) = value.bg {
+//             style = style.bg(bg.into());
+//         }
+//         if let Some(underline) = value.underline_color {
+//             style = style.underline_color(underline.into());
+//         }
+//         style = style.modifier(value.add_modifier);
+//         style
+//     }
+// }
+//
+// impl Style {
+//     pub fn new() -> Self {
+//         Self::default()
+//     }
+//
+//     pub fn fg(mut self, fg: Color) -> Self {
+//         self.fg = Some(fg);
+//         self
+//     }
+//
+//     pub fn bg(mut self, bg: Color) -> Self {
+//         self.bg = Some(bg);
+//         self
+//     }
+//
+//     pub fn underline_color(mut self, underline: Color) -> Self {
+//         self.underline_color = Some(underline);
+//         self
+//     }
+//
+//     pub fn modifier(mut self, modifier: Modifier) -> Self {
+//         self.modifier = modifier;
+//         self
+//     }
+// }
 
 static COLOR_SUPPORT: LazyLock<RwLock<ColorSupportLevel>> =
     LazyLock::new(|| RwLock::new(ColorSupportLevel::TrueColor));
@@ -168,12 +254,6 @@ fn rgb_to_ansi256(r: u8, g: u8, b: u8) -> u8 {
     }
 }
 
-// #[derive(Default, Clone, Copy)]
-// pub struct AppTheme {
-//     primary: ratatui::style::Color,
-//     secondary: ratatui::style::Color,
-// }
-
 pub trait SetTheme {
     type Theme;
 
@@ -184,83 +264,11 @@ pub trait SetTheme {
     fn set_global(&self);
 
     fn current() -> Self::Theme;
+
+    fn with_theme<F, T>(f: F) -> T
+    where
+        F: FnOnce(&Self::Theme) -> T;
 }
-
-// impl SetTheme for AppTheme {
-//     type Theme = Self;
-
-//     fn set_local(&self) {
-//         __LOCAL_APPTHEME.with(|t| *t.borrow_mut() = Some(self.clone()));
-//     }
-
-//     fn unset_local() {
-//         __LOCAL_APPTHEME.with(|t| *t.borrow_mut() = None);
-//     }
-
-//     fn set_global(&self) {
-//         *__GLOBAL_APPTHEME.write().unwrap() = self.clone();
-//     }
-
-//     fn current() -> Self {
-//         __LOCAL_APPTHEME
-//             .with(|t| *t.borrow())
-//             .unwrap_or_else(|| *__GLOBAL_APPTHEME.read().unwrap())
-//     }
-// }
-
-// static __GLOBAL_APPTHEME: LazyLock<Arc<RwLock<AppTheme>>> = LazyLock::new(Default::default);
-
-// thread_local! {
-//     static __LOCAL_APPTHEME: RefCell<Option<AppTheme>> = Default::default();
-// }
-
-// pub trait ThemeStyle<T> {
-//     fn primary(self) -> T;
-//     fn secondary(self) -> T;
-
-//     fn on_primary(self) -> T;
-//     fn on_secondary(self) -> T;
-// }
-
-// impl<'a, T, U> ThemeStyle<T> for U
-// where
-//     U: Stylize<'a, T>,
-// {
-//     fn primary(self) -> T {
-//         let theme = AppTheme::current();
-//         self.fg(theme.primary)
-//     }
-
-//     fn secondary(self) -> T {
-//         let theme = AppTheme::current();
-//         self.fg(theme.secondary)
-//     }
-
-//     fn on_primary(self) -> T {
-//         let theme = AppTheme::current();
-//         self.bg(theme.primary)
-//     }
-
-//     fn on_secondary(self) -> T {
-//         let theme = AppTheme::current();
-//         self.bg(theme.secondary)
-//     }
-// }
-
-// pub trait AppThemeColor {
-//     fn primary() -> Self;
-//     fn secondary() -> Self;
-// }
-
-// impl AppThemeColor for ratatui::style::Color {
-//     fn primary() -> Self {
-//         AppTheme::current().primary
-//     }
-
-//     fn secondary() -> Self {
-//         AppTheme::current().secondary
-//     }
-// }
 
 #[derive(Debug, Clone, Copy, Default)]
 pub enum Color {
@@ -854,55 +862,45 @@ impl From<Color> for ratatui::style::Color {
             Color::Gray => ratatui::style::Color::Gray,
             Color::DarkGray => ratatui::style::Color::DarkGray,
             Color::LightRed => ratatui::style::Color::LightRed,
-            Color::LightGreen => todo!(),
-            Color::LightYellow => todo!(),
-            Color::LightBlue => todo!(),
-            Color::LightMagenta => todo!(),
-            Color::LightCyan => todo!(),
-            Color::White => todo!(),
-            Color::Indexed(_) => todo!(),
+            Color::LightGreen => ratatui::style::Color::LightGreen,
+            Color::LightYellow => ratatui::style::Color::LightYellow,
+            Color::LightBlue => ratatui::style::Color::LightBlue,
+            Color::LightMagenta => ratatui::style::Color::LightMagenta,
+            Color::LightCyan => ratatui::style::Color::LightCyan,
+            Color::White => ratatui::style::Color::White,
+            Color::Indexed(idx) => ratatui::style::Color::Indexed(idx),
         };
         adapt_color(tui_color)
     }
 }
 
-// #[derive(Theme, Default, Clone)]
-// #[variants("a", "b")]
-// struct AppTheme2 {
-//     #[variants("a", "b")]
-//     //#[color(variants("a", "b"))]
-//     primary: Color,
-//     secondary: Color,
-//     //borders: Borders,
-//     //borders_focused: Borders,
-// }
-//
-// #[derive(ColorTheme, Default, Clone)]
-// #[variants("a", "b")]
-// struct ColorTheme2 {
-//     #[variants("a", "b")]
-//     primary: Color,
-//     secondary: Color,
-// }
-//
-// #[derive(SubTheme, Default, Clone)]
-// struct BorderTheme {
-//     default: Borders,
-//     focused: Borders,
-// }
-//
-// struct AppTheme2 {
-//     colors: ColorTheme2,
-//     borders: BorderTheme,
-//     //borders: Borders,
-//     //borders_focused: Borders,
-// }
-//
-// fn test() {
-//     let a = "a".primary();
-//     "a".on_primary();
-//     // Borders::primary()
-// }
+impl From<ratatui::style::Color> for Color {
+    fn from(value: ratatui::style::Color) -> Self {
+        match value {
+            ratatui::style::Color::Reset => Color::Reset,
+            ratatui::style::Color::Black => Color::Black,
+            ratatui::style::Color::Red => Color::Red,
+            ratatui::style::Color::Green => Color::Green,
+            ratatui::style::Color::Yellow => Color::Yellow,
+            ratatui::style::Color::Blue => Color::Blue,
+            ratatui::style::Color::Magenta => Color::Magenta,
+            ratatui::style::Color::Cyan => Color::Cyan,
+            ratatui::style::Color::Gray => Color::Gray,
+            ratatui::style::Color::DarkGray => Color::DarkGray,
+            ratatui::style::Color::LightRed => Color::LightRed,
+            ratatui::style::Color::LightGreen => Color::LightGreen,
+            ratatui::style::Color::LightYellow => Color::LightYellow,
+            ratatui::style::Color::LightBlue => Color::LightBlue,
+            ratatui::style::Color::LightMagenta => Color::LightMagenta,
+            ratatui::style::Color::LightCyan => Color::LightCyan,
+            ratatui::style::Color::White => Color::White,
+            ratatui::style::Color::Rgb(r, g, b) => {
+                Color::Rgb(Rgb::new(r as f32 / 255., g as f32 / 255., b as f32 / 255.))
+            }
+            ratatui::style::Color::Indexed(idx) => Color::Indexed(idx),
+        }
+    }
+}
 
 const ANSI_HEX: [&str; 256] = [
     "#000000", "#800000", "#008000", "#808000", "#000080", "#800080", "#008080", "#c0c0c0",
