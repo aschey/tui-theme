@@ -83,9 +83,10 @@ pub fn derive_color_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
     let trait_fns: TokenStream = fields
         .iter()
         .map(|f| {
-            let bg_fn = Ident::new(&format!("on_{f}"), Span::call_site());
+            let fg_fn = Ident::new(&format!("fg_{f}"), Span::call_site());
+            let bg_fn = Ident::new(&format!("bg_{f}"), Span::call_site());
             quote! {
-                fn #f(self) -> T;
+                fn #fg_fn(self) -> T;
                 fn #bg_fn(self) -> T;
             }
         })
@@ -94,9 +95,10 @@ pub fn derive_color_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
     let impl_fns: TokenStream = fields
         .iter()
         .map(|f| {
-            let bg_fn = Ident::new(&format!("on_{f}"), Span::call_site());
+            let fg_fn = Ident::new(&format!("fg_{f}"), Span::call_site());
+            let bg_fn = Ident::new(&format!("bg_{f}"), Span::call_site());
             quote! {
-                fn #f(self) -> T {
+                fn #fg_fn(self) -> T {
                     #struct_name::with_theme(|t| self.fg(t.#f))
                 }
 
@@ -187,10 +189,6 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
     let unset_local: TokenStream = fields
         .iter()
         .map(|(_, ty)| quote!(#ty::unset_local();))
-        .collect();
-    let current_fields: TokenStream = fields
-        .iter()
-        .map(|(f, ty)| quote!(#f: #ty::current(), ))
         .collect();
 
     Ok(quote! {
