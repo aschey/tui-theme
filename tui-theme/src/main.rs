@@ -1,7 +1,5 @@
-use palette::rgb::Srgb;
 use ratatui::style::Stylize;
 use std::cell::RefCell;
-use std::collections::HashMap;
 use std::sync::Arc;
 use std::sync::LazyLock;
 use std::sync::RwLock;
@@ -33,7 +31,9 @@ struct AppTheme {
 
 fn main() {
     let col: Color = "lab(50.0 100% 40%)".parse().unwrap();
+    let col2 = col.into_adaptive();
     println!("{col:?}");
+    println!("{col2:?}");
     BorderTheme::primary();
 
     let theme = AppTheme {

@@ -1,21 +1,16 @@
 use std::{
-    cell::RefCell,
     io::IsTerminal,
     str::FromStr,
-    sync::{Arc, LazyLock, OnceLock, RwLock},
+    sync::{LazyLock, RwLock},
 };
 
 use palette::{
-    Darken, FromColor, Hsl, Hsluv, Hsv, Hwb, IntoColor, Lab, Lch, Lchuv, Lighten, LinSrgb, Luv,
-    Okhsl, Okhsv, Okhwb, Oklab, Oklch, Srgb, Xyz, Yxy, color_difference::EuclideanDistance,
-    convert::FromColorUnclamped, encoding::Linear, rgb::Rgb, white_point::D50,
+    Darken, FromColor, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb,
+    Oklab, Oklch, Srgb, Xyz, Yxy, rgb::Rgb, white_point::D50,
 };
 use regex::{Captures, Regex};
-use serde::{Deserialize, Serialize};
 use term_color_adapter::ColorSupport;
-use terminal_colorsaurus::{
-    ColorPalette, ColorScheme, QueryOptions, background_color, color_palette, foreground_color,
-};
+use terminal_colorsaurus::{ColorPalette, ColorScheme, QueryOptions, color_palette};
 pub use tui_theme_derive::*;
 
 pub enum ThemeChoice {
@@ -94,75 +89,6 @@ where
         T::with_theme(f)
     }
 }
-
-// #[derive(Clone, Default, Debug)]
-// pub struct Style {
-//     fg: Option<Color>,
-//     bg: Option<Color>,
-//     underline_color: Option<Color>,
-//     modifier: Modifier,
-// }
-//
-// impl From<Style> for ratatui::style::Style {
-//     fn from(value: Style) -> Self {
-//         let mut style = ratatui::style::Style::new();
-//         if let Some(fg) = value.fg {
-//             style = style.fg(fg.into());
-//         }
-//         if let Some(bg) = value.bg {
-//             style = style.bg(bg.into());
-//         }
-//         if let Some(underline) = value.underline_color {
-//             style = style.underline_color(underline.into());
-//         }
-//
-//         style = style.add_modifier(value.modifier);
-//         style
-//     }
-// }
-//
-// impl From<ratatui::style::Style> for Style {
-//     fn from(value: ratatui::style::Style) -> Self {
-//         let mut style = Style::default();
-//         if let Some(fg) = value.fg {
-//             style = style.fg(fg.into());
-//         }
-//         if let Some(bg) = value.bg {
-//             style = style.bg(bg.into());
-//         }
-//         if let Some(underline) = value.underline_color {
-//             style = style.underline_color(underline.into());
-//         }
-//         style = style.modifier(value.add_modifier);
-//         style
-//     }
-// }
-//
-// impl Style {
-//     pub fn new() -> Self {
-//         Self::default()
-//     }
-//
-//     pub fn fg(mut self, fg: Color) -> Self {
-//         self.fg = Some(fg);
-//         self
-//     }
-//
-//     pub fn bg(mut self, bg: Color) -> Self {
-//         self.bg = Some(bg);
-//         self
-//     }
-//
-//     pub fn underline_color(mut self, underline: Color) -> Self {
-//         self.underline_color = Some(underline);
-//         self
-//     }
-//
-//     pub fn modifier(mut self, modifier: Modifier) -> Self {
-//         self.modifier = modifier;
-//         self
-//     }
-// }
 
 static COLOR_SUPPORT: LazyLock<RwLock<ColorSupport>> =
     LazyLock::new(|| RwLock::new(ColorSupport::TrueColor));
@@ -279,7 +205,51 @@ impl Color {
         ))
     }
 
+    pub fn is_compatible(&self) -> bool {
+        let color_support = COLOR_SUPPORT.read().unwrap();
+        match self {
+            Self::White
+            | Self::Gray
+            | Self::Blue
+            | Self::Cyan
+            | Self::Magenta
+            | Self::Green
+            | Self::Yellow
+            | Self::Red
+            | Self::LightBlue
+            | Self::LightRed
+            | Self::LightGreen
+            | Self::LightCyan
+            | Self::LightMagenta
+            | Self::LightYellow
+            | Self::Reset
+            | Self::Black
+            | Self::DarkGray => *color_support >= ColorSupport::Ansi16,
+            Self::Indexed(index) if *index < 16 => *color_support >= ColorSupport::Ansi16,
+            Self::Indexed(_) => *color_support >= ColorSupport::Ansi256,
+            Self::Rgb(_)
+            | Self::Hsl(_)
+            | Self::Hsv(_)
+            | Self::Hsluv(_)
+            | Self::Hwb(_)
+            | Self::Lab(_)
+            | Self::Okhsl(_)
+            | Self::Oklab(_)
+            | Self::Lch(_)
+            | Self::Lchuv(_)
+            | Self::Luv(_)
+            | Self::Okhsv(_)
+            | Self::Okhwb(_)
+            | Self::Oklch(_)
+            | Self::Xyz(_)
+            | Self::Yxy(_) => *color_support >= ColorSupport::TrueColor,
+        }
+    }
+
     pub fn into_adaptive(self) -> Self {
+        if self.is_compatible() {
+            return self;
+        }
         let anstyle_color: Option<anstyle::Color> = self.into();
         let Some(color) = anstyle_color else {
             return self;
