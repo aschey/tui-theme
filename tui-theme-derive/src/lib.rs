@@ -99,11 +99,11 @@ pub fn derive_color_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
             let bg_fn = Ident::new(&format!("bg_{f}"), Span::call_site());
             quote! {
                 fn #fg_fn(self) -> T {
-                    #struct_name::with_theme(|t| self.fg(t.#f))
+                    #struct_name::with_theme(|t| self.fg(t.#f.into_adaptive()))
                 }
 
                 fn #bg_fn(self) -> T {
-                    #struct_name::with_theme(|t| self.bg(t.#f))
+                    #struct_name::with_theme(|t| self.bg(t.#f.into_adaptive()))
                 }
             }
         })
