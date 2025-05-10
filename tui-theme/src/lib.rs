@@ -96,7 +96,7 @@ static COLOR_SUPPORT: LazyLock<RwLock<ColorSupport>> =
 static COLOR_PALETTE: LazyLock<RwLock<ColorPalette>> =
     LazyLock::new(|| RwLock::new(color_palette(QueryOptions::default()).unwrap()));
 
-pub fn load_color_support<T>(stream: T)
+pub fn load_color_support<T>(stream: &T)
 where
     T: IsTerminal,
 {

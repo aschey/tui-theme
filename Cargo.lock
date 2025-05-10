@@ -682,7 +682,7 @@ dependencies = [
 [[package]]
 name = "term-color-adapter"
 version = "0.1.0"
-source = "git+https://github.com/aschey/term-color-adapter?rev=d85ae44a4e88015e036970d747b0e098aa5ec8c8#d85ae44a4e88015e036970d747b0e098aa5ec8c8"
+source = "git+https://github.com/aschey/term-color-adapter?rev=9a972ba0b6c850d99dd87d5129dc0a827b5ca658#9a972ba0b6c850d99dd87d5129dc0a827b5ca658"
 dependencies = [
  "anstyle",
  "palette",

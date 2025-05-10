@@ -12,7 +12,7 @@ manyhow = "0.11"
 ratatui = "0.29"
 palette = "0.7.6"
 serde = "1"
-term-color-adapter = { git = "https://github.com/aschey/term-color-adapter", rev = "d85ae44a4e88015e036970d747b0e098aa5ec8c8", features = [
+term-color-adapter = { git = "https://github.com/aschey/term-color-adapter", rev = "9a972ba0b6c850d99dd87d5129dc0a827b5ca658", features = [
   "convert",
 ] }
 terminal-colorsaurus = "0.4"
