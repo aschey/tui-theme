@@ -1,4 +1,6 @@
 use std::{
+    error::Error,
+    fmt::Display,
     io::IsTerminal,
     str::FromStr,
     sync::{LazyLock, RwLock},
@@ -9,8 +11,8 @@ use palette::{
     Oklab, Oklch, Srgb, Xyz, Yxy, rgb::Rgb, white_point::D50,
 };
 use regex::{Captures, Regex};
-use term_color_adapter::ColorSupport;
 use terminal_colorsaurus::{ColorPalette, ColorScheme, QueryOptions, color_palette};
+use termprofile::TermProfile;
 pub use tui_theme_derive::*;
 
 pub enum ThemeChoice {
@@ -95,17 +97,17 @@ where
     }
 }
 
-static COLOR_SUPPORT: LazyLock<RwLock<ColorSupport>> =
-    LazyLock::new(|| RwLock::new(ColorSupport::TrueColor));
+static TERM_PROFILE: LazyLock<RwLock<TermProfile>> =
+    LazyLock::new(|| RwLock::new(TermProfile::TrueColor));
 
 static COLOR_PALETTE: LazyLock<RwLock<Option<ColorPalette>>> =
     LazyLock::new(|| RwLock::new(color_palette(QueryOptions::default()).ok()));
 
-pub fn load_color_support<T>(stream: &T)
+pub fn load_profile<T>(stream: &T)
 where
     T: IsTerminal,
 {
-    *COLOR_SUPPORT.write().unwrap() = ColorSupport::detect(stream)
+    *TERM_PROFILE.write().unwrap() = TermProfile::detect(stream)
 }
 
 pub fn load_color_palette() {
@@ -221,7 +223,7 @@ impl Color {
     }
 
     pub fn is_compatible(&self) -> bool {
-        let color_support = COLOR_SUPPORT.read().unwrap();
+        let color_support = TERM_PROFILE.read().unwrap();
         match self {
             Self::AnsiWhite
             | Self::AnsiGray
@@ -239,9 +241,9 @@ impl Color {
             | Self::AnsiLightYellow
             | Self::AnsiReset
             | Self::AnsiBlack
-            | Self::AnsiDarkGray => *color_support >= ColorSupport::Ansi16,
-            Self::Indexed(index) if *index < 16 => *color_support >= ColorSupport::Ansi16,
-            Self::Indexed(_) => *color_support >= ColorSupport::Ansi256,
+            | Self::AnsiDarkGray => *color_support >= TermProfile::Ansi16,
+            Self::Indexed(index) if *index < 16 => *color_support >= TermProfile::Ansi16,
+            Self::Indexed(_) => *color_support >= TermProfile::Ansi256,
             Self::Rgb(_)
             | Self::Hsl(_)
             | Self::Hsv(_)
@@ -257,7 +259,7 @@ impl Color {
             | Self::Okhwb(_)
             | Self::Oklch(_)
             | Self::Xyz(_)
-            | Self::Yxy(_) => *color_support >= ColorSupport::TrueColor,
+            | Self::Yxy(_) => *color_support >= TermProfile::TrueColor,
         }
     }
 
@@ -269,7 +271,7 @@ impl Color {
         let Some(color) = anstyle_color else {
             return self;
         };
-        if let Some(adapted) = COLOR_SUPPORT.read().unwrap().adapt(color) {
+        if let Some(adapted) = TERM_PROFILE.read().unwrap().adapt(color) {
             adapted.into()
         } else {
             Self::AnsiReset
@@ -866,8 +868,19 @@ impl Color {
     }
 }
 
+#[derive(Debug)]
+pub struct InvalidColor;
+
+impl Error for InvalidColor {}
+
+impl Display for InvalidColor {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("invalid color")
+    }
+}
+
 impl FromStr for Color {
-    type Err = ();
+    type Err = InvalidColor;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if let Ok(val) = s.parse::<u8>() {
@@ -925,7 +938,7 @@ impl FromStr for Color {
         if let Some(val) = Self::parse_yxy(s) {
             return Ok(val);
         }
-        Err(())
+        Err(InvalidColor)
     }
 }
 

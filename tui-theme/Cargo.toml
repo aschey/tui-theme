@@ -8,7 +8,7 @@ ratatui = { workspace = true, features = ["palette"] }
 tui-theme-derive = { workspace = true }
 palette = { workspace = true, features = ["serializing"] }
 serde = { workspace = true, features = ["derive"] }
-term-color-adapter = { workspace = true }
+termprofile = { workspace = true, features = ["convert"] }
 serde_json = { workspace = true }
 regex = { workspace = true }
 anstyle = { workspace = true }
