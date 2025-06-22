@@ -13,3 +13,6 @@ serde_json = { workspace = true }
 regex = { workspace = true }
 anstyle = { workspace = true }
 terminal-colorsaurus = { workspace = true }
+
+crossterm = { workspace = true }
+anstyle-crossterm = { workspace = true }

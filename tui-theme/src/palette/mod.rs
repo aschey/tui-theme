@@ -1,0 +1,14 @@
+mod rose_pine;
+pub use rose_pine::*;
+mod tailwind;
+pub use tailwind::*;
+mod gruvbox;
+pub use gruvbox::*;
+mod kanagawa;
+pub use kanagawa::*;
+mod everforest;
+pub use everforest::*;
+mod nord;
+pub use nord::*;
+mod catppuccin;
+pub use catppuccin::*;

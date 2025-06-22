@@ -5,8 +5,8 @@ use std::{
     str::FromStr,
     sync::{LazyLock, RwLock},
 };
-
-use palette::{
+pub mod palette;
+use ::palette::{
     Darken, FromColor, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb,
     Oklab, Oklch, Srgb, Xyz, Yxy, rgb::Rgb, white_point::D50,
 };
@@ -400,10 +400,93 @@ fn parse_capture(
     s.parse().ok()
 }
 
+static HEX_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^#[a-fA-F0-9]{6};?$").unwrap());
+
+static RGB_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(
+        "^rgb\\(({DIGITS}){SEP}({DIGITS}){SEP}({DIGITS})\\);?$"
+    ))
+    .unwrap()
+});
+
+static HSL_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!("^hsl\\(({DIGITS}){SEP}({PCT}){SEP}({PCT})\\);?$")).unwrap()
+});
+
+static HSLUV_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(
+        "^hsluv\\(({DIGITS}){SEP}({PCT}){SEP}({PCT})\\);?$"
+    ))
+    .unwrap()
+});
+
+static HWB_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!("^hwb\\(({DIGITS}){SEP}({PCT}){SEP}({PCT});?$\\)")).unwrap()
+});
+
+static LAB_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!("^lab\\(({PCT}){SEP}(-?{PCT}){SEP}(-?{PCT})\\);?$")).unwrap()
+});
+
+static LCH_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!("^lch\\({PCT}{SEP}{PCT}{SEP}{DIGITS}{DEC}\\);?$")).unwrap()
+});
+
+static LCHUV_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(
+        "lchuv\\(({PCT}){SEP}({PCT}){SEP}({DIGITS}{DEC})\\);?$"
+    ))
+    .unwrap()
+});
+
+static LUV_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!("^luv\\(({PCT}{SEP})(-?{PCT}){SEP}(-?{PCT})\\);?$")).unwrap()
+});
+
+static OKHSL_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(
+        "^okhsl\\(({DIGITS}{DEC}){SEP}({PCT}){SEP}({PCT})\\);?$"
+    ))
+    .unwrap()
+});
+
+static OKHSV_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(
+        "^okhsv\\(({DIGITS}{DEC}){SEP}({PCT}){SEP}({PCT})\\);?$"
+    ))
+    .unwrap()
+});
+
+static OKHWB_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(
+        "^okhwb\\(({DIGITS}{DEC}){SEP}({PCT}){SEP}({PCT})\\);?$"
+    ))
+    .unwrap()
+});
+
+static OKLAB_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(
+        "^oklab\\(({PCT}){SEP}(-?{PCT}){SEP}(-?{PCT})\\);?$"
+    ))
+    .unwrap()
+});
+
+static OKLCH_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!(
+        "^oklch\\(({PCT}){SEP}({PCT}){SEP}({DIGITS}{DEC})\\);?$"
+    ))
+    .unwrap()
+});
+
+static XYZ_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(&format!("^xyz\\(({PCT}){SEP}({PCT}){SEP}({PCT})\\);?$")).unwrap());
+
+static YXY_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(&format!("^yxy\\(({PCT}){SEP}({PCT}){SEP}({PCT})\\);?$")).unwrap());
+
 impl Color {
     fn parse_hex(s: &str) -> Option<Self> {
-        let re = Regex::new(r"#[a-fA-F0-9]{6}").unwrap();
-        if re.is_match(s) {
+        if HEX_RE.is_match(s) {
             let rgb: Srgb<u8> = s.parse().unwrap();
             Some(Self::Rgb(rgb.into()))
         } else {
@@ -412,11 +495,7 @@ impl Color {
     }
 
     fn parse_rgb(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!(
-            "rgb\\(({DIGITS}){SEP}({DIGITS}){SEP}({DIGITS})\\)"
-        ))
-        .unwrap();
-        re.captures(s).and_then(|captures| {
+        RGB_RE.captures(s).and_then(|captures| {
             Some(Self::Rgb(Rgb::new(
                 parse_capture(1, None, &captures)? / 255.0,
                 parse_capture(2, None, &captures)? / 255.0,
@@ -426,8 +505,7 @@ impl Color {
     }
 
     fn parse_hsl(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("hsl\\(({DIGITS}){SEP}({PCT}){SEP}({PCT})\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        HSL_RE.captures(s).and_then(|captures| {
             Some(Self::Hsl(Hsl::new(
                 parse_capture(1, None, &captures)?,
                 parse_capture(
@@ -445,8 +523,7 @@ impl Color {
     }
 
     fn parse_hsluv(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("hsluv\\(({DIGITS}){SEP}({PCT}){SEP}({PCT})\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        HSLUV_RE.captures(s).and_then(|captures| {
             Some(Self::Hsluv(Hsluv::new(
                 parse_capture(1, None, &captures)?,
                 parse_capture(
@@ -467,8 +544,7 @@ impl Color {
     }
 
     fn parse_hwb(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("hwb\\(({DIGITS}){SEP}({PCT}){SEP}({PCT})\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        HWB_RE.captures(s).and_then(|captures| {
             Some(Self::Hwb(Hwb::new(
                 parse_capture(1, None, &captures)?,
                 parse_capture(
@@ -486,8 +562,7 @@ impl Color {
     }
 
     fn parse_lab(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("lab\\(({PCT}){SEP}(-?{PCT}){SEP}(-?{PCT})\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        LAB_RE.captures(s).and_then(|captures| {
             Some(Self::Lab(Lab::new(
                 parse_capture(
                     1,
@@ -509,8 +584,7 @@ impl Color {
     }
 
     fn parse_lch(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("lch\\({PCT}{SEP}{PCT}{SEP}{DIGITS}{DEC}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        LCH_RE.captures(s).and_then(|captures| {
             Some(Self::Lch(Lch::new(
                 parse_capture(
                     1,
@@ -528,8 +602,7 @@ impl Color {
     }
 
     fn parse_lchuv(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("lchuv\\({PCT}{SEP}{PCT}{SEP}{DIGITS}{DEC}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        LCHUV_RE.captures(s).and_then(|captures| {
             Some(Self::Lchuv(Lchuv::new(
                 parse_capture(
                     1,
@@ -547,8 +620,7 @@ impl Color {
     }
 
     fn parse_luv(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("luv\\({PCT}{SEP}-?{PCT}{SEP}-?{PCT}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        LUV_RE.captures(s).and_then(|captures| {
             Some(Self::Luv(Luv::new(
                 parse_capture(
                     1,
@@ -570,8 +642,7 @@ impl Color {
     }
 
     fn parse_okhsl(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("okhsl\\({DIGITS}{DEC}{SEP}{PCT}{SEP}{PCT}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        OKHSL_RE.captures(s).and_then(|captures| {
             Some(Self::Okhsl(Okhsl::new(
                 parse_capture(1, None, &captures)?,
                 parse_capture(
@@ -589,8 +660,7 @@ impl Color {
     }
 
     fn parse_okhsv(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("okhsv\\({DIGITS}{DEC}{SEP}{PCT}{SEP}{PCT}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        OKHSV_RE.captures(s).and_then(|captures| {
             Some(Self::Okhsv(Okhsv::new(
                 parse_capture(1, None, &captures)?,
                 parse_capture(
@@ -608,8 +678,7 @@ impl Color {
     }
 
     fn parse_okhwb(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("okhwb\\({DIGITS}{DEC}{SEP}{PCT}{SEP}{PCT}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        OKHWB_RE.captures(s).and_then(|captures| {
             Some(Self::Okhwb(Okhwb::new(
                 parse_capture(1, None, &captures)?,
                 parse_capture(
@@ -627,8 +696,7 @@ impl Color {
     }
 
     fn parse_oklab(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("oklab\\({PCT}{SEP}-?{PCT}{SEP}-?{PCT}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        OKLAB_RE.captures(s).and_then(|captures| {
             Some(Self::Oklab(Oklab::new(
                 parse_capture(1, Bounds::new(Oklab::min_l(), Oklab::max_l()), &captures)?,
                 parse_capture(2, None, &captures)?,
@@ -638,8 +706,7 @@ impl Color {
     }
 
     fn parse_oklch(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("oklch\\({PCT}{SEP}{PCT}{SEP}{DIGITS}{DEC}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        OKLCH_RE.captures(s).and_then(|captures| {
             Some(Self::Oklch(Oklch::new(
                 parse_capture(1, Bounds::new(Oklch::min_l(), Oklch::max_l()), &captures)?,
                 parse_capture(2, None, &captures)?,
@@ -649,8 +716,7 @@ impl Color {
     }
 
     fn parse_xyz(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("xyz\\({PCT}{SEP}{PCT}{SEP}{PCT}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        XYZ_RE.captures(s).and_then(|captures| {
             Some(Self::Xyz(Xyz::new(
                 parse_capture(
                     1,
@@ -672,8 +738,7 @@ impl Color {
     }
 
     fn parse_yxy(s: &str) -> Option<Self> {
-        let re = Regex::new(&format!("yxy\\({PCT}{SEP}{PCT}{SEP}{PCT}\\)")).unwrap();
-        re.captures(s).and_then(|captures| {
+        YXY_RE.captures(s).and_then(|captures| {
             Some(Self::Yxy(Yxy::new(
                 parse_capture(
                     1,
@@ -882,6 +947,7 @@ impl FromStr for Color {
     type Err = InvalidColor;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let s = s.trim();
         if let Ok(val) = s.parse::<u8>() {
             return Ok(Self::Indexed(val));
         }
@@ -946,20 +1012,20 @@ impl From<Color> for ratatui::style::Color {
         match value {
             Color::Rgb(val) => val.into(),
             Color::Hsl(val) => Rgb::from_color(val).into(),
-            Color::Hsluv(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Hsv(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Hwb(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Lab(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Lch(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Lchuv(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Luv(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Okhsl(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Okhsv(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Okhwb(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Oklab(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Oklch(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Xyz(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Yxy(val) => Rgb::<palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Hsluv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Hsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Hwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Lab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Lch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Lchuv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Luv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Okhsl(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Okhsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Okhwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Oklab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Oklch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Xyz(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
+            Color::Yxy(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
             Color::AnsiReset => ratatui::style::Color::Reset,
             Color::AnsiBlack => ratatui::style::Color::Black,
             Color::AnsiRed => ratatui::style::Color::Red,
@@ -1063,46 +1129,46 @@ impl From<Color> for Option<anstyle::Color> {
             Color::Rgb(rgb_color) => palette_to_anstyle(rgb_color),
             Color::Hsl(val) => palette_to_anstyle(Rgb::from_color(val)),
             Color::Hsluv(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Hsv(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Hwb(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Lab(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Lch(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Lchuv(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Luv(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Okhsl(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Okhsv(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Okhwb(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Oklab(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Oklch(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Xyz(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
             Color::Yxy(val) => {
-                palette_to_anstyle(Rgb::<palette::encoding::Srgb, _>::from_color(val))
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
             }
         })
     }
