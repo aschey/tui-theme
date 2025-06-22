@@ -195,30 +195,29 @@ pub enum Color {
 
 impl Color {
     pub fn terminal_foreground() -> Self {
-        let fg = &COLOR_PALETTE
+        COLOR_PALETTE
             .read()
             .unwrap()
             .as_ref()
-            .map(|p| p.foreground.clone())
-            .unwrap_or_default();
-        Self::Rgb(Rgb::new(
-            fg.r as f32 / 255.,
-            fg.g as f32 / 255.,
-            fg.b as f32 / 255.,
-        ))
+            .map(|p| Self::scale_color(&p.foreground))
+            .unwrap_or_default()
     }
 
     pub fn terminal_background() -> Self {
-        let bg = &COLOR_PALETTE
+        COLOR_PALETTE
             .read()
             .unwrap()
             .as_ref()
-            .map(|p| p.background.clone())
-            .unwrap_or_default();
+            .map(|p| Self::scale_color(&p.background))
+            .unwrap_or_default()
+    }
+
+    fn scale_color(color: &terminal_colorsaurus::Color) -> Self {
+        let color = color.scale_to_8bit();
         Self::Rgb(Rgb::new(
-            bg.r as f32 / 255.,
-            bg.g as f32 / 255.,
-            bg.b as f32 / 255.,
+            color.0 as f32 / 255.,
+            color.1 as f32 / 255.,
+            color.2 as f32 / 255.,
         ))
     }
 
