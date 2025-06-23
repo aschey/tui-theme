@@ -1,9 +1,10 @@
-use convert_case::{Case, Casing};
-
 use std::fs;
-use std::io::{self, Write};
+use std::fs::File;
+use std::io::{self, Read, Write};
+use std::path::Path;
 use std::process::Command;
-use std::{fs::File, io::Read, path::Path};
+
+use convert_case::{Case, Casing};
 use tui_theme::Color;
 
 fn main() -> io::Result<()> {
@@ -85,7 +86,8 @@ fn generate_const(name: &str, color: ::palette::Oklch) -> String {
         .replacen("color_", "", 1)
         .to_ascii_uppercase();
     format!(
-        "    pub const {name}: Color = Color::Oklch(::palette::Oklch::new_const({:.4}, {:.4}, ::palette::OklabHue::new({:.4})));",
+        "    pub const {name}: Color = Color::Oklch(::palette::Oklch::new_const({:.4}, {:.4}, \
+         ::palette::OklabHue::new({:.4})));",
         color.l,
         color.chroma,
         color.hue.into_raw_degrees()

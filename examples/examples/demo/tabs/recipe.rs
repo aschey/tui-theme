@@ -1,13 +1,11 @@
 use itertools::Itertools;
-use ratatui::{
-    buffer::Buffer,
-    layout::{Alignment, Constraint, Layout, Margin, Rect},
-    style::{Style, Stylize},
-    text::Line,
-    widgets::{
-        Block, Clear, Padding, Paragraph, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
-        StatefulWidget, Table, TableState, Widget, Wrap,
-    },
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Alignment, Constraint, Layout, Margin, Rect};
+use ratatui::style::{Style, Stylize};
+use ratatui::text::Line;
+use ratatui::widgets::{
+    Block, Clear, Padding, Paragraph, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
+    StatefulWidget, Table, TableState, Widget, Wrap,
 };
 
 use crate::{RgbSwatch, THEME};
@@ -36,14 +34,14 @@ const RECIPE: &[(&str, &str)] = &[
     (
         "Step 1: ",
         "Over medium-low heat, add the oil to a large skillet with the onion, garlic, and bay \
-        leaf, stirring occasionally, until the onion has softened.",
+         leaf, stirring occasionally, until the onion has softened.",
     ),
     (
         "Step 2: ",
         "Add the eggplant and cook, stirring occasionally, for 8 minutes or until the eggplant \
-        has softened. Stir in the zucchini, red bell pepper, tomatoes, and salt, and cook over \
-        medium heat, stirring occasionally, for 5 to 7 minutes or until the vegetables are \
-        tender. Stir in the basil and few grinds of pepper to taste.",
+         has softened. Stir in the zucchini, red bell pepper, tomatoes, and salt, and cook over \
+         medium heat, stirring occasionally, for 5 to 7 minutes or until the vegetables are \
+         tender. Stir in the basil and few grinds of pepper to taste.",
     ),
 ];
 

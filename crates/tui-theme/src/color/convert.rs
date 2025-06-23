@@ -1,4 +1,5 @@
-use palette::{FromColor, rgb::Rgb};
+use palette::FromColor;
+use palette::rgb::Rgb;
 
 use super::Color;
 

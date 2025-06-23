@@ -1,9 +1,7 @@
 use itertools::Itertools;
-use ratatui::{
-    buffer::Buffer,
-    layout::{Alignment, Constraint, Layout, Margin, Rect},
-    widgets::{Block, Borders, Clear, Padding, Paragraph, Widget, Wrap},
-};
+use ratatui::buffer::Buffer;
+use ratatui::layout::{Alignment, Constraint, Layout, Margin, Rect};
+use ratatui::widgets::{Block, Borders, Clear, Padding, Paragraph, Widget, Wrap};
 
 use crate::{RgbSwatch, THEME};
 
@@ -81,7 +79,7 @@ fn render_crate_description(area: Rect, buf: &mut Buffer) {
     let text = "- cooking up terminal user interfaces -
 
     Ratatui is a Rust crate that provides widgets (e.g. Paragraph, Table) and draws them to the \
-    screen efficiently every frame.";
+                screen efficiently every frame.";
     Paragraph::new(text)
         .style(THEME.description)
         .block(

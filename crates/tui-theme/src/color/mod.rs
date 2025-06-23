@@ -1,10 +1,10 @@
+use std::io::IsTerminal;
+use std::sync::{LazyLock, RwLock};
+
+use ::palette::rgb::Rgb;
 use ::palette::{
     Darken, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch,
-    Xyz, Yxy, rgb::Rgb,
-};
-use std::{
-    io::IsTerminal,
-    sync::{LazyLock, RwLock},
+    Xyz, Yxy,
 };
 use terminal_colorsaurus::{ColorPalette, ColorScheme, QueryOptions, color_palette};
 use termprofile::TermProfile;

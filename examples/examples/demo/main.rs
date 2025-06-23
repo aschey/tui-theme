@@ -28,16 +28,13 @@ use std::io::stdout;
 
 use app::App;
 use color_eyre::Result;
-use crossterm::{
-    execute,
-    terminal::{EnterAlternateScreen, LeaveAlternateScreen},
-};
-use ratatui::{TerminalOptions, Viewport, layout::Rect};
+use crossterm::execute;
+use crossterm::terminal::{EnterAlternateScreen, LeaveAlternateScreen};
+use ratatui::layout::Rect;
+use ratatui::{TerminalOptions, Viewport};
 
-pub use self::{
-    colors::{RgbSwatch, color_from_oklab},
-    theme::THEME,
-};
+pub use self::colors::{RgbSwatch, color_from_oklab};
+pub use self::theme::THEME;
 
 fn main() -> Result<()> {
     color_eyre::install()?;

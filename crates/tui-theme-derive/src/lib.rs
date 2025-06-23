@@ -1,7 +1,8 @@
 use manyhow::{Emitter, bail, manyhow};
 use proc_macro2::{Span, TokenStream};
 use quote::quote;
-use syn::{Data, DeriveInput, Ident, spanned::Spanned};
+use syn::spanned::Spanned;
+use syn::{Data, DeriveInput, Ident};
 
 #[manyhow(proc_macro_derive(SetTheme, attributes(variants)))]
 pub fn derive_set_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {

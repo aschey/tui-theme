@@ -1,15 +1,12 @@
-use anstyle_crossterm::to_crossterm;
-use ratatui::style::Stylize;
 use std::cell::RefCell;
 use std::io::stdout;
-use std::sync::Arc;
-use std::sync::LazyLock;
-use std::sync::RwLock;
-use tui_theme::SubTheme;
-use tui_theme::load_color_palette;
-use tui_theme::load_profile;
-use tui_theme::palette;
-use tui_theme::{Color, ColorTheme, SetTheme, Theme};
+use std::sync::{Arc, LazyLock, RwLock};
+
+use anstyle_crossterm::to_crossterm;
+use ratatui::style::Stylize;
+use tui_theme::{
+    Color, ColorTheme, SetTheme, SubTheme, Theme, load_color_palette, load_profile, palette,
+};
 
 #[derive(Clone, Default, Debug)]
 struct Borders(String);

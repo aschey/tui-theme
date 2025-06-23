@@ -1,9 +1,14 @@
+use std::error::Error;
+use std::fmt::Display;
+use std::str::FromStr;
+use std::sync::LazyLock;
+
+use ::palette::rgb::Rgb;
+use ::palette::white_point::D50;
 use ::palette::{
     Hsl, Hsluv, Hwb, Lab, Lch, Lchuv, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch, Srgb, Xyz, Yxy,
-    rgb::Rgb, white_point::D50,
 };
 use regex::{Captures, Regex};
-use std::{error::Error, fmt::Display, str::FromStr, sync::LazyLock};
 
 use super::Color;
 
