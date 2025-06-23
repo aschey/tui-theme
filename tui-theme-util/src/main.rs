@@ -25,6 +25,13 @@ fn main() -> io::Result<()> {
         writeln!(mod_file, "mod {mod_name};")?;
         writeln!(mod_file, "pub use {mod_name}::*;")?;
     }
+
+    Command::new("cargo")
+        .args(["+nightly", "fmt"])
+        .current_dir("..")
+        .output()
+        .unwrap();
+
     Ok(())
 }
 
@@ -67,11 +74,7 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
         writeln!(out, "{}", generate_const(name, color))?;
     }
     writeln!(out, "}}")?;
-    Command::new("cargo")
-        .args(["+nightly", "fmt"])
-        .current_dir("..")
-        .output()
-        .unwrap();
+
     Ok(())
 }
 
