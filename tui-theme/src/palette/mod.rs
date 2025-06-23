@@ -1,3 +1,5 @@
+mod tokyo_night;
+pub use tokyo_night::*;
 mod rose_pine;
 pub use rose_pine::*;
 mod tailwind;
