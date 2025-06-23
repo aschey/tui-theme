@@ -1,0 +1,14 @@
+[package]
+name = "tui-theme-examples"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ratatui = { workspace = true, features = ["widget-calendar"] }
+color-eyre = { workspace = true }
+itertools = { workspace = true }
+palette = { workspace = true }
+crossterm = { workspace = true }
+strum = { workspace = true, features = ["derive"] }
+unicode-width = { workspace = true }
+time = { workspace = true }

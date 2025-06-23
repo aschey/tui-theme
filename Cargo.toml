@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/*"]
+members = ["crates/*", "examples"]
 resolver = "3"
 
 [workspace.dependencies]
@@ -19,5 +19,10 @@ regex = "1"
 anstyle = "1"
 convert_case = "0.8"
 
-crossterm = "0.29"
-anstyle-crossterm = "4"
+crossterm = "0.28"
+anstyle-crossterm = "3"
+color-eyre = "0.6"
+itertools = "0.14"
+strum = "0.27"
+unicode-width = "0.2"
+time = "0.3"

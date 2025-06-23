@@ -28,7 +28,7 @@ fn main() -> io::Result<()> {
 
     Command::new("cargo")
         .args(["+nightly", "fmt"])
-        .current_dir("..")
+        .current_dir("../..")
         .output()
         .unwrap();
 
