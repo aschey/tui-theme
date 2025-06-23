@@ -1,6 +1,6 @@
 use ::palette::{
-    Darken, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb,
-    Oklab, Oklch, Xyz, Yxy, rgb::Rgb,
+    Darken, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch,
+    Xyz, Yxy, rgb::Rgb,
 };
 use std::{
     io::IsTerminal,
@@ -102,6 +102,47 @@ pub enum Color {
     Indexed(u8),
 }
 
+macro_rules! color_op {
+    ($self:ident, $op:ident, $factor:expr) => {
+        match $self {
+            Self::Rgb(val) => Self::Rgb(val.$op($factor)),
+            Self::Hsl(val) => Self::Hsl(val.$op($factor)),
+            Self::Hsluv(val) => Self::Hsluv(val.$op($factor)),
+            Self::Hsv(val) => Self::Hsv(val.$op($factor)),
+            Self::Hwb(val) => Self::Hwb(val.$op($factor)),
+            Self::Lab(val) => Self::Lab(val.$op($factor)),
+            Self::Lch(val) => Self::Lch(val.$op($factor)),
+            Self::Lchuv(val) => Self::Lchuv(val.$op($factor)),
+            Self::Luv(val) => Self::Luv(val.$op($factor)),
+            Self::Okhsl(val) => Self::Okhsl(val.$op($factor)),
+            Self::Okhsv(val) => Self::Okhsv(val.$op($factor)),
+            Self::Okhwb(val) => Self::Okhwb(val.$op($factor)),
+            Self::Oklab(val) => Self::Oklab(val.$op($factor)),
+            Self::Oklch(val) => Self::Oklch(val.$op($factor)),
+            Self::Xyz(val) => Self::Xyz(val.lighten_fixed($factor)),
+            Self::Yxy(val) => Self::Yxy(val.lighten_fixed($factor)),
+            Self::Indexed(i) => indexed_to_rgb(*i).$op($factor),
+            Self::AnsiReset => Self::AnsiReset,
+            Self::AnsiBlack => indexed_to_rgb(0).$op($factor),
+            Self::AnsiRed => indexed_to_rgb(1).$op($factor),
+            Self::AnsiGreen => indexed_to_rgb(2).$op($factor),
+            Self::AnsiYellow => indexed_to_rgb(3).$op($factor),
+            Self::AnsiBlue => indexed_to_rgb(4).$op($factor),
+            Self::AnsiMagenta => indexed_to_rgb(5).$op($factor),
+            Self::AnsiCyan => indexed_to_rgb(6).$op($factor),
+            Self::AnsiGray => indexed_to_rgb(7).$op($factor),
+            Self::AnsiDarkGray => indexed_to_rgb(8).$op($factor),
+            Self::AnsiLightRed => indexed_to_rgb(9).$op($factor),
+            Self::AnsiLightGreen => indexed_to_rgb(10).$op($factor),
+            Self::AnsiLightYellow => indexed_to_rgb(11).$op($factor),
+            Self::AnsiLightBlue => indexed_to_rgb(12).$op($factor),
+            Self::AnsiLightMagenta => indexed_to_rgb(13).$op($factor),
+            Self::AnsiLightCyan => indexed_to_rgb(14).$op($factor),
+            Self::AnsiWhite => indexed_to_rgb(15).$op($factor),
+        }
+    };
+}
+
 impl Color {
     pub fn terminal_foreground() -> Self {
         COLOR_PALETTE
@@ -187,90 +228,57 @@ impl Color {
     }
 
     pub fn lighten(&self, factor: f32) -> Self {
-        match self {
-            Self::Rgb(val) => Self::Rgb(val.lighten(factor)),
-            Self::Hsl(val) => Self::Hsl(val.lighten(factor)),
-            Self::Hsluv(val) => Self::Hsluv(val.lighten(factor)),
-            Self::Hsv(val) => Self::Hsv(val.lighten(factor)),
-            Self::Hwb(val) => Self::Hwb(val.lighten(factor)),
-            Self::Lab(val) => Self::Lab(val.lighten(factor)),
-            Self::Lch(val) => Self::Lch(val.lighten(factor)),
-            Self::Lchuv(val) => Self::Lchuv(val.lighten(factor)),
-            Self::Luv(val) => Self::Luv(val.lighten(factor)),
-            Self::Okhsl(val) => Self::Okhsl(val.lighten(factor)),
-            Self::Okhsv(val) => Self::Okhsv(val.lighten(factor)),
-            Self::Okhwb(val) => Self::Okhwb(val.lighten(factor)),
-            Self::Oklab(val) => Self::Oklab(val.lighten(factor)),
-            Self::Oklch(val) => Self::Oklch(val.lighten(factor)),
-            Self::Xyz(val) => Self::Xyz(val.lighten(factor)),
-            Self::Yxy(val) => Self::Yxy(val.lighten(factor)),
-            _ => *self,
-        }
+        color_op!(self, lighten, factor)
     }
 
     pub fn lighten_fixed(&self, factor: f32) -> Self {
-        match self {
-            Self::Rgb(val) => Self::Rgb(val.lighten_fixed(factor)),
-            Self::Hsl(val) => Self::Hsl(val.lighten_fixed(factor)),
-            Self::Hsluv(val) => Self::Hsluv(val.lighten_fixed(factor)),
-            Self::Hsv(val) => Self::Hsv(val.lighten_fixed(factor)),
-            Self::Hwb(val) => Self::Hwb(val.lighten_fixed(factor)),
-            Self::Lab(val) => Self::Lab(val.lighten_fixed(factor)),
-            Self::Lch(val) => Self::Lch(val.lighten_fixed(factor)),
-            Self::Lchuv(val) => Self::Lchuv(val.lighten_fixed(factor)),
-            Self::Luv(val) => Self::Luv(val.lighten_fixed(factor)),
-            Self::Okhsl(val) => Self::Okhsl(val.lighten_fixed(factor)),
-            Self::Okhsv(val) => Self::Okhsv(val.lighten_fixed(factor)),
-            Self::Okhwb(val) => Self::Okhwb(val.lighten_fixed(factor)),
-            Self::Oklab(val) => Self::Oklab(val.lighten_fixed(factor)),
-            Self::Oklch(val) => Self::Oklch(val.lighten_fixed(factor)),
-            Self::Xyz(val) => Self::Xyz(val.lighten_fixed(factor)),
-            Self::Yxy(val) => Self::Yxy(val.lighten_fixed(factor)),
-            _ => *self,
-        }
+        color_op!(self, lighten_fixed, factor)
     }
 
     pub fn darken(&self, factor: f32) -> Self {
-        match self {
-            Self::Rgb(val) => Self::Rgb(val.darken(factor)),
-            Self::Hsl(val) => Self::Hsl(val.darken(factor)),
-            Self::Hsluv(val) => Self::Hsluv(val.darken(factor)),
-            Self::Hsv(val) => Self::Hsv(val.darken(factor)),
-            Self::Hwb(val) => Self::Hwb(val.darken(factor)),
-            Self::Lab(val) => Self::Lab(val.darken(factor)),
-            Self::Lch(val) => Self::Lch(val.darken(factor)),
-            Self::Lchuv(val) => Self::Lchuv(val.darken(factor)),
-            Self::Luv(val) => Self::Luv(val.darken(factor)),
-            Self::Okhsl(val) => Self::Okhsl(val.darken(factor)),
-            Self::Okhsv(val) => Self::Okhsv(val.darken(factor)),
-            Self::Okhwb(val) => Self::Okhwb(val.darken(factor)),
-            Self::Oklab(val) => Self::Oklab(val.darken(factor)),
-            Self::Oklch(val) => Self::Oklch(val.darken(factor)),
-            Self::Xyz(val) => Self::Xyz(val.darken(factor)),
-            Self::Yxy(val) => Self::Yxy(val.darken(factor)),
-            _ => *self,
-        }
+        color_op!(self, darken, factor)
     }
 
     pub fn darken_fixed(&self, factor: f32) -> Self {
-        match self {
-            Self::Rgb(val) => Self::Rgb(val.darken_fixed(factor)),
-            Self::Hsl(val) => Self::Hsl(val.darken_fixed(factor)),
-            Self::Hsluv(val) => Self::Hsluv(val.darken_fixed(factor)),
-            Self::Hsv(val) => Self::Hsv(val.darken_fixed(factor)),
-            Self::Hwb(val) => Self::Hwb(val.darken_fixed(factor)),
-            Self::Lab(val) => Self::Lab(val.darken_fixed(factor)),
-            Self::Lch(val) => Self::Lch(val.darken_fixed(factor)),
-            Self::Lchuv(val) => Self::Lchuv(val.darken_fixed(factor)),
-            Self::Luv(val) => Self::Luv(val.darken_fixed(factor)),
-            Self::Okhsl(val) => Self::Okhsl(val.darken_fixed(factor)),
-            Self::Okhsv(val) => Self::Okhsv(val.darken_fixed(factor)),
-            Self::Okhwb(val) => Self::Okhwb(val.darken_fixed(factor)),
-            Self::Oklab(val) => Self::Oklab(val.darken_fixed(factor)),
-            Self::Oklch(val) => Self::Oklch(val.darken_fixed(factor)),
-            Self::Xyz(val) => Self::Xyz(val.darken_fixed(factor)),
-            Self::Yxy(val) => Self::Yxy(val.darken_fixed(factor)),
-            _ => *self,
-        }
+        color_op!(self, darken_fixed, factor)
     }
 }
+
+fn indexed_to_rgb(index: u8) -> Color {
+    Color::parse_hex(ANSI_HEX[index as usize]).unwrap()
+}
+
+const ANSI_HEX: [&str; 256] = [
+    "#000000", "#800000", "#008000", "#808000", "#000080", "#800080", "#008080", "#c0c0c0",
+    "#808080", "#ff0000", "#00ff00", "#ffff00", "#0000ff", "#ff00ff", "#00ffff", "#ffffff",
+    "#000000", "#00005f", "#000087", "#0000af", "#0000d7", "#0000ff", "#005f00", "#005f5f",
+    "#005f87", "#005faf", "#005fd7", "#005fff", "#008700", "#00875f", "#008787", "#0087af",
+    "#0087d7", "#0087ff", "#00af00", "#00af5f", "#00af87", "#00afaf", "#00afd7", "#00afff",
+    "#00d700", "#00d75f", "#00d787", "#00d7af", "#00d7d7", "#00d7ff", "#00ff00", "#00ff5f",
+    "#00ff87", "#00ffaf", "#00ffd7", "#00ffff", "#5f0000", "#5f005f", "#5f0087", "#5f00af",
+    "#5f00d7", "#5f00ff", "#5f5f00", "#5f5f5f", "#5f5f87", "#5f5faf", "#5f5fd7", "#5f5fff",
+    "#5f8700", "#5f875f", "#5f8787", "#5f87af", "#5f87d7", "#5f87ff", "#5faf00", "#5faf5f",
+    "#5faf87", "#5fafaf", "#5fafd7", "#5fafff", "#5fd700", "#5fd75f", "#5fd787", "#5fd7af",
+    "#5fd7d7", "#5fd7ff", "#5fff00", "#5fff5f", "#5fff87", "#5fffaf", "#5fffd7", "#5fffff",
+    "#870000", "#87005f", "#870087", "#8700af", "#8700d7", "#8700ff", "#875f00", "#875f5f",
+    "#875f87", "#875faf", "#875fd7", "#875fff", "#878700", "#87875f", "#878787", "#8787af",
+    "#8787d7", "#8787ff", "#87af00", "#87af5f", "#87af87", "#87afaf", "#87afd7", "#87afff",
+    "#87d700", "#87d75f", "#87d787", "#87d7af", "#87d7d7", "#87d7ff", "#87ff00", "#87ff5f",
+    "#87ff87", "#87ffaf", "#87ffd7", "#87ffff", "#af0000", "#af005f", "#af0087", "#af00af",
+    "#af00d7", "#af00ff", "#af5f00", "#af5f5f", "#af5f87", "#af5faf", "#af5fd7", "#af5fff",
+    "#af8700", "#af875f", "#af8787", "#af87af", "#af87d7", "#af87ff", "#afaf00", "#afaf5f",
+    "#afaf87", "#afafaf", "#afafd7", "#afafff", "#afd700", "#afd75f", "#afd787", "#afd7af",
+    "#afd7d7", "#afd7ff", "#afff00", "#afff5f", "#afff87", "#afffaf", "#afffd7", "#afffff",
+    "#d70000", "#d7005f", "#d70087", "#d700af", "#d700d7", "#d700ff", "#d75f00", "#d75f5f",
+    "#d75f87", "#d75faf", "#d75fd7", "#d75fff", "#d78700", "#d7875f", "#d78787", "#d787af",
+    "#d787d7", "#d787ff", "#d7af00", "#d7af5f", "#d7af87", "#d7afaf", "#d7afd7", "#d7afff",
+    "#d7d700", "#d7d75f", "#d7d787", "#d7d7af", "#d7d7d7", "#d7d7ff", "#d7ff00", "#d7ff5f",
+    "#d7ff87", "#d7ffaf", "#d7ffd7", "#d7ffff", "#ff0000", "#ff005f", "#ff0087", "#ff00af",
+    "#ff00d7", "#ff00ff", "#ff5f00", "#ff5f5f", "#ff5f87", "#ff5faf", "#ff5fd7", "#ff5fff",
+    "#ff8700", "#ff875f", "#ff8787", "#ff87af", "#ff87d7", "#ff87ff", "#ffaf00", "#ffaf5f",
+    "#ffaf87", "#ffafaf", "#ffafd7", "#ffafff", "#ffd700", "#ffd75f", "#ffd787", "#ffd7af",
+    "#ffd7d7", "#ffd7ff", "#ffff00", "#ffff5f", "#ffff87", "#ffffaf", "#ffffd7", "#ffffff",
+    "#080808", "#121212", "#1c1c1c", "#262626", "#303030", "#3a3a3a", "#444444", "#4e4e4e",
+    "#585858", "#626262", "#6c6c6c", "#767676", "#808080", "#8a8a8a", "#949494", "#9e9e9e",
+    "#a8a8a8", "#b2b2b2", "#bcbcbc", "#c6c6c6", "#d0d0d0", "#dadada", "#e4e4e4", "#eeeeee",
+];

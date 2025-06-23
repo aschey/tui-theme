@@ -1,6 +1,6 @@
 use ::palette::{
-    Hsl, Hsluv, Hwb, Lab, Lch, Lchuv, Luv, Okhsl, Okhsv, Okhwb,
-    Oklab, Oklch, Srgb, Xyz, Yxy, rgb::Rgb, white_point::D50,
+    Hsl, Hsluv, Hwb, Lab, Lch, Lchuv, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch, Srgb, Xyz, Yxy,
+    rgb::Rgb, white_point::D50,
 };
 use regex::{Captures, Regex};
 use std::{error::Error, fmt::Display, str::FromStr, sync::LazyLock};
@@ -126,7 +126,7 @@ static YXY_RE: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(&format!("^yxy\\(({PCT}){SEP}({PCT}){SEP}({PCT})\\);?$")).unwrap());
 
 impl Color {
-    fn parse_hex(s: &str) -> Option<Self> {
+    pub(super) fn parse_hex(s: &str) -> Option<Self> {
         if HEX_RE.is_match(s) {
             let rgb: Srgb<u8> = s.parse().unwrap();
             Some(Self::Rgb(rgb.into()))
