@@ -71,7 +71,7 @@ pub fn derive_color_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
         );
     }
 
-    let style_trait = Ident::new(&(struct_name.to_string() + "Style"), Span::call_site());
+    let style_trait = Ident::new(&(struct_name.to_string() + "ColorTheme"), Span::call_site());
     let Data::Struct(data_struct) = &input.data else {
         bail!(input.span(), "Theme can only be derived on structs");
     };
@@ -118,6 +118,63 @@ pub fn derive_color_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
         impl<'a, T, U> #style_trait<T> for U
         where
             U: Stylize<'a, T>,
+        {
+            #impl_fns
+        }
+
+    })
+}
+
+#[manyhow(proc_macro_derive(StyleTheme, attributes(variants)))]
+pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
+    let struct_name = &input.ident;
+    if let Some(param) = input.generics.type_params().next() {
+        bail!(
+            param.span(),
+            "Type parameters are not supported for theme structs"
+        );
+    }
+
+    let style_trait = Ident::new(&(struct_name.to_string() + "Style"), Span::call_site());
+    let Data::Struct(data_struct) = &input.data else {
+        bail!(input.span(), "Theme can only be derived on structs");
+    };
+
+    let fields: Vec<_> = data_struct
+        .fields
+        .iter()
+        .filter_map(|f| f.ident.as_ref())
+        .collect();
+    let trait_fns: TokenStream = fields
+        .iter()
+        .map(|f| {
+            let style_fn = Ident::new(&format!("style_{f}"), Span::call_site());
+            quote! {
+                fn #style_fn(self) -> T;
+            }
+        })
+        .collect();
+
+    let impl_fns: TokenStream = fields
+        .iter()
+        .map(|f| {
+            let style_fn = Ident::new(&format!("style_{f}"), Span::call_site());
+            quote! {
+                fn #style_fn(self) -> T {
+                    #struct_name::with_theme(|t| self.set_style(t.#f))
+                }
+            }
+        })
+        .collect();
+
+    Ok(quote! {
+        pub trait #style_trait<T> {
+            #trait_fns
+        }
+
+        impl<T, U> #style_trait<T> for U
+        where
+            U: Styled<Item = T>
         {
             #impl_fns
         }

@@ -3,9 +3,11 @@ use std::io::stdout;
 use std::sync::{Arc, LazyLock, RwLock};
 
 use anstyle_crossterm::to_crossterm;
-use ratatui::style::Stylize;
+use ratatui::style::{Style, Styled, Stylize};
+use ratatui::text::Text;
 use tui_theme::{
-    Color, ColorTheme, SetTheme, SubTheme, Theme, load_color_palette, load_profile, palette,
+    Color, ColorTheme, SetTheme, StyleTheme, SubTheme, Theme, load_color_palette, load_profile,
+    palette,
 };
 
 #[derive(Clone, Default, Debug)]
@@ -17,6 +19,14 @@ struct AppColorTheme {
     #[variants("a", "b")]
     primary: Color,
     secondary: Color,
+}
+
+#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
+#[variants("a", "b")]
+struct AppStyleTheme {
+    #[variants("a", "b")]
+    primary: Style,
+    secondary: Style,
 }
 
 #[derive(ColorTheme, SetTheme, Default, Clone, Debug)]
@@ -55,6 +65,7 @@ fn main() {
     println!("{col:?}");
     println!("{col2:?}");
     BorderTheme::primary();
+    "a".style_primary();
 
     let theme = AppTheme {
         color: AppColorTheme {
