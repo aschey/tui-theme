@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Alignment, Constraint, Layout, Margin, Rect};
-use ratatui::style::{Style, Stylize};
+use ratatui::style::Stylize;
 use ratatui::text::Line;
 use ratatui::widgets::{
     Block, Clear, Padding, Paragraph, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
@@ -9,7 +9,7 @@ use ratatui::widgets::{
 };
 use tui_theme::SetTheme;
 
-use crate::theme::AppTheme;
+use crate::theme::{AppTheme, AppThemeStyle, RecipeStyle};
 
 #[derive(Debug, Default, Clone, Copy)]
 struct Ingredient {
@@ -120,7 +120,7 @@ impl Widget for RecipeTab {
         Block::new()
             .title("Ratatouille Recipe".bold().white())
             .title_alignment(Alignment::Center)
-            .style(AppTheme::current().content)
+            .style_content()
             .padding(Padding::new(1, 1, 2, 1))
             .render(area, buf);
 
@@ -157,12 +157,11 @@ fn render_recipe(area: Rect, buf: &mut Buffer) {
 fn render_ingredients(selected_row: usize, area: Rect, buf: &mut Buffer) {
     let mut state = TableState::default().with_selected(Some(selected_row));
     let rows = INGREDIENTS.iter().copied();
-    let theme = AppTheme::current().recipe;
     StatefulWidget::render(
         Table::new(rows, [Constraint::Length(7), Constraint::Length(30)])
-            .block(Block::new().style(theme.ingredients))
-            .header(Row::new(vec!["Qty", "Ingredient"]).style(theme.ingredients_header))
-            .row_highlight_style(Style::new().light_yellow()),
+            .block(Block::new().style_ingredients())
+            .header(Row::new(vec!["Qty", "Ingredient"]).style_ingredients_header())
+            .row_highlight_style(AppTheme::current().recipe.selected),
         area,
         buf,
         &mut state,

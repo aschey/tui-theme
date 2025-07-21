@@ -1,15 +1,14 @@
 use itertools::Itertools;
-use palette::{IntoColor, Okhsv, Srgb};
+use palette::Okhsv;
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Direction, Layout, Margin, Rect};
-use ratatui::style::{Color, Style, Stylize};
 use ratatui::symbols;
 use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
 use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding, Widget};
 use time::OffsetDateTime;
-use tui_theme::SetTheme;
+use tui_theme::{Color, SetTheme, Style};
 
-use crate::theme::AppTheme;
+use crate::theme::{AppTheme, AppThemeStyle, WeatherColorTheme as _};
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct WeatherTab {
@@ -18,12 +17,12 @@ pub struct WeatherTab {
 
 impl WeatherTab {
     /// Simulate a download indicator by decrementing the row index.
-    pub fn prev(&mut self) {
+    pub fn decrease(&mut self) {
         self.download_progress = self.download_progress.saturating_sub(1);
     }
 
     /// Simulate a download indicator by incrementing the row index.
-    pub fn next(&mut self) {
+    pub fn increase(&mut self) {
         self.download_progress = self.download_progress.saturating_add(1);
     }
 }
@@ -35,9 +34,7 @@ impl Widget for WeatherTab {
             horizontal: 2,
         });
         Clear.render(area, buf);
-        Block::new()
-            .style(AppTheme::current().content)
-            .render(area, buf);
+        Block::new().style_content().render(area, buf);
 
         let area = area.inner(Margin {
             horizontal: 2,
@@ -63,11 +60,14 @@ impl Widget for WeatherTab {
 
 fn render_calendar(area: Rect, buf: &mut Buffer) {
     let date = OffsetDateTime::now_utc().date();
-    Monthly::new(date, CalendarEventStore::today(Style::new().red().bold()))
-        .block(Block::new().padding(Padding::new(0, 0, 2, 0)))
-        .show_month_header(Style::new().bold())
-        .show_weekdays_header(Style::new().italic())
-        .render(area, buf);
+    Monthly::new(
+        date,
+        CalendarEventStore::today(AppTheme::current().weather.calendar_day),
+    )
+    .block(Block::new().padding(Padding::new(0, 0, 2, 0)))
+    .show_month_header(Style::new().bold())
+    .show_weekdays_header(Style::new().italic())
+    .render(area, buf);
 }
 
 fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
@@ -80,6 +80,7 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
         ("Thu", 69),
         ("Fri", 73),
     ];
+    let cur = AppTheme::current().weather;
     let data = data
         .into_iter()
         .map(|(label, value)| {
@@ -89,15 +90,11 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
                 // See https://github.com/ratatui/ratatui/issues/513 for more info
                 // (the demo GIFs hack around this by hacking the calculation in bars.rs)
                 .text_value(format!("{value}°"))
-                .style(if value > 70 {
-                    Style::new().fg(Color::Red)
-                } else {
-                    Style::new().fg(Color::Yellow)
-                })
+                .style(if value > 70 { cur.bar1 } else { cur.bar2 })
                 .value_style(if value > 70 {
-                    Style::new().fg(Color::Gray).bg(Color::Red).bold()
+                    cur.bar_value1
                 } else {
-                    Style::new().fg(Color::DarkGray).bg(Color::Yellow).bold()
+                    cur.bar_value2
                 })
                 .label(label.into())
         })
@@ -111,7 +108,6 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
 }
 
 fn render_horizontal_barchart(area: Rect, buf: &mut Buffer) {
-    let bg = Color::Rgb(32, 48, 96);
     let data = [
         Bar::default().text_value("Winter 37-51".into()).value(51),
         Bar::default().text_value("Spring 40-65".into()).value(65),
@@ -127,8 +123,8 @@ fn render_horizontal_barchart(area: Rect, buf: &mut Buffer) {
         .direction(Direction::Horizontal)
         .data(group)
         .bar_gap(1)
-        .bar_style(Style::new().fg(bg))
-        .value_style(Style::new().bg(bg).fg(Color::Gray))
+        .bar_style(Style::new().fg_progress())
+        .value_style(Style::new().bg_progress().fg_progress_value())
         .render(area, buf);
 }
 
@@ -154,7 +150,7 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
     LineGauge::default()
         .ratio(percent / 100.0)
         .label(label)
-        .style(Style::new().light_blue())
+        .fg_line_gauge()
         .filled_style(Style::new().fg(filled_color))
         .unfilled_style(Style::new().fg(unfilled_color))
         .line_set(symbols::line::THICK)
@@ -162,7 +158,5 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
 }
 
 fn color_from_oklab(hue: f32, saturation: f32, value: f32) -> Color {
-    let color: Srgb = Okhsv::new(hue, saturation, value).into_color();
-    let color = color.into_format();
-    Color::Rgb(color.red, color.green, color.blue)
+    Okhsv::new(hue, saturation, value).into()
 }

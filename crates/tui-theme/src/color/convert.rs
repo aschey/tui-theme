@@ -1,5 +1,8 @@
-use palette::FromColor;
 use palette::rgb::Rgb;
+use palette::{
+    FromColor, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch, Xyz,
+    Yxy,
+};
 
 use super::Color;
 
@@ -107,4 +110,104 @@ impl From<Color> for Option<anstyle::Color> {
     }
 }
 
+impl From<Rgb> for Color {
+    fn from(value: Rgb) -> Self {
+        Self::Rgb(value)
+    }
+}
 
+impl From<Hsl> for Color {
+    fn from(value: Hsl) -> Self {
+        Self::Hsl(value)
+    }
+}
+
+impl From<Hsluv> for Color {
+    fn from(value: Hsluv) -> Self {
+        Self::Hsluv(value)
+    }
+}
+
+impl From<Hsv> for Color {
+    fn from(value: Hsv) -> Self {
+        Self::Hsv(value)
+    }
+}
+
+impl From<Hwb> for Color {
+    fn from(value: Hwb) -> Self {
+        Self::Hwb(value)
+    }
+}
+
+impl From<Lab> for Color {
+    fn from(value: Lab) -> Self {
+        Self::Lab(value)
+    }
+}
+
+impl From<Lch> for Color {
+    fn from(value: Lch) -> Self {
+        Self::Lch(value)
+    }
+}
+
+impl From<Lchuv> for Color {
+    fn from(value: Lchuv) -> Self {
+        Self::Lchuv(value)
+    }
+}
+
+impl From<Luv> for Color {
+    fn from(value: Luv) -> Self {
+        Self::Luv(value)
+    }
+}
+
+impl From<Okhsl> for Color {
+    fn from(value: Okhsl) -> Self {
+        Self::Okhsl(value)
+    }
+}
+
+impl From<Okhsv> for Color {
+    fn from(value: Okhsv) -> Self {
+        Self::Okhsv(value)
+    }
+}
+
+impl From<Okhwb> for Color {
+    fn from(value: Okhwb) -> Self {
+        Self::Okhwb(value)
+    }
+}
+
+impl From<Oklab> for Color {
+    fn from(value: Oklab) -> Self {
+        Self::Oklab(value)
+    }
+}
+
+impl From<Oklch> for Color {
+    fn from(value: Oklch) -> Self {
+        Self::Oklch(value)
+    }
+}
+
+impl From<Xyz> for Color {
+    fn from(value: Xyz) -> Self {
+        Self::Xyz(value)
+    }
+}
+
+impl From<Yxy> for Color {
+    fn from(value: Yxy) -> Self {
+        Self::Yxy(value)
+    }
+}
+
+impl From<u8> for Color {
+    fn from(value: u8) -> Self {
+        Self::Indexed(value)
+    }
+}

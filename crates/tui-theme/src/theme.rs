@@ -1,7 +1,3 @@
-use std::cell::RefCell;
-use std::sync::{Arc, LazyLock, RwLock};
-
-use ratatui::style::Stylize;
 use tui_theme_derive::StyleTheme;
 
 use crate::{Color, SetTheme};

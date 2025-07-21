@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Layout, Margin, Rect};
-use ratatui::style::{Styled, Stylize};
+use ratatui::style::Stylize;
 use ratatui::text::Line;
 use ratatui::widgets::{
     Block, BorderType, Borders, Clear, List, ListItem, ListState, Padding, Paragraph, Scrollbar,
@@ -10,7 +10,7 @@ use ratatui::widgets::{
 use tui_theme::SetTheme;
 use unicode_width::UnicodeWidthStr;
 
-use crate::theme::AppTheme;
+use crate::theme::{AppTheme, EmailStyle};
 
 #[derive(Debug, Default)]
 pub struct Email {
@@ -82,7 +82,7 @@ fn render_inbox(selected_index: usize, area: Rect, buf: &mut Buffer) {
     let [tabs, inbox] = vertical.areas(area);
     let theme = AppTheme::current().email;
     Tabs::new(vec![" Inbox ", " Sent ", " Drafts "])
-        .style(theme.tabs)
+        .style_tabs()
         .highlight_style(theme.tabs_selected)
         .select(0)
         .divider("")
@@ -101,7 +101,7 @@ fn render_inbox(selected_index: usize, area: Rect, buf: &mut Buffer) {
     let mut state = ListState::default().with_selected(Some(selected_index));
     StatefulWidget::render(
         List::new(items)
-            .style(theme.inbox)
+            .style_inbox()
             .highlight_style(theme.selected_item)
             .highlight_symbol(highlight_symbol),
         inbox,
@@ -120,10 +120,9 @@ fn render_inbox(selected_index: usize, area: Rect, buf: &mut Buffer) {
 }
 
 fn render_email(selected_index: usize, area: Rect, buf: &mut Buffer) {
-    let theme = AppTheme::current().email;
     let email = EMAILS.get(selected_index);
     let block = Block::new()
-        .style(theme.body)
+        .style_body()
         .padding(Padding::new(2, 2, 0, 0))
         .borders(Borders::TOP)
         .border_type(BorderType::Thick);
@@ -134,22 +133,20 @@ fn render_email(selected_index: usize, area: Rect, buf: &mut Buffer) {
         let [headers_area, body_area] = vertical.areas(inner);
         let headers = vec![
             Line::from(vec![
-                "From: ".set_style(theme.header),
-                email.from.set_style(theme.header_value),
+                "From: ".style_header(),
+                email.from.style_header_value(),
             ]),
             Line::from(vec![
-                "Subject: ".set_style(theme.header),
-                email.subject.set_style(theme.header_value),
+                "Subject: ".style_header(),
+                email.subject.style_header_value(),
             ]),
             "-".repeat(inner.width as usize).dim().into(),
         ];
         Paragraph::new(headers)
-            .style(theme.body)
+            .style_body()
             .render(headers_area, buf);
         let body = email.body.lines().map(Line::from).collect_vec();
-        Paragraph::new(body)
-            .style(theme.body)
-            .render(body_area, buf);
+        Paragraph::new(body).style_body().render(body_area, buf);
     } else {
         Paragraph::new("No email selected").render(inner, buf);
     }

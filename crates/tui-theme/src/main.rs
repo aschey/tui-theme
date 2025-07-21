@@ -1,6 +1,4 @@
-use std::cell::RefCell;
 use std::io::stdout;
-use std::sync::{Arc, LazyLock, RwLock};
 
 use anstyle_crossterm::to_crossterm;
 use termprofile::ProfileColor;
@@ -53,8 +51,8 @@ struct AppTheme {
 }
 
 fn main() {
-    let _ = load_profile(&stdout());
-    let _ = load_color_palette();
+    load_profile(&stdout());
+    load_color_palette();
     let a: Option<Color> = ProfileColor::new(Color::AnsiReset)
         .try_adapt(&profile().unwrap())
         .map(Into::into);

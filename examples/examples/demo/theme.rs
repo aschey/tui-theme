@@ -1,25 +1,26 @@
-use std::sync::LazyLock;
-
-use palette::Srgb;
-use palette::rgb::Rgb;
 use tui_theme::palette::{Catppuccin, RosePine};
-use tui_theme::{Color, Modifiers, SetTheme, Style, StyleTheme, Theme};
+use tui_theme::{Color, Modifiers, SetTheme, Style, StyleTheme, SubTheme, Theme};
 
-#[derive(Theme, Default, Clone, Debug)]
+#[derive(Theme, StyleTheme, Default, Clone, Debug)]
 pub struct AppTheme {
     pub root: Style,
     pub content: Style,
     pub app_title: Style,
-    pub tabs: Style,
+    pub main_tabs: Style,
     pub tabs_selected: Style,
     pub borders: Style,
     pub description: Style,
     pub description_title: Style,
     pub key_binding: KeyBinding,
     pub logo: Logo,
+    #[subtheme]
     pub email: Email,
+    #[subtheme]
     pub traceroute: Traceroute,
+    #[subtheme]
     pub recipe: Recipe,
+    #[subtheme]
+    pub weather: Weather,
 }
 
 #[derive(Default, Clone, Debug)]
@@ -28,7 +29,7 @@ pub struct KeyBinding {
     pub description: Style,
 }
 
-#[derive(Default, Clone, Debug)]
+#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
 pub struct Logo {
     pub rat: Color,
     pub rat_eye: Color,
@@ -36,7 +37,7 @@ pub struct Logo {
     pub term: Color,
 }
 
-#[derive(Default, Clone, Debug)]
+#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
 pub struct Email {
     pub tabs: Style,
     pub tabs_selected: Style,
@@ -48,17 +49,18 @@ pub struct Email {
     pub body: Style,
 }
 
-#[derive(Default, Clone, Debug)]
+#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
 pub struct Traceroute {
     pub header: Style,
+    pub title: Style,
     pub selected: Style,
     pub ping: Style,
     pub map: Map,
 }
 
-#[derive(Default, Clone, Debug)]
+#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
 pub struct Map {
-    pub style: Style,
+    pub main: Style,
     pub color: Color,
     pub path: Color,
     pub source: Color,
@@ -66,10 +68,23 @@ pub struct Map {
     pub background_color: Color,
 }
 
-#[derive(Default, Clone, Debug)]
+#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
 pub struct Recipe {
     pub ingredients: Style,
     pub ingredients_header: Style,
+    pub selected: Style,
+}
+
+#[derive(SubTheme, StyleTheme, Theme, Default, Clone, Debug)]
+pub struct Weather {
+    pub bar1: Style,
+    pub bar2: Style,
+    pub bar_value1: Style,
+    pub bar_value2: Style,
+    pub calendar_day: Style,
+    pub progress: Color,
+    pub progress_value: Color,
+    pub line_gauge: Color,
 }
 
 #[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
@@ -96,7 +111,7 @@ const THEMES: [Colors; 2] = [
         light_red: Catppuccin::ROSEWATER_300,
         red: Catppuccin::ROSEWATER_600,
         black: Catppuccin::BLUE_950,
-        dark_gray: Catppuccin::GRAY_900,
+        dark_gray: Catppuccin::GRAY_700,
         mid_gray: Catppuccin::GRAY_500,
         light_gray: Catppuccin::GRAY_300,
         white: Catppuccin::GRAY_50,
@@ -109,7 +124,7 @@ const THEMES: [Colors; 2] = [
         light_red: RosePine::ROSE_300,
         red: RosePine::ROSE_600,
         black: RosePine::GRAY_950,
-        dark_gray: RosePine::GRAY_900,
+        dark_gray: RosePine::GRAY_700,
         mid_gray: RosePine::GRAY_500,
         light_gray: RosePine::GRAY_300,
         white: RosePine::GRAY_50,
@@ -131,7 +146,7 @@ pub fn init_theme(index: usize) {
             .fg_white()
             .bg_dark_blue()
             .modifiers(Modifiers::BOLD),
-        tabs: Style::new().fg_mid_gray().bg_dark_blue(),
+        main_tabs: Style::new().fg_mid_gray().bg_dark_blue(),
         tabs_selected: Style::new()
             .fg_white()
             .bg_dark_blue()
@@ -140,10 +155,10 @@ pub fn init_theme(index: usize) {
         description: Style::new().fg_light_gray().bg_dark_blue(),
         description_title: Style::new().fg_light_gray().modifiers(Modifiers::BOLD),
         logo: Logo {
-            rat: cur.white,       //white,
-            rat_eye: cur.black,   //black,
-            rat_eye_alt: cur.red, //red,
-            term: cur.black,      //black,
+            rat: cur.white,
+            rat_eye: cur.black,
+            rat_eye_alt: cur.red,
+            term: cur.black,
         },
         key_binding: KeyBinding {
             key: Style::new().fg_black().bg_dark_gray(),
@@ -166,10 +181,11 @@ pub fn init_theme(index: usize) {
             header: Style::new()
                 .bg_dark_blue()
                 .modifiers(Modifiers::BOLD | Modifiers::UNDERLINE),
+            title: Style::new().fg_white().bold(),
             selected: Style::new().fg_light_yellow(),
             ping: Style::new().fg_white(),
             map: Map {
-                style: Style::new().bg_dark_blue(),
+                main: Style::new().bg_dark_blue(),
                 background_color: cur.dark_blue,
                 color: cur.light_gray,
                 path: cur.light_blue,
@@ -180,7 +196,19 @@ pub fn init_theme(index: usize) {
         recipe: Recipe {
             ingredients: Style::new().bg_dark_blue().fg_light_gray(),
             ingredients_header: Style::new().modifiers(Modifiers::BOLD | Modifiers::UNDERLINE),
+            selected: Style::new().fg_light_yellow(),
+        },
+        weather: Weather {
+            bar1: Style::new().fg_red(),
+            bar2: Style::new().fg_light_yellow(),
+            bar_value1: Style::new().fg_mid_gray().bg_red().bold(),
+            bar_value2: Style::new().fg_mid_gray().bg_light_yellow().bold(),
+            calendar_day: Style::new().fg_red().bold(),
+            progress: cur.light_yellow,
+            progress_value: cur.mid_gray,
+            line_gauge: cur.light_blue,
         },
     };
+
     theme.set_global();
 }

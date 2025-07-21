@@ -8,7 +8,6 @@ use itertools::Itertools;
 use ratatui::buffer::Buffer;
 use ratatui::crossterm::event::{Event, KeyCode, KeyEvent, KeyEventKind};
 use ratatui::layout::{Constraint, Layout, Rect};
-use ratatui::style::Color;
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Tabs, Widget};
 use ratatui::{DefaultTerminal, Frame};
@@ -16,7 +15,7 @@ use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 use tui_theme::SetTheme;
 
 use crate::tabs::{AboutTab, EmailTab, RecipeTab, TracerouteTab, WeatherTab};
-use crate::theme::{AppTheme, init_theme, num_themes};
+use crate::theme::{AppTheme, AppThemeStyle, init_theme, num_themes};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct App {
@@ -105,7 +104,7 @@ impl App {
             Tab::Recipe => self.recipe_tab.prev(),
             Tab::Email => self.email_tab.prev(),
             Tab::Traceroute => self.traceroute_tab.prev_row(),
-            Tab::Weather => self.weather_tab.prev(),
+            Tab::Weather => self.weather_tab.increase(),
         }
     }
 
@@ -115,7 +114,7 @@ impl App {
             Tab::Recipe => self.recipe_tab.next(),
             Tab::Email => self.email_tab.next(),
             Tab::Traceroute => self.traceroute_tab.next_row(),
-            Tab::Weather => self.weather_tab.next(),
+            Tab::Weather => self.weather_tab.decrease(),
         }
     }
 
@@ -145,9 +144,7 @@ impl Widget for &App {
         ]);
         let [title_bar, tab, bottom_bar] = vertical.areas(area);
 
-        Block::new()
-            .style(AppTheme::current().root)
-            .render(area, buf);
+        Block::new().style_root().render(area, buf);
         self.render_title_bar(title_bar, buf);
         self.render_selected_tab(tab, buf);
         App::render_bottom_bar(bottom_bar, buf);
@@ -162,7 +159,7 @@ impl App {
         Span::styled("Ratatui", AppTheme::current().app_title).render(title, buf);
         let titles = Tab::iter().map(Tab::title);
         Tabs::new(titles)
-            .style(AppTheme::current().tabs)
+            .style_main_tabs()
             .highlight_style(AppTheme::current().tabs_selected)
             .select(self.tab as usize)
             .divider("")
@@ -200,10 +197,7 @@ impl App {
                 [key, desc]
             })
             .collect_vec();
-        Line::from(spans)
-            .centered()
-            .style((Color::Indexed(236), Color::Indexed(232)))
-            .render(area, buf);
+        Line::from(spans).centered().render(area, buf);
     }
 }
 

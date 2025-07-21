@@ -1,7 +1,6 @@
 use itertools::Itertools;
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Alignment, Constraint, Layout, Margin, Rect};
-use ratatui::style::{Styled, Stylize};
 use ratatui::symbols::Marker;
 use ratatui::widgets::canvas::{self, Canvas, Map, MapResolution, Points};
 use ratatui::widgets::{
@@ -10,7 +9,7 @@ use ratatui::widgets::{
 };
 use tui_theme::SetTheme;
 
-use crate::theme::AppTheme;
+use crate::theme::{AppTheme, AppThemeStyle, MapStyle, TracerouteStyle};
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct TracerouteTab {
@@ -36,9 +35,7 @@ impl Widget for TracerouteTab {
             horizontal: 2,
         });
         Clear.render(area, buf);
-        Block::new()
-            .style(AppTheme::current().content)
-            .render(area, buf);
+        Block::new().style_content().render(area, buf);
         let horizontal = Layout::horizontal([Constraint::Ratio(1, 2), Constraint::Ratio(1, 2)]);
         let vertical = Layout::vertical([Constraint::Min(0), Constraint::Length(3)]);
         let [left, map] = horizontal.areas(area);
@@ -56,12 +53,10 @@ fn render_hops(selected_row: usize, area: Rect, buf: &mut Buffer) {
     let block = Block::new()
         .padding(Padding::new(1, 1, 1, 1))
         .title_alignment(Alignment::Center)
-        .title("Traceroute bad.horse".bold().white());
+        .title("Traceroute bad.horse".style_title());
     StatefulWidget::render(
         Table::new(rows, [Constraint::Max(100), Constraint::Length(15)])
-            .header(
-                Row::new(vec!["Host", "Address"]).set_style(AppTheme::current().traceroute.header),
-            )
+            .header(Row::new(vec!["Host", "Address"]).style_header())
             .row_highlight_style(AppTheme::current().traceroute.selected)
             .block(block),
         area,
@@ -102,7 +97,7 @@ pub fn render_ping(progress: usize, area: Rect, buf: &mut Buffer) {
                 .border_type(BorderType::Thick),
         )
         .data(data)
-        .style(AppTheme::current().traceroute.ping)
+        .style_ping()
         .render(area, buf);
 }
 
@@ -111,15 +106,11 @@ fn render_map(selected_row: usize, area: Rect, buf: &mut Buffer) {
     let path: Option<(&Hop, &Hop)> = HOPS.iter().tuple_windows().nth(selected_row);
     let map = Map {
         resolution: MapResolution::High,
-        color: theme.color.into_adaptive().into(),
+        color: theme.color.into(),
     };
     Canvas::default()
-        .background_color(theme.background_color.into_adaptive().into())
-        .block(
-            Block::new()
-                .padding(Padding::new(1, 0, 1, 0))
-                .style(theme.style),
-        )
+        .background_color(theme.background_color.into())
+        .block(Block::new().padding(Padding::new(1, 0, 1, 0)).style_main())
         .marker(Marker::HalfBlock)
         // picked to show Australia for the demo as it's the most interesting part of the map
         // (and the only part with hops ;))
@@ -133,14 +124,14 @@ fn render_map(selected_row: usize, area: Rect, buf: &mut Buffer) {
                     path.0.location.1,
                     path.1.location.0,
                     path.1.location.1,
-                    theme.path.into_adaptive().into(),
+                    theme.path.into(),
                 ));
                 context.draw(&Points {
-                    color: theme.source.into_adaptive().into(),
+                    color: theme.source.into(),
                     coords: &[path.0.location], // sydney
                 });
                 context.draw(&Points {
-                    color: theme.destination.into_adaptive().into(),
+                    color: theme.destination.into(),
                     coords: &[path.1.location], // perth
                 });
             }

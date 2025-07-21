@@ -1,4 +1,3 @@
-use std::fmt::Display;
 use std::io::{self, IsTerminal};
 use std::sync::{Arc, OnceLock};
 use std::time::Duration;

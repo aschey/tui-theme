@@ -63,6 +63,18 @@ impl Style {
         self
     }
 
+    pub fn bold(self) -> Self {
+        self.modifiers(Modifiers::BOLD)
+    }
+
+    pub fn italic(self) -> Self {
+        self.modifiers(Modifiers::ITALIC)
+    }
+
+    pub fn dim(self) -> Self {
+        self.modifiers(Modifiers::DIM)
+    }
+
     pub fn into_adaptive(self) -> Self {
         let profile = profile().unwrap_or(TermProfile::TrueColor);
         if profile == TermProfile::NoTty {
