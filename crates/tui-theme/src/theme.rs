@@ -1,8 +1,6 @@
-use tui_theme_derive::StyleTheme;
-
 use crate::{Color, Theme};
 
-#[derive(StyleTheme, Theme, Default, Clone, Debug)]
+#[derive(Theme, Default, Clone, Debug)]
 pub struct AppTheme {
     pub primary: Color,
     pub secondary: Color,

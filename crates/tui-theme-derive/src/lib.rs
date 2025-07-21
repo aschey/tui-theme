@@ -5,15 +5,77 @@ use quote::{ToTokens, quote};
 use syn::spanned::Spanned;
 use syn::{Data, DeriveInput, Fields, Ident, Type};
 
-#[manyhow(proc_macro_derive(StyleTheme, attributes(variants)))]
-pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
+fn style_fields(fields: &Fields) -> Vec<&Ident> {
+    fields
+        .iter()
+        .filter_map(|f| {
+            if f.ty.to_token_stream().to_string() == "Style" {
+                f.ident.as_ref()
+            } else {
+                None
+            }
+        })
+        .collect()
+}
+
+fn color_fields(fields: &Fields) -> Vec<&Ident> {
+    fields
+        .iter()
+        .filter_map(|f| {
+            if f.ty.to_token_stream().to_string() == "Color" {
+                f.ident.as_ref()
+            } else {
+                None
+            }
+        })
+        .collect()
+}
+
+fn subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
+    fields
+        .iter()
+        .filter_map(|f| {
+            if f.attrs.iter().any(|a| a.meta.path().is_ident("subtheme")) {
+                f.ident.as_ref().map(|i| (i, &f.ty))
+            } else {
+                None
+            }
+        })
+        .collect()
+}
+
+#[manyhow(proc_macro_derive(Theme, attributes(subtheme, variants)))]
+pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
+    let Data::Struct(data_struct) = &input.data else {
+        bail!(input.span(), "Theme can only be derived on structs");
+    };
     let struct_name = &input.ident;
-    if let Some(param) = input.generics.type_params().next() {
-        bail!(
-            param.span(),
-            "Type parameters are not supported for theme structs"
-        );
-    }
+    let struct_name_upper = struct_name.to_string().to_ascii_uppercase();
+
+    let global_theme = Ident::new(
+        &format!("__{struct_name_upper}__GLOBAL_THEME"),
+        Span::call_site(),
+    );
+    let local_theme = Ident::new(
+        &format!("__{struct_name_upper}__LOCAL_THEME"),
+        Span::call_site(),
+    );
+
+    let fields = subtheme_fields(&data_struct.fields);
+    let set_local: TokenStream = fields
+        .iter()
+        .map(|(f, _)| quote!(self.#f.set_local();))
+        .collect();
+    let set_global: TokenStream = fields
+        .iter()
+        .map(|(f, _)| quote!(self.#f.set_global();))
+        .collect();
+    let unset_local: TokenStream = fields
+        .iter()
+        .map(|(_, ty)| quote!(#ty::unset_local();))
+        .collect();
+
+    let tui_theme = get_import("tui-theme");
 
     let style_trait = Ident::new(&(struct_name.to_string() + "Style"), Span::call_site());
     let color_trait = Ident::new(&(struct_name.to_string() + "ColorTheme"), Span::call_site());
@@ -110,108 +172,6 @@ pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
         .collect();
 
     Ok(quote! {
-        impl #struct_name {
-            #impl_fns
-        }
-
-        pub trait #style_trait<T> {
-            #style_trait_fns
-        }
-
-        impl<T, U> #style_trait<T> for U
-        where
-            U: #tui_theme::Styled<Item = T>
-        {
-            #style_impl_fns
-        }
-
-        pub trait #color_trait<T> {
-            #color_trait_fns
-        }
-
-        impl<T, U> #color_trait<T> for U
-        where
-            U: #tui_theme::Stylize<T>,
-        {
-            #color_impl_fns
-        }
-
-    })
-}
-
-fn style_fields(fields: &Fields) -> Vec<&Ident> {
-    fields
-        .iter()
-        .filter_map(|f| {
-            if f.ty.to_token_stream().to_string() == "Style" {
-                f.ident.as_ref()
-            } else {
-                None
-            }
-        })
-        .collect()
-}
-
-fn color_fields(fields: &Fields) -> Vec<&Ident> {
-    fields
-        .iter()
-        .filter_map(|f| {
-            if f.ty.to_token_stream().to_string() == "Color" {
-                f.ident.as_ref()
-            } else {
-                None
-            }
-        })
-        .collect()
-}
-
-fn subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
-    fields
-        .iter()
-        .filter_map(|f| {
-            if f.attrs.iter().any(|a| a.meta.path().is_ident("subtheme")) {
-                f.ident.as_ref().map(|i| (i, &f.ty))
-            } else {
-                None
-            }
-        })
-        .collect()
-}
-
-#[manyhow(proc_macro_derive(Theme, attributes(subtheme)))]
-pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
-    let Data::Struct(data_struct) = &input.data else {
-        bail!(input.span(), "Theme can only be derived on structs");
-    };
-    let struct_name = &input.ident;
-    let struct_name_upper = struct_name.to_string().to_ascii_uppercase();
-
-    let global_theme = Ident::new(
-        &format!("__{struct_name_upper}__GLOBAL_THEME"),
-        Span::call_site(),
-    );
-    let local_theme = Ident::new(
-        &format!("__{struct_name_upper}__LOCAL_THEME"),
-        Span::call_site(),
-    );
-
-    let fields = subtheme_fields(&data_struct.fields);
-    let set_local: TokenStream = fields
-        .iter()
-        .map(|(f, _)| quote!(self.#f.set_local();))
-        .collect();
-    let set_global: TokenStream = fields
-        .iter()
-        .map(|(f, _)| quote!(self.#f.set_global();))
-        .collect();
-    let unset_local: TokenStream = fields
-        .iter()
-        .map(|(_, ty)| quote!(#ty::unset_local();))
-        .collect();
-
-    let tui_theme = get_import("tui-theme");
-
-    Ok(quote! {
         static #global_theme: ::std::sync::LazyLock<
             ::std::sync::Arc<::std::sync::RwLock<#struct_name>>
         > =
@@ -254,7 +214,32 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
                     f(&*#global_theme.read().unwrap())
                 }
             }
+        }
 
+        impl #struct_name {
+            #impl_fns
+        }
+
+        pub trait #style_trait<T> {
+            #style_trait_fns
+        }
+
+        impl<T, U> #style_trait<T> for U
+        where
+            U: #tui_theme::Styled<Item = T>
+        {
+            #style_impl_fns
+        }
+
+        pub trait #color_trait<T> {
+            #color_trait_fns
+        }
+
+        impl<T, U> #color_trait<T> for U
+        where
+            U: #tui_theme::Stylize<T>,
+        {
+            #color_impl_fns
         }
 
     })
