@@ -3,14 +3,13 @@ use std::io::stdout;
 use anstyle_crossterm::to_crossterm;
 use termprofile::ProfileColor;
 use tui_theme::{
-    Color, SetTheme, Style, StyleTheme, SubTheme, Theme, load_color_palette, load_profile, palette,
-    profile,
+    Color, SetTheme, Style, StyleTheme, Theme, load_color_palette, load_profile, palette, profile,
 };
 
 #[derive(Clone, Default, Debug)]
 struct Borders(String);
 
-#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
+#[derive(StyleTheme, Theme, Default, Clone, Debug)]
 #[variants("a", "b")]
 struct AppColorTheme {
     #[variants("a", "b")]
@@ -18,7 +17,7 @@ struct AppColorTheme {
     secondary: Color,
 }
 
-#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
+#[derive(StyleTheme, Theme, Default, Clone, Debug)]
 #[variants("a", "b")]
 struct AppStyleTheme {
     #[variants("a", "b")]
@@ -26,7 +25,7 @@ struct AppStyleTheme {
     secondary: Style,
 }
 
-#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
+#[derive(StyleTheme, Theme, Default, Clone, Debug)]
 #[variants("a", "b")]
 struct AppColorTheme2 {
     #[variants("a", "b")]
@@ -34,7 +33,7 @@ struct AppColorTheme2 {
     secondary2: Color,
 }
 
-#[derive(SubTheme, SetTheme, Default, Clone, Debug)]
+#[derive(Theme, StyleTheme, Default, Clone, Debug)]
 struct BorderTheme {
     primary: Borders,
     secondary: Borders,

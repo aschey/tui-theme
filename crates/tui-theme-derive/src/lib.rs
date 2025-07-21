@@ -5,67 +5,6 @@ use quote::{ToTokens, quote};
 use syn::spanned::Spanned;
 use syn::{Data, DeriveInput, Fields, Ident, Type};
 
-#[manyhow(proc_macro_derive(SetTheme, attributes(variants)))]
-pub fn derive_set_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
-    let struct_name = &input.ident;
-    let struct_name_upper = struct_name.to_string().to_ascii_uppercase();
-
-    let global_theme = Ident::new(
-        &format!("__{struct_name_upper}__GLOBAL_THEME"),
-        Span::call_site(),
-    );
-    let local_theme = Ident::new(
-        &format!("__{struct_name_upper}__LOCAL_THEME"),
-        Span::call_site(),
-    );
-
-    let tui_theme = get_import("tui-theme");
-    Ok(quote! {
-        static #global_theme: ::std::sync::LazyLock<
-            ::std::sync::Arc<::std::sync::RwLock<#struct_name>
-        >>
-            = ::std::sync::LazyLock::new(Default::default);
-
-        thread_local! {
-            static #local_theme: ::std::cell::RefCell<Option<#struct_name>> = Default::default();
-        }
-
-        impl #tui_theme::SetTheme for #struct_name {
-            type Theme = Self;
-
-            fn set_local(&self) {
-                #local_theme.with(|t| *t.borrow_mut() = Some(self.clone()));
-            }
-
-            fn set_global(&self) {
-                *#global_theme.write().unwrap() = self.clone();
-            }
-
-            fn unset_local() {
-                #local_theme.with(|t| *t.borrow_mut() = None);
-            }
-
-            fn current() -> Self {
-                #local_theme
-                    .with(|t| t.borrow().clone())
-                    .unwrap_or_else(|| #global_theme.read().unwrap().clone())
-            }
-
-            fn with_theme< F, T>(f: F) -> T
-            where
-                F: FnOnce(&Self::Theme) -> T {
-                if #local_theme.with(|t| t.borrow().is_some()) {
-                    #local_theme.with(|t| f(&t.borrow().as_ref().unwrap()))
-                } else {
-                    f(&*#global_theme.read().unwrap())
-                }
-            }
-
-        }
-
-    })
-}
-
 #[manyhow(proc_macro_derive(StyleTheme, attributes(variants)))]
 pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
     let struct_name = &input.ident;
@@ -95,6 +34,7 @@ pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
             }
         })
         .collect();
+    let tui_theme = get_import("tui-theme");
 
     let style_impl_fns: TokenStream = style_fields
         .iter()
@@ -102,6 +42,7 @@ pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
             let style_fn = Ident::new(&format!("style_{f}"), Span::call_site());
             quote! {
                 fn #style_fn(self) -> T {
+                    use #tui_theme::SetTheme;
                     #struct_name::with_theme(|t| self.set_style(t.#f))
                 }
             }
@@ -123,6 +64,24 @@ pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
         })
         .collect();
 
+    let impl_fns: TokenStream = data_struct
+        .fields
+        .iter()
+        .filter_map(|f| {
+            if let Some(ident) = &f.ident {
+                let ty = &f.ty;
+                Some(quote! {
+                    fn #ident() -> #ty {
+                        use #tui_theme::SetTheme;
+                        #struct_name::with_theme(|t| t.#ident.clone())
+                    }
+                })
+            } else {
+                None
+            }
+        })
+        .collect();
+
     let color_impl_fns: TokenStream = color_fields
         .iter()
         .map(|f| {
@@ -132,14 +91,17 @@ pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
 
             quote! {
                 fn #fg_fn(self) -> T {
+                    use #tui_theme::SetTheme;
                     #struct_name::with_theme(|t| self.fg(t.#f))
                 }
 
                 fn #bg_fn(self) -> T {
+                    use #tui_theme::SetTheme;
                     #struct_name::with_theme(|t| self.bg(t.#f))
                 }
 
                 fn #underline_fn(self) -> T {
+                    use #tui_theme::SetTheme;
                     #struct_name::with_theme(|t| self.underline(t.#f))
                 }
 
@@ -147,9 +109,11 @@ pub fn derive_style_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow:
         })
         .collect();
 
-    let tui_theme = get_import("tui-theme");
-
     Ok(quote! {
+        impl #struct_name {
+            #impl_fns
+        }
+
         pub trait #style_trait<T> {
             #style_trait_fns
         }
@@ -214,38 +178,6 @@ fn subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
         .collect()
 }
 
-#[manyhow(proc_macro_derive(SubTheme))]
-pub fn derive_sub_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
-    let struct_name = &input.ident;
-
-    let Data::Struct(data_struct) = &input.data else {
-        bail!(input.span(), "Theme can only be derived on structs");
-    };
-
-    let impl_fns: TokenStream = data_struct
-        .fields
-        .iter()
-        .filter_map(|f| {
-            if let Some(ident) = &f.ident {
-                let ty = &f.ty;
-                Some(quote! {
-                    fn #ident() -> #ty {
-                        #struct_name::with_theme(|t| t.#ident.clone())
-                    }
-                })
-            } else {
-                None
-            }
-        })
-        .collect();
-
-    Ok(quote! {
-        impl #struct_name {
-            #impl_fns
-        }
-    })
-}
-
 #[manyhow(proc_macro_derive(Theme, attributes(subtheme)))]
 pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
     let Data::Struct(data_struct) = &input.data else {
@@ -277,6 +209,8 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
         .map(|(_, ty)| quote!(#ty::unset_local();))
         .collect();
 
+    let tui_theme = get_import("tui-theme");
+
     Ok(quote! {
         static #global_theme: ::std::sync::LazyLock<
             ::std::sync::Arc<::std::sync::RwLock<#struct_name>>
@@ -287,7 +221,7 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
             static #local_theme: ::std::cell::RefCell<Option<#struct_name>> = Default::default();
         }
 
-        impl SetTheme for #struct_name {
+        impl #tui_theme::SetTheme for #struct_name {
             type Theme = Self;
 
             fn set_local(&self) {

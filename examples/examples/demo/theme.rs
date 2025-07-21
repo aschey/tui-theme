@@ -1,5 +1,5 @@
 use tui_theme::palette::{Catppuccin, RosePine};
-use tui_theme::{Color, Modifiers, SetTheme, Style, StyleTheme, SubTheme, Theme};
+use tui_theme::{Color, Modifiers, SetTheme, Style, StyleTheme, Theme};
 
 #[derive(Theme, StyleTheme, Default, Clone, Debug)]
 pub struct AppTheme {
@@ -29,7 +29,7 @@ pub struct KeyBinding {
     pub description: Style,
 }
 
-#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
+#[derive(Theme, StyleTheme, Default, Clone, Debug)]
 pub struct Logo {
     pub rat: Color,
     pub rat_eye: Color,
@@ -37,7 +37,7 @@ pub struct Logo {
     pub term: Color,
 }
 
-#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
+#[derive(Theme, StyleTheme, Default, Clone, Debug)]
 pub struct Email {
     pub tabs: Style,
     pub tabs_selected: Style,
@@ -49,7 +49,7 @@ pub struct Email {
     pub body: Style,
 }
 
-#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
+#[derive(Theme, StyleTheme, Default, Clone, Debug)]
 pub struct Traceroute {
     pub header: Style,
     pub title: Style,
@@ -58,7 +58,7 @@ pub struct Traceroute {
     pub map: Map,
 }
 
-#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
+#[derive(Theme, StyleTheme, Default, Clone, Debug)]
 pub struct Map {
     pub main: Style,
     pub color: Color,
@@ -68,14 +68,14 @@ pub struct Map {
     pub background_color: Color,
 }
 
-#[derive(Theme, SubTheme, StyleTheme, Default, Clone, Debug)]
+#[derive(Theme, StyleTheme, Default, Clone, Debug)]
 pub struct Recipe {
     pub ingredients: Style,
     pub ingredients_header: Style,
     pub selected: Style,
 }
 
-#[derive(SubTheme, StyleTheme, Theme, Default, Clone, Debug)]
+#[derive(Theme, StyleTheme, Default, Clone, Debug)]
 pub struct Weather {
     pub bar1: Style,
     pub bar2: Style,
@@ -87,7 +87,7 @@ pub struct Weather {
     pub line_gauge: Color,
 }
 
-#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
+#[derive(StyleTheme, Theme, Default, Clone, Debug)]
 pub struct Colors {
     dark_blue: Color,
     light_blue: Color,
