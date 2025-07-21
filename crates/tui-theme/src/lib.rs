@@ -1,24 +1,32 @@
 mod color;
 pub mod palette;
+mod style;
 mod theme;
 
-use color::color_scheme;
+// hack for referencing the current crate in proc macros https://github.com/bkchr/proc-macro-crate/issues/14#issuecomment-1742071768
+extern crate self as tui_theme;
+
 pub use color::*;
+pub use style::*;
 use terminal_colorsaurus::ColorScheme;
+pub use theme::*;
 pub use tui_theme_derive::*;
+pub mod profile {
+    pub use termprofile::*;
+}
 
 pub enum ThemeChoice {
     Dark,
     Light,
 }
 
-pub struct AdaptiveTheme<T> {
+pub struct Adaptive<T> {
     dark: T,
     light: T,
     choice: ThemeChoice,
 }
 
-impl<T> AdaptiveTheme<T> {
+impl<T> Adaptive<T> {
     pub fn auto(dark: T, light: T) -> Self {
         let theme = color_scheme();
         Self::new(
@@ -38,23 +46,23 @@ impl<T> AdaptiveTheme<T> {
             choice: theme,
         }
     }
+
+    pub fn adapt(&self) -> &T {
+        match self.choice {
+            ThemeChoice::Dark => &self.dark,
+            ThemeChoice::Light => &self.light,
+        }
+    }
 }
 
-impl<T> SetTheme for AdaptiveTheme<T>
+impl<T> SetTheme for Adaptive<T>
 where
     T: SetTheme,
 {
     type Theme = T::Theme;
 
     fn set_global(&self) {
-        match self.choice {
-            ThemeChoice::Dark => {
-                self.dark.set_global();
-            }
-            ThemeChoice::Light => {
-                self.light.set_global();
-            }
-        }
+        self.adapt().set_global();
     }
 
     fn unset_local() {
@@ -62,14 +70,7 @@ where
     }
 
     fn set_local(&self) {
-        match self.choice {
-            ThemeChoice::Dark => {
-                self.dark.set_local();
-            }
-            ThemeChoice::Light => {
-                self.light.set_local();
-            }
-        }
+        self.adapt().set_local();
     }
 
     fn current() -> Self::Theme {

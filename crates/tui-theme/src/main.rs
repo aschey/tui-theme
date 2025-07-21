@@ -3,17 +3,16 @@ use std::io::stdout;
 use std::sync::{Arc, LazyLock, RwLock};
 
 use anstyle_crossterm::to_crossterm;
-use ratatui::style::{Style, Styled, Stylize};
-use ratatui::text::Text;
+use termprofile::ProfileColor;
 use tui_theme::{
-    Color, ColorTheme, SetTheme, StyleTheme, SubTheme, Theme, load_color_palette, load_profile,
-    palette,
+    Color, SetTheme, Style, StyleTheme, SubTheme, Theme, load_color_palette, load_profile, palette,
+    profile,
 };
 
 #[derive(Clone, Default, Debug)]
 struct Borders(String);
 
-#[derive(ColorTheme, SetTheme, Default, Clone, Debug)]
+#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
 #[variants("a", "b")]
 struct AppColorTheme {
     #[variants("a", "b")]
@@ -29,7 +28,7 @@ struct AppStyleTheme {
     secondary: Style,
 }
 
-#[derive(ColorTheme, SetTheme, Default, Clone, Debug)]
+#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
 #[variants("a", "b")]
 struct AppColorTheme2 {
     #[variants("a", "b")]
@@ -45,14 +44,20 @@ struct BorderTheme {
 
 #[derive(Theme, Default, Clone, Debug)]
 struct AppTheme {
+    #[subtheme]
     color: AppColorTheme,
+    #[subtheme]
     borders: BorderTheme,
+    #[subtheme]
     color2: AppColorTheme2,
 }
 
 fn main() {
-    load_profile(&stdout());
-    load_color_palette();
+    let _ = load_profile(&stdout());
+    let _ = load_color_palette();
+    let a: Option<Color> = ProfileColor::new(Color::AnsiReset)
+        .try_adapt(&profile().unwrap())
+        .map(Into::into);
     let fg = Color::terminal_background();
     println!("{fg:?}");
     println!("{:?}", palette::RosePine::ROSE_500.into_adaptive());
@@ -84,5 +89,11 @@ fn main() {
     };
     theme.set_global();
     "a".fg_primary2();
-    println!("{:?}", AppTheme::current())
+    println!("{:?}", AppTheme::current());
+
+    let theme2 = AppStyleTheme {
+        primary: Style::default().fg(palette::RosePine::ROSE_500),
+        secondary: Style::default().fg(palette::RosePine::ROSE_100),
+    };
+    println!("{theme2:?}");
 }

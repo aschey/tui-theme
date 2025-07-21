@@ -5,7 +5,7 @@ use super::Color;
 
 impl From<Color> for ratatui::style::Color {
     fn from(value: Color) -> Self {
-        match value {
+        match value.into_adaptive() {
             Color::Rgb(val) => val.into(),
             Color::Hsl(val) => Rgb::from_color(val).into(),
             Color::Hsluv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
@@ -103,77 +103,8 @@ impl From<anstyle::Color> for Color {
 
 impl From<Color> for Option<anstyle::Color> {
     fn from(value: Color) -> Self {
-        Some(match value {
-            Color::AnsiReset => None?,
-            Color::AnsiBlack => anstyle::Color::Ansi(anstyle::AnsiColor::Black),
-            Color::AnsiRed => anstyle::Color::Ansi(anstyle::AnsiColor::Red),
-            Color::AnsiGreen => anstyle::Color::Ansi(anstyle::AnsiColor::Green),
-            Color::AnsiYellow => anstyle::Color::Ansi(anstyle::AnsiColor::Yellow),
-            Color::AnsiBlue => anstyle::Color::Ansi(anstyle::AnsiColor::Blue),
-            Color::AnsiMagenta => anstyle::Color::Ansi(anstyle::AnsiColor::Magenta),
-            Color::AnsiCyan => anstyle::Color::Ansi(anstyle::AnsiColor::Cyan),
-            Color::AnsiGray => anstyle::Color::Ansi(anstyle::AnsiColor::White),
-            Color::AnsiDarkGray => anstyle::Color::Ansi(anstyle::AnsiColor::BrightBlack),
-            Color::AnsiLightRed => anstyle::Color::Ansi(anstyle::AnsiColor::BrightRed),
-            Color::AnsiLightGreen => anstyle::Color::Ansi(anstyle::AnsiColor::BrightGreen),
-            Color::AnsiLightYellow => anstyle::Color::Ansi(anstyle::AnsiColor::BrightYellow),
-            Color::AnsiLightBlue => anstyle::Color::Ansi(anstyle::AnsiColor::BrightBlue),
-            Color::AnsiLightMagenta => anstyle::Color::Ansi(anstyle::AnsiColor::BrightMagenta),
-            Color::AnsiLightCyan => anstyle::Color::Ansi(anstyle::AnsiColor::BrightCyan),
-            Color::AnsiWhite => anstyle::Color::Ansi(anstyle::AnsiColor::BrightWhite),
-            Color::Indexed(index) => anstyle::Color::Ansi256(anstyle::Ansi256Color(index)),
-            Color::Rgb(rgb_color) => palette_to_anstyle(rgb_color),
-            Color::Hsl(val) => palette_to_anstyle(Rgb::from_color(val)),
-            Color::Hsluv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Hsv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Hwb(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Lab(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Lch(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Lchuv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Luv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Okhsl(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Okhsv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Okhwb(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Oklab(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Oklch(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Xyz(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Yxy(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-        })
+        value.into_anstyle()
     }
 }
 
-fn palette_to_anstyle(rgb_color: Rgb) -> anstyle::Color {
-    anstyle::Color::Rgb(anstyle::RgbColor(
-        (rgb_color.red * 255.) as u8,
-        (rgb_color.green * 255.) as u8,
-        (rgb_color.blue * 255.) as u8,
-    ))
-}
+

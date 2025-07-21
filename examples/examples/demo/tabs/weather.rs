@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use palette::Okhsv;
+use palette::{IntoColor, Okhsv, Srgb};
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Direction, Layout, Margin, Rect};
 use ratatui::style::{Color, Style, Stylize};
@@ -7,8 +7,9 @@ use ratatui::symbols;
 use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
 use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding, Widget};
 use time::OffsetDateTime;
+use tui_theme::SetTheme;
 
-use crate::{RgbSwatch, THEME, color_from_oklab};
+use crate::theme::AppTheme;
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct WeatherTab {
@@ -29,13 +30,14 @@ impl WeatherTab {
 
 impl Widget for WeatherTab {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        RgbSwatch.render(area, buf);
         let area = area.inner(Margin {
             vertical: 1,
             horizontal: 2,
         });
         Clear.render(area, buf);
-        Block::new().style(THEME.content).render(area, buf);
+        Block::new()
+            .style(AppTheme::current().content)
+            .render(area, buf);
 
         let area = area.inner(Margin {
             horizontal: 2,
@@ -157,4 +159,10 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
         .unfilled_style(Style::new().fg(unfilled_color))
         .line_set(symbols::line::THICK)
         .render(area, buf);
+}
+
+fn color_from_oklab(hue: f32, saturation: f32, value: f32) -> Color {
+    let color: Srgb = Okhsv::new(hue, saturation, value).into_color();
+    let color = color.into_format();
+    Color::Rgb(color.red, color.green, color.blue)
 }

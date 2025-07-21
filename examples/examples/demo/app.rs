@@ -1,3 +1,4 @@
+use std::io::stdout;
 use std::time::Duration;
 
 use color_eyre::Result;
@@ -12,9 +13,10 @@ use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Tabs, Widget};
 use ratatui::{DefaultTerminal, Frame};
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
+use tui_theme::SetTheme;
 
-use crate::THEME;
 use crate::tabs::{AboutTab, EmailTab, RecipeTab, TracerouteTab, WeatherTab};
+use crate::theme::{AppTheme, init_theme, num_themes};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct App {
@@ -25,6 +27,7 @@ pub struct App {
     email_tab: EmailTab,
     traceroute_tab: TracerouteTab,
     weather_tab: WeatherTab,
+    theme_index: usize,
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
@@ -47,6 +50,9 @@ enum Tab {
 impl App {
     /// Run the app until the user quits.
     pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
+        tui_theme::load_color_palette();
+        tui_theme::load_profile(&stdout());
+        init_theme(0);
         while self.is_running() {
             terminal
                 .draw(|frame| self.draw(frame))
@@ -88,6 +94,7 @@ impl App {
             KeyCode::Char('l') | KeyCode::Right => self.next_tab(),
             KeyCode::Char('k') | KeyCode::Up => self.prev(),
             KeyCode::Char('j') | KeyCode::Down => self.next(),
+            KeyCode::Char('t') => self.next_theme(),
             _ => {}
         };
     }
@@ -119,6 +126,11 @@ impl App {
     fn next_tab(&mut self) {
         self.tab = self.tab.next();
     }
+
+    fn next_theme(&mut self) {
+        self.theme_index = (self.theme_index + 1) % num_themes();
+        init_theme(self.theme_index);
+    }
 }
 
 /// Implement Widget for &App rather than for App as we would otherwise have to clone or copy the
@@ -133,7 +145,9 @@ impl Widget for &App {
         ]);
         let [title_bar, tab, bottom_bar] = vertical.areas(area);
 
-        Block::new().style(THEME.root).render(area, buf);
+        Block::new()
+            .style(AppTheme::current().root)
+            .render(area, buf);
         self.render_title_bar(title_bar, buf);
         self.render_selected_tab(tab, buf);
         App::render_bottom_bar(bottom_bar, buf);
@@ -145,11 +159,11 @@ impl App {
         let layout = Layout::horizontal([Constraint::Min(0), Constraint::Length(43)]);
         let [title, tabs] = layout.areas(area);
 
-        Span::styled("Ratatui", THEME.app_title).render(title, buf);
+        Span::styled("Ratatui", AppTheme::current().app_title).render(title, buf);
         let titles = Tab::iter().map(Tab::title);
         Tabs::new(titles)
-            .style(THEME.tabs)
-            .highlight_style(THEME.tabs_selected)
+            .style(AppTheme::current().tabs)
+            .highlight_style(AppTheme::current().tabs_selected)
             .select(self.tab as usize)
             .divider("")
             .padding("", "")
@@ -172,13 +186,17 @@ impl App {
             ("L/→", "Right"),
             ("K/↑", "Up"),
             ("J/↓", "Down"),
+            ("t", "Toggle Theme"),
             ("Q/Esc", "Quit"),
         ];
         let spans = keys
             .iter()
             .flat_map(|(key, desc)| {
-                let key = Span::styled(format!(" {key} "), THEME.key_binding.key);
-                let desc = Span::styled(format!(" {desc} "), THEME.key_binding.description);
+                let key = Span::styled(format!(" {key} "), AppTheme::current().key_binding.key);
+                let desc = Span::styled(
+                    format!(" {desc} "),
+                    AppTheme::current().key_binding.description,
+                );
                 [key, desc]
             })
             .collect_vec();

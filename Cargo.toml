@@ -12,12 +12,15 @@ manyhow = "0.11"
 ratatui = "0.29"
 palette = "0.7.6"
 serde = "1"
-termprofile = { git = "https://github.com/aschey/termprofile", rev = "875ec34ffd7b14643c1f7bd8f6bc785563ee6618" }
+termprofile = { git = "https://github.com/aschey/termprofile", rev = "2e3046c0366343d040ee06061a7e25a1a58f0cf1" }
 terminal-colorsaurus = "0.4"
 serde_json = "1"
 regex = "1"
 anstyle = "1"
+thiserror = "2"
+bitflags = "2"
 convert_case = "0.8"
+proc-macro-crate = "3"
 
 crossterm = "0.28"
 anstyle-crossterm = "3"

@@ -8,8 +8,9 @@ use ratatui::widgets::{
     Block, BorderType, Clear, Padding, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
     Sparkline, StatefulWidget, Table, TableState, Widget,
 };
+use tui_theme::SetTheme;
 
-use crate::{RgbSwatch, THEME};
+use crate::theme::AppTheme;
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct TracerouteTab {
@@ -30,13 +31,14 @@ impl TracerouteTab {
 
 impl Widget for TracerouteTab {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        RgbSwatch.render(area, buf);
         let area = area.inner(Margin {
             vertical: 1,
             horizontal: 2,
         });
         Clear.render(area, buf);
-        Block::new().style(THEME.content).render(area, buf);
+        Block::new()
+            .style(AppTheme::current().content)
+            .render(area, buf);
         let horizontal = Layout::horizontal([Constraint::Ratio(1, 2), Constraint::Ratio(1, 2)]);
         let vertical = Layout::vertical([Constraint::Min(0), Constraint::Length(3)]);
         let [left, map] = horizontal.areas(area);
@@ -57,8 +59,10 @@ fn render_hops(selected_row: usize, area: Rect, buf: &mut Buffer) {
         .title("Traceroute bad.horse".bold().white());
     StatefulWidget::render(
         Table::new(rows, [Constraint::Max(100), Constraint::Length(15)])
-            .header(Row::new(vec!["Host", "Address"]).set_style(THEME.traceroute.header))
-            .row_highlight_style(THEME.traceroute.selected)
+            .header(
+                Row::new(vec!["Host", "Address"]).set_style(AppTheme::current().traceroute.header),
+            )
+            .row_highlight_style(AppTheme::current().traceroute.selected)
             .block(block),
         area,
         buf,
@@ -98,19 +102,19 @@ pub fn render_ping(progress: usize, area: Rect, buf: &mut Buffer) {
                 .border_type(BorderType::Thick),
         )
         .data(data)
-        .style(THEME.traceroute.ping)
+        .style(AppTheme::current().traceroute.ping)
         .render(area, buf);
 }
 
 fn render_map(selected_row: usize, area: Rect, buf: &mut Buffer) {
-    let theme = THEME.traceroute.map;
+    let theme = AppTheme::current().traceroute.map;
     let path: Option<(&Hop, &Hop)> = HOPS.iter().tuple_windows().nth(selected_row);
     let map = Map {
         resolution: MapResolution::High,
-        color: theme.color,
+        color: theme.color.into_adaptive().into(),
     };
     Canvas::default()
-        .background_color(theme.background_color)
+        .background_color(theme.background_color.into_adaptive().into())
         .block(
             Block::new()
                 .padding(Padding::new(1, 0, 1, 0))
@@ -129,14 +133,14 @@ fn render_map(selected_row: usize, area: Rect, buf: &mut Buffer) {
                     path.0.location.1,
                     path.1.location.0,
                     path.1.location.1,
-                    theme.path,
+                    theme.path.into_adaptive().into(),
                 ));
                 context.draw(&Points {
-                    color: theme.source,
+                    color: theme.source.into_adaptive().into(),
                     coords: &[path.0.location], // sydney
                 });
                 context.draw(&Points {
-                    color: theme.destination,
+                    color: theme.destination.into_adaptive().into(),
                     coords: &[path.1.location], // perth
                 });
             }

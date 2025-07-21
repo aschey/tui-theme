@@ -1,6 +1,12 @@
-use ratatui::style::{Color, Modifier, Style};
+use std::sync::LazyLock;
 
-pub struct Theme {
+use palette::Srgb;
+use palette::rgb::Rgb;
+use tui_theme::palette::{Catppuccin, RosePine};
+use tui_theme::{Color, Modifiers, SetTheme, Style, StyleTheme, Theme};
+
+#[derive(Theme, Default, Clone, Debug)]
+pub struct AppTheme {
     pub root: Style,
     pub content: Style,
     pub app_title: Style,
@@ -16,11 +22,13 @@ pub struct Theme {
     pub recipe: Recipe,
 }
 
+#[derive(Default, Clone, Debug)]
 pub struct KeyBinding {
     pub key: Style,
     pub description: Style,
 }
 
+#[derive(Default, Clone, Debug)]
 pub struct Logo {
     pub rat: Color,
     pub rat_eye: Color,
@@ -28,6 +36,7 @@ pub struct Logo {
     pub term: Color,
 }
 
+#[derive(Default, Clone, Debug)]
 pub struct Email {
     pub tabs: Style,
     pub tabs_selected: Style,
@@ -39,6 +48,7 @@ pub struct Email {
     pub body: Style,
 }
 
+#[derive(Default, Clone, Debug)]
 pub struct Traceroute {
     pub header: Style,
     pub selected: Style,
@@ -46,6 +56,7 @@ pub struct Traceroute {
     pub map: Map,
 }
 
+#[derive(Default, Clone, Debug)]
 pub struct Map {
     pub style: Style,
     pub color: Color,
@@ -55,82 +66,121 @@ pub struct Map {
     pub background_color: Color,
 }
 
+#[derive(Default, Clone, Debug)]
 pub struct Recipe {
     pub ingredients: Style,
     pub ingredients_header: Style,
 }
 
-pub const THEME: Theme = Theme {
-    root: Style::new().bg(DARK_BLUE),
-    content: Style::new().bg(DARK_BLUE).fg(LIGHT_GRAY),
-    app_title: Style::new()
-        .fg(WHITE)
-        .bg(DARK_BLUE)
-        .add_modifier(Modifier::BOLD),
-    tabs: Style::new().fg(MID_GRAY).bg(DARK_BLUE),
-    tabs_selected: Style::new()
-        .fg(WHITE)
-        .bg(DARK_BLUE)
-        .add_modifier(Modifier::BOLD)
-        .add_modifier(Modifier::REVERSED),
-    borders: Style::new().fg(LIGHT_GRAY),
-    description: Style::new().fg(LIGHT_GRAY).bg(DARK_BLUE),
-    description_title: Style::new().fg(LIGHT_GRAY).add_modifier(Modifier::BOLD),
-    logo: Logo {
-        rat: WHITE,
-        rat_eye: BLACK,
-        rat_eye_alt: RED,
-        term: BLACK,
-    },
-    key_binding: KeyBinding {
-        key: Style::new().fg(BLACK).bg(DARK_GRAY),
-        description: Style::new().fg(DARK_GRAY).bg(BLACK),
-    },
-    email: Email {
-        tabs: Style::new().fg(MID_GRAY).bg(DARK_BLUE),
-        tabs_selected: Style::new()
-            .fg(WHITE)
-            .bg(DARK_BLUE)
-            .add_modifier(Modifier::BOLD),
-        inbox: Style::new().bg(DARK_BLUE).fg(LIGHT_GRAY),
-        item: Style::new().fg(LIGHT_GRAY),
-        selected_item: Style::new().fg(LIGHT_YELLOW),
-        header: Style::new().add_modifier(Modifier::BOLD),
-        header_value: Style::new().fg(LIGHT_GRAY),
-        body: Style::new().bg(DARK_BLUE).fg(LIGHT_GRAY),
-    },
-    traceroute: Traceroute {
-        header: Style::new()
-            .bg(DARK_BLUE)
-            .add_modifier(Modifier::BOLD)
-            .add_modifier(Modifier::UNDERLINED),
-        selected: Style::new().fg(LIGHT_YELLOW),
-        ping: Style::new().fg(WHITE),
-        map: Map {
-            style: Style::new().bg(DARK_BLUE),
-            background_color: DARK_BLUE,
-            color: LIGHT_GRAY,
-            path: LIGHT_BLUE,
-            source: LIGHT_GREEN,
-            destination: LIGHT_RED,
-        },
-    },
-    recipe: Recipe {
-        ingredients: Style::new().bg(DARK_BLUE).fg(LIGHT_GRAY),
-        ingredients_header: Style::new()
-            .add_modifier(Modifier::BOLD)
-            .add_modifier(Modifier::UNDERLINED),
-    },
-};
+#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
+pub struct Colors {
+    dark_blue: Color,
+    light_blue: Color,
+    light_yellow: Color,
+    light_green: Color,
+    light_red: Color,
+    red: Color,
+    black: Color,
+    dark_gray: Color,
+    mid_gray: Color,
+    light_gray: Color,
+    white: Color,
+}
 
-const DARK_BLUE: Color = Color::Rgb(16, 24, 48);
-const LIGHT_BLUE: Color = Color::Rgb(64, 96, 192);
-const LIGHT_YELLOW: Color = Color::Rgb(192, 192, 96);
-const LIGHT_GREEN: Color = Color::Rgb(64, 192, 96);
-const LIGHT_RED: Color = Color::Rgb(192, 96, 96);
-const RED: Color = Color::Rgb(215, 0, 0);
-const BLACK: Color = Color::Rgb(8, 8, 8); // not really black, often #080808
-const DARK_GRAY: Color = Color::Rgb(68, 68, 68);
-const MID_GRAY: Color = Color::Rgb(128, 128, 128);
-const LIGHT_GRAY: Color = Color::Rgb(188, 188, 188);
-const WHITE: Color = Color::Rgb(238, 238, 238); // not really white, often #eeeeee
+const THEMES: [Colors; 2] = [
+    Colors {
+        dark_blue: Catppuccin::BLUE_950,
+        light_blue: Catppuccin::BLUE_300,
+        light_yellow: Catppuccin::YELLOW_300,
+        light_green: Catppuccin::GREEN_300,
+        light_red: Catppuccin::ROSEWATER_300,
+        red: Catppuccin::ROSEWATER_600,
+        black: Catppuccin::BLUE_950,
+        dark_gray: Catppuccin::GRAY_900,
+        mid_gray: Catppuccin::GRAY_500,
+        light_gray: Catppuccin::GRAY_300,
+        white: Catppuccin::GRAY_50,
+    },
+    Colors {
+        dark_blue: RosePine::GRAY_900,
+        light_blue: RosePine::PINE_300,
+        light_yellow: RosePine::GOLD_300,
+        light_green: RosePine::FOAM_300,
+        light_red: RosePine::ROSE_300,
+        red: RosePine::ROSE_600,
+        black: RosePine::GRAY_950,
+        dark_gray: RosePine::GRAY_900,
+        mid_gray: RosePine::GRAY_500,
+        light_gray: RosePine::GRAY_300,
+        white: RosePine::GRAY_50,
+    },
+];
+
+pub fn num_themes() -> usize {
+    THEMES.len()
+}
+
+pub fn init_theme(index: usize) {
+    let colors = &THEMES[index];
+    colors.set_global();
+    let cur = Colors::current();
+    let theme = AppTheme {
+        root: Style::new().bg_dark_blue(),
+        content: Style::new().bg_dark_blue().fg_light_gray(),
+        app_title: Style::new()
+            .fg_white()
+            .bg_dark_blue()
+            .modifiers(Modifiers::BOLD),
+        tabs: Style::new().fg_mid_gray().bg_dark_blue(),
+        tabs_selected: Style::new()
+            .fg_white()
+            .bg_dark_blue()
+            .modifiers(Modifiers::BOLD | Modifiers::INVERT),
+        borders: Style::new().fg_light_gray(),
+        description: Style::new().fg_light_gray().bg_dark_blue(),
+        description_title: Style::new().fg_light_gray().modifiers(Modifiers::BOLD),
+        logo: Logo {
+            rat: cur.white,       //white,
+            rat_eye: cur.black,   //black,
+            rat_eye_alt: cur.red, //red,
+            term: cur.black,      //black,
+        },
+        key_binding: KeyBinding {
+            key: Style::new().fg_black().bg_dark_gray(),
+            description: Style::new().fg_dark_gray().bg_black(),
+        },
+        email: Email {
+            tabs: Style::new().fg_mid_gray().bg_dark_blue(),
+            tabs_selected: Style::new()
+                .fg_white()
+                .bg_dark_blue()
+                .modifiers(Modifiers::BOLD),
+            inbox: Style::new().bg_dark_blue().fg_light_gray(),
+            item: Style::new().fg_light_gray(),
+            selected_item: Style::new().fg_light_yellow(),
+            header: Style::new().modifiers(Modifiers::BOLD),
+            header_value: Style::new().fg_light_gray(),
+            body: Style::new().bg_dark_blue().fg_light_gray(),
+        },
+        traceroute: Traceroute {
+            header: Style::new()
+                .bg_dark_blue()
+                .modifiers(Modifiers::BOLD | Modifiers::UNDERLINE),
+            selected: Style::new().fg_light_yellow(),
+            ping: Style::new().fg_white(),
+            map: Map {
+                style: Style::new().bg_dark_blue(),
+                background_color: cur.dark_blue,
+                color: cur.light_gray,
+                path: cur.light_blue,
+                source: cur.light_green,
+                destination: cur.light_red,
+            },
+        },
+        recipe: Recipe {
+            ingredients: Style::new().bg_dark_blue().fg_light_gray(),
+            ingredients_header: Style::new().modifiers(Modifiers::BOLD | Modifiers::UNDERLINE),
+        },
+    };
+    theme.set_global();
+}

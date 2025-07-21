@@ -20,7 +20,6 @@
 )]
 
 mod app;
-mod colors;
 mod tabs;
 mod theme;
 
@@ -32,9 +31,6 @@ use crossterm::execute;
 use crossterm::terminal::{EnterAlternateScreen, LeaveAlternateScreen};
 use ratatui::layout::Rect;
 use ratatui::{TerminalOptions, Viewport};
-
-pub use self::colors::{RgbSwatch, color_from_oklab};
-pub use self::theme::THEME;
 
 fn main() -> Result<()> {
     color_eyre::install()?;

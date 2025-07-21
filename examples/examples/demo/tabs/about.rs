@@ -2,8 +2,9 @@ use itertools::Itertools;
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Alignment, Constraint, Layout, Margin, Rect};
 use ratatui::widgets::{Block, Borders, Clear, Padding, Paragraph, Widget, Wrap};
+use tui_theme::SetTheme;
 
-use crate::{RgbSwatch, THEME};
+use crate::theme::AppTheme;
 
 const RATATUI_LOGO: [&str; 32] = [
     "               ███              ",
@@ -57,7 +58,6 @@ impl AboutTab {
 
 impl Widget for AboutTab {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        RgbSwatch.render(area, buf);
         let horizontal = Layout::horizontal([Constraint::Length(34), Constraint::Min(0)]);
         let [description, logo] = horizontal.areas(area);
         render_crate_description(description, buf);
@@ -71,7 +71,9 @@ fn render_crate_description(area: Rect, buf: &mut Buffer) {
         horizontal: 2,
     });
     Clear.render(area, buf); // clear out the color swatches
-    Block::new().style(THEME.content).render(area, buf);
+    Block::new()
+        .style(AppTheme::current().content)
+        .render(area, buf);
     let area = area.inner(Margin {
         vertical: 1,
         horizontal: 2,
@@ -81,13 +83,13 @@ fn render_crate_description(area: Rect, buf: &mut Buffer) {
     Ratatui is a Rust crate that provides widgets (e.g. Paragraph, Table) and draws them to the \
                 screen efficiently every frame.";
     Paragraph::new(text)
-        .style(THEME.description)
+        .style(AppTheme::current().description)
         .block(
             Block::new()
                 .title(" Ratatui ")
                 .title_alignment(Alignment::Center)
                 .borders(Borders::TOP)
-                .border_style(THEME.description_title)
+                .border_style(AppTheme::current().description_title)
                 .padding(Padding::new(0, 0, 0, 0)),
         )
         .wrap(Wrap { trim: true })
@@ -102,9 +104,9 @@ fn render_crate_description(area: Rect, buf: &mut Buffer) {
 #[allow(clippy::cast_possible_truncation)]
 pub fn render_logo(selected_row: usize, area: Rect, buf: &mut Buffer) {
     let eye_color = if selected_row % 2 == 0 {
-        THEME.logo.rat_eye
+        AppTheme::current().logo.rat_eye.into()
     } else {
-        THEME.logo.rat_eye_alt
+        AppTheme::current().logo.rat_eye_alt.into()
     };
     let area = area.inner(Margin {
         vertical: 0,
@@ -115,8 +117,8 @@ pub fn render_logo(selected_row: usize, area: Rect, buf: &mut Buffer) {
             let x = area.left() + x as u16;
             let y = area.top() + y as u16;
             let cell = &mut buf[(x, y)];
-            let rat_color = THEME.logo.rat;
-            let term_color = THEME.logo.term;
+            let rat_color = AppTheme::current().logo.rat.into();
+            let term_color = AppTheme::current().logo.term.into();
             match (ch1, ch2) {
                 ('█', '█') => {
                     cell.set_char('█');

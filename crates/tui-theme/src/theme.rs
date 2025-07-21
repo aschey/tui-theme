@@ -2,10 +2,11 @@ use std::cell::RefCell;
 use std::sync::{Arc, LazyLock, RwLock};
 
 use ratatui::style::Stylize;
+use tui_theme_derive::StyleTheme;
 
-use crate::{Color, ColorTheme, SetTheme};
+use crate::{Color, SetTheme};
 
-#[derive(ColorTheme, SetTheme, Default, Clone, Debug)]
+#[derive(StyleTheme, SetTheme, Default, Clone, Debug)]
 pub struct Theme {
     pub primary: Color,
     pub secondary: Color,

@@ -7,8 +7,9 @@ use ratatui::widgets::{
     Block, Clear, Padding, Paragraph, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
     StatefulWidget, Table, TableState, Widget, Wrap,
 };
+use tui_theme::SetTheme;
 
-use crate::{RgbSwatch, THEME};
+use crate::theme::AppTheme;
 
 #[derive(Debug, Default, Clone, Copy)]
 struct Ingredient {
@@ -111,7 +112,6 @@ impl RecipeTab {
 
 impl Widget for RecipeTab {
     fn render(self, area: Rect, buf: &mut Buffer) {
-        RgbSwatch.render(area, buf);
         let area = area.inner(Margin {
             vertical: 1,
             horizontal: 2,
@@ -120,7 +120,7 @@ impl Widget for RecipeTab {
         Block::new()
             .title("Ratatouille Recipe".bold().white())
             .title_alignment(Alignment::Center)
-            .style(THEME.content)
+            .style(AppTheme::current().content)
             .padding(Padding::new(1, 1, 2, 1))
             .render(area, buf);
 
@@ -157,7 +157,7 @@ fn render_recipe(area: Rect, buf: &mut Buffer) {
 fn render_ingredients(selected_row: usize, area: Rect, buf: &mut Buffer) {
     let mut state = TableState::default().with_selected(Some(selected_row));
     let rows = INGREDIENTS.iter().copied();
-    let theme = THEME.recipe;
+    let theme = AppTheme::current().recipe;
     StatefulWidget::render(
         Table::new(rows, [Constraint::Length(7), Constraint::Length(30)])
             .block(Block::new().style(theme.ingredients))

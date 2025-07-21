@@ -7,12 +7,17 @@ edition = "2024"
 ratatui = { workspace = true, features = ["palette"] }
 tui-theme-derive = { workspace = true }
 palette = { workspace = true, features = ["serializing"] }
-serde = { workspace = true, features = ["derive"] }
+serde = { workspace = true, features = ["derive"], optional = true }
 termprofile = { workspace = true, features = ["convert"] }
 serde_json = { workspace = true }
 regex = { workspace = true }
 anstyle = { workspace = true }
 terminal-colorsaurus = { workspace = true }
+bitflags = { workspace = true }
+thiserror = { workspace = true }
 
 crossterm = { workspace = true }
 anstyle-crossterm = { workspace = true }
+
+[features]
+serde = ["dep:serde", "bitflags/serde"]

@@ -1,45 +1,96 @@
-use std::io::IsTerminal;
-use std::sync::{LazyLock, RwLock};
+use std::fmt::Display;
+use std::io::{self, IsTerminal};
+use std::sync::{Arc, OnceLock};
+use std::time::Duration;
 
 use ::palette::rgb::Rgb;
 use ::palette::{
     Darken, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch,
     Xyz, Yxy,
 };
-use terminal_colorsaurus::{ColorPalette, ColorScheme, QueryOptions, color_palette};
+use palette::FromColor;
+use terminal_colorsaurus::{ColorPalette, ColorScheme, QueryOptions};
 use termprofile::TermProfile;
 
 mod convert;
 mod parse;
 pub use parse::*;
 
-static TERM_PROFILE: LazyLock<RwLock<TermProfile>> =
-    LazyLock::new(|| RwLock::new(TermProfile::TrueColor));
+static TERM_PROFILE: OnceLock<TermProfile> = OnceLock::new();
 
-static COLOR_PALETTE: LazyLock<RwLock<Option<ColorPalette>>> =
-    LazyLock::new(|| RwLock::new(color_palette(QueryOptions::default()).ok()));
+static COLOR_PALETTE: OnceLock<Result<ColorPalette, PaletteError>> = OnceLock::new();
+
+#[derive(Debug, Clone, thiserror::Error)]
+pub enum PaletteError {
+    /// I/O error
+    #[error("I/O error: {0}")]
+    Io(Arc<io::Error>),
+    /// The terminal responded using an unsupported response format
+    #[error("unsupported format: {0:?}")]
+    Parse(Vec<u8>),
+    /// The query timed out. This can happen because \
+    /// either the terminal does not support querying for colors \
+    /// or the terminal has a lot of latency (e.g. when connected via SSH).
+    #[error("query timed out: {0:?}")]
+    Timeout(Duration),
+    /// The terminal does not support querying for the foreground or background color.
+    #[error("unsupported terminal")]
+    UnsupportedTerminal,
+    #[error("the palette has not been loaded")]
+    NotLoaded,
+    #[error("unknown error")]
+    Unknown,
+}
+
+#[derive(Debug, Clone, thiserror::Error)]
+pub enum ProfileError {
+    #[error("the profile has not been loaded")]
+    NotLoaded,
+}
+
+impl From<terminal_colorsaurus::Error> for PaletteError {
+    fn from(value: terminal_colorsaurus::Error) -> Self {
+        match value {
+            terminal_colorsaurus::Error::Io(e) => Self::Io(e.into()),
+            terminal_colorsaurus::Error::Parse(e) => Self::Parse(e),
+            terminal_colorsaurus::Error::Timeout(d) => Self::Timeout(d),
+            terminal_colorsaurus::Error::UnsupportedTerminal => Self::UnsupportedTerminal,
+            _ => Self::Unknown,
+        }
+    }
+}
 
 pub fn load_profile<T>(stream: &T)
 where
     T: IsTerminal,
 {
-    *TERM_PROFILE.write().unwrap() = TermProfile::detect(stream)
+    let _ = TERM_PROFILE.set(TermProfile::detect(stream));
 }
 
 pub fn load_color_palette() {
-    drop(COLOR_PALETTE.read().unwrap());
+    let _ = COLOR_PALETTE
+        .set(terminal_colorsaurus::color_palette(QueryOptions::default()).map_err(Into::into));
 }
 
-pub(crate) fn color_scheme() -> ColorScheme {
-    COLOR_PALETTE
-        .read()
-        .unwrap()
-        .as_ref()
+pub fn profile() -> Result<TermProfile, ProfileError> {
+    TERM_PROFILE.get().copied().ok_or(ProfileError::NotLoaded)
+}
+
+pub fn color_palette() -> Result<ColorPalette, PaletteError> {
+    match COLOR_PALETTE.get() {
+        Some(res) => res.clone(),
+        None => Err(PaletteError::NotLoaded),
+    }
+}
+
+pub fn color_scheme() -> ColorScheme {
+    color_palette()
         .map(|p| p.color_scheme())
         .unwrap_or_default()
 }
 
-#[derive(Debug, Clone, Copy, Default)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Default, Clone, Copy, Debug, PartialEq)]
 pub enum Color {
     Rgb(Rgb),
     Hsl(Hsl),
@@ -145,19 +196,13 @@ macro_rules! color_op {
 
 impl Color {
     pub fn terminal_foreground() -> Self {
-        COLOR_PALETTE
-            .read()
-            .unwrap()
-            .as_ref()
+        color_palette()
             .map(|p| Self::scale_color(&p.foreground))
             .unwrap_or_default()
     }
 
     pub fn terminal_background() -> Self {
-        COLOR_PALETTE
-            .read()
-            .unwrap()
-            .as_ref()
+        color_palette()
             .map(|p| Self::scale_color(&p.background))
             .unwrap_or_default()
     }
@@ -172,7 +217,7 @@ impl Color {
     }
 
     pub fn is_compatible(&self) -> bool {
-        let color_support = TERM_PROFILE.read().unwrap();
+        let color_support = profile().unwrap_or(TermProfile::TrueColor);
         match self {
             Self::AnsiWhite
             | Self::AnsiGray
@@ -190,9 +235,9 @@ impl Color {
             | Self::AnsiLightYellow
             | Self::AnsiReset
             | Self::AnsiBlack
-            | Self::AnsiDarkGray => *color_support >= TermProfile::Ansi16,
-            Self::Indexed(index) if *index < 16 => *color_support >= TermProfile::Ansi16,
-            Self::Indexed(_) => *color_support >= TermProfile::Ansi256,
+            | Self::AnsiDarkGray => color_support >= TermProfile::Ansi16,
+            Self::Indexed(index) if *index < 16 => color_support >= TermProfile::Ansi16,
+            Self::Indexed(_) => color_support >= TermProfile::Ansi256,
             Self::Rgb(_)
             | Self::Hsl(_)
             | Self::Hsv(_)
@@ -208,7 +253,7 @@ impl Color {
             | Self::Okhwb(_)
             | Self::Oklch(_)
             | Self::Xyz(_)
-            | Self::Yxy(_) => *color_support >= TermProfile::TrueColor,
+            | Self::Yxy(_) => color_support >= TermProfile::TrueColor,
         }
     }
 
@@ -216,15 +261,78 @@ impl Color {
         if self.is_compatible() {
             return self;
         }
-        let anstyle_color: Option<anstyle::Color> = self.into();
-        let Some(color) = anstyle_color else {
-            return self;
+        self.into_anstyle()
+            .map(Into::into)
+            .unwrap_or(Self::AnsiReset)
+    }
+
+    fn into_anstyle(self) -> Option<anstyle::Color> {
+        let value = match self {
+            Color::AnsiReset => return None,
+            Color::AnsiBlack => anstyle::Color::Ansi(anstyle::AnsiColor::Black),
+            Color::AnsiRed => anstyle::Color::Ansi(anstyle::AnsiColor::Red),
+            Color::AnsiGreen => anstyle::Color::Ansi(anstyle::AnsiColor::Green),
+            Color::AnsiYellow => anstyle::Color::Ansi(anstyle::AnsiColor::Yellow),
+            Color::AnsiBlue => anstyle::Color::Ansi(anstyle::AnsiColor::Blue),
+            Color::AnsiMagenta => anstyle::Color::Ansi(anstyle::AnsiColor::Magenta),
+            Color::AnsiCyan => anstyle::Color::Ansi(anstyle::AnsiColor::Cyan),
+            Color::AnsiGray => anstyle::Color::Ansi(anstyle::AnsiColor::White),
+            Color::AnsiDarkGray => anstyle::Color::Ansi(anstyle::AnsiColor::BrightBlack),
+            Color::AnsiLightRed => anstyle::Color::Ansi(anstyle::AnsiColor::BrightRed),
+            Color::AnsiLightGreen => anstyle::Color::Ansi(anstyle::AnsiColor::BrightGreen),
+            Color::AnsiLightYellow => anstyle::Color::Ansi(anstyle::AnsiColor::BrightYellow),
+            Color::AnsiLightBlue => anstyle::Color::Ansi(anstyle::AnsiColor::BrightBlue),
+            Color::AnsiLightMagenta => anstyle::Color::Ansi(anstyle::AnsiColor::BrightMagenta),
+            Color::AnsiLightCyan => anstyle::Color::Ansi(anstyle::AnsiColor::BrightCyan),
+            Color::AnsiWhite => anstyle::Color::Ansi(anstyle::AnsiColor::BrightWhite),
+            Color::Indexed(index) => anstyle::Color::Ansi256(anstyle::Ansi256Color(index)),
+            Color::Rgb(rgb_color) => palette_to_anstyle(rgb_color),
+            Color::Hsl(val) => palette_to_anstyle(Rgb::from_color(val)),
+            Color::Hsluv(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Hsv(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Hwb(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Lab(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Lch(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Lchuv(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Luv(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Okhsl(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Okhsv(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Okhwb(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Oklab(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Oklch(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Xyz(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
+            Color::Yxy(val) => {
+                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
+            }
         };
-        if let Some(adapted) = TERM_PROFILE.read().unwrap().adapt(color) {
-            adapted.into()
-        } else {
-            Self::AnsiReset
-        }
+        let profile = profile().unwrap_or(TermProfile::TrueColor);
+        profile.adapt_color(value)
     }
 
     pub fn lighten(&self, factor: f32) -> Self {
@@ -246,6 +354,14 @@ impl Color {
 
 fn indexed_to_rgb(index: u8) -> Color {
     Color::parse_hex(ANSI_HEX[index as usize]).unwrap()
+}
+
+fn palette_to_anstyle(rgb_color: Rgb) -> anstyle::Color {
+    anstyle::Color::Rgb(anstyle::RgbColor(
+        (rgb_color.red * 255.) as u8,
+        (rgb_color.green * 255.) as u8,
+        (rgb_color.blue * 255.) as u8,
+    ))
 }
 
 const ANSI_HEX: [&str; 256] = [
