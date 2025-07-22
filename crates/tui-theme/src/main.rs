@@ -52,6 +52,7 @@ struct AppTheme {
 fn main() {
     load_profile(&stdout());
     load_color_palette();
+    ratatui::style::Style::new().fg_primary2();
     let a: Option<Color> = ProfileColor::new(Color::AnsiReset)
         .try_adapt(&profile().unwrap())
         .map(Into::into);

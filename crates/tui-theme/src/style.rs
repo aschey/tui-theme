@@ -364,61 +364,6 @@ pub trait Stylize<T> {
         C: Into<Color>;
 }
 
-impl<T, U> Stylize<T> for U
-where
-    U: ratatui::style::Styled<Item = T>,
-{
-    fn fg<C>(self, color: C) -> T
-    where
-        C: Into<Color>,
-    {
-        let color: Color = color.into();
-        let style = self.style().fg(color.into());
-        self.set_style(style)
-    }
-
-    fn bg<C>(self, color: C) -> T
-    where
-        C: Into<Color>,
-    {
-        let color: Color = color.into();
-        let style = self.style().bg(color.into());
-        self.set_style(style)
-    }
-
-    fn underline_color<C>(self, color: C) -> T
-    where
-        C: Into<Color>,
-    {
-        let color: Color = color.into();
-        let style = self.style().underline_color(color.into());
-        self.set_style(style)
-    }
-}
-
-impl Stylize<Self> for Style {
-    fn fg<C>(self, color: C) -> Self
-    where
-        C: Into<Color>,
-    {
-        self.fg(color.into())
-    }
-
-    fn bg<C>(self, color: C) -> Self
-    where
-        C: Into<Color>,
-    {
-        self.bg(color.into())
-    }
-
-    fn underline_color<C>(self, color: C) -> Self
-    where
-        C: Into<Color>,
-    {
-        self.underline_color(color.into())
-    }
-}
-
 pub trait Styled {
     type Item;
 
@@ -450,5 +395,34 @@ where
 
     fn set_style<S: Into<Style>>(self, style: S) -> Self::Item {
         self.set_style(style.into())
+    }
+}
+
+impl<T, U> Stylize<T> for U
+where
+    U: Styled<Item = T>,
+{
+    fn fg<C>(self, color: C) -> T
+    where
+        C: Into<Color>,
+    {
+        let style = self.style().fg(color.into());
+        self.set_style(style)
+    }
+
+    fn bg<C>(self, color: C) -> T
+    where
+        C: Into<Color>,
+    {
+        let style = self.style().bg(color.into());
+        self.set_style(style)
+    }
+
+    fn underline_color<C>(self, color: C) -> T
+    where
+        C: Into<Color>,
+    {
+        let style = self.style().underline_color(color.into());
+        self.set_style(style)
     }
 }
