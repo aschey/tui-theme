@@ -48,7 +48,7 @@ impl Style {
         self
     }
 
-    pub fn underline(mut self, color: Color) -> Self {
+    pub fn underline_color(mut self, color: Color) -> Self {
         self.underline = Some(color);
         self
     }
@@ -73,6 +73,46 @@ impl Style {
 
     pub fn dim(self) -> Self {
         self.modifiers(Modifiers::DIM)
+    }
+
+    pub fn underline(self) -> Self {
+        self.modifiers(Modifiers::UNDERLINE)
+    }
+
+    pub fn double_underline(self) -> Self {
+        self.modifiers(Modifiers::DOUBLE_UNDERLINE)
+    }
+
+    pub fn curly_underline(self) -> Self {
+        self.modifiers(Modifiers::CURLY_UNDERLINE)
+    }
+
+    pub fn dotted_underline(self) -> Self {
+        self.modifiers(Modifiers::DOTTED_UNDERLINE)
+    }
+
+    pub fn dashed_underline(self) -> Self {
+        self.modifiers(Modifiers::DASHED_UNDERLINE)
+    }
+
+    pub fn slow_blink(self) -> Self {
+        self.modifiers(Modifiers::SLOW_BLINK)
+    }
+
+    pub fn rapid_blink(self) -> Self {
+        self.modifiers(Modifiers::RAPID_BLINK)
+    }
+
+    pub fn invert(self) -> Self {
+        self.modifiers(Modifiers::INVERT)
+    }
+
+    pub fn hide(self) -> Self {
+        self.modifiers(Modifiers::HIDE)
+    }
+
+    pub fn strikethrough(self) -> Self {
+        self.modifiers(Modifiers::STRIKETHROUGH)
     }
 
     pub fn into_adaptive(self) -> Self {
@@ -319,7 +359,7 @@ pub trait Stylize<T> {
     where
         C: Into<Color>;
 
-    fn underline<C>(self, color: C) -> T
+    fn underline_color<C>(self, color: C) -> T
     where
         C: Into<Color>;
 }
@@ -346,7 +386,7 @@ where
         self.set_style(style)
     }
 
-    fn underline<C>(self, color: C) -> T
+    fn underline_color<C>(self, color: C) -> T
     where
         C: Into<Color>,
     {
@@ -371,11 +411,11 @@ impl Stylize<Self> for Style {
         self.bg(color.into())
     }
 
-    fn underline<C>(self, color: C) -> Self
+    fn underline_color<C>(self, color: C) -> Self
     where
         C: Into<Color>,
     {
-        self.underline(color.into())
+        self.underline_color(color.into())
     }
 }
 
@@ -405,10 +445,10 @@ where
     type Item = <T as ratatui::style::Styled>::Item;
 
     fn style(&self) -> Style {
-        <Self as ratatui::style::Styled>::style(self).into()
+        self.style().into()
     }
 
     fn set_style<S: Into<Style>>(self, style: S) -> Self::Item {
-        <Self as ratatui::style::Styled>::set_style(self, style.into())
+        self.set_style(style.into())
     }
 }

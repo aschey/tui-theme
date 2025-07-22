@@ -75,8 +75,6 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
         .map(|(_, ty)| quote!(#ty::unset_local();))
         .collect();
 
-    let tui_theme = get_import("tui-theme");
-
     let style_trait = Ident::new(&(struct_name.to_string() + "Style"), Span::call_site());
     let color_trait = Ident::new(&(struct_name.to_string() + "ColorTheme"), Span::call_site());
 
@@ -164,7 +162,7 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
 
                 fn #underline_fn(self) -> T {
                     use #tui_theme::SetTheme;
-                    #struct_name::with_theme(|t| self.underline(t.#f))
+                    #struct_name::with_theme(|t| self.underline_color(t.#f))
                 }
 
             }
