@@ -8,12 +8,14 @@ use ::palette::{
     Xyz, Yxy,
 };
 use palette::FromColor;
-use terminal_colorsaurus::{ColorPalette, ColorScheme, QueryOptions};
+use terminal_colorsaurus::{ColorPalette, QueryOptions};
 use termprofile::TermProfile;
 
 mod convert;
 mod parse;
 pub use parse::*;
+
+use crate::ThemeMode;
 
 static TERM_PROFILE: OnceLock<TermProfile> = OnceLock::new();
 
@@ -53,7 +55,7 @@ impl From<terminal_colorsaurus::Error> for PaletteError {
             terminal_colorsaurus::Error::Io(e) => Self::Io(e.into()),
             terminal_colorsaurus::Error::Parse(e) => Self::Parse(e),
             terminal_colorsaurus::Error::Timeout(d) => Self::Timeout(d),
-            terminal_colorsaurus::Error::UnsupportedTerminal => Self::UnsupportedTerminal,
+            terminal_colorsaurus::Error::UnsupportedTerminal(_) => Self::UnsupportedTerminal,
             _ => Self::Unknown,
         }
     }
@@ -82,10 +84,10 @@ pub fn color_palette() -> Result<ColorPalette, PaletteError> {
     }
 }
 
-pub fn color_scheme() -> ColorScheme {
+pub fn color_scheme() -> ThemeMode {
     color_palette()
-        .map(|p| p.color_scheme())
-        .unwrap_or_default()
+        .map(|p| p.theme_mode().into())
+        .unwrap_or(ThemeMode::Dark)
 }
 
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]

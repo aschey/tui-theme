@@ -1,5 +1,5 @@
 use tui_theme::palette::{Catppuccin, RosePine};
-use tui_theme::{Color, Modifiers, SetTheme, Style, Theme};
+use tui_theme::{Color, SetTheme, Style, Theme};
 
 #[derive(Theme, Default, Clone, Debug)]
 pub struct AppTheme {
@@ -142,18 +142,12 @@ pub fn init_theme(index: usize) {
     let theme = AppTheme {
         root: Style::new().bg_dark_blue(),
         content: Style::new().bg_dark_blue().fg_light_gray(),
-        app_title: Style::new()
-            .fg_white()
-            .bg_dark_blue()
-            .modifiers(Modifiers::BOLD),
+        app_title: Style::new().fg_white().bg_dark_blue().bold(),
         main_tabs: Style::new().fg_mid_gray().bg_dark_blue(),
-        tabs_selected: Style::new()
-            .fg_white()
-            .bg_dark_blue()
-            .modifiers(Modifiers::BOLD | Modifiers::INVERT),
+        tabs_selected: Style::new().fg_white().bg_dark_blue().bold().reversed(),
         borders: Style::new().fg_light_gray(),
         description: Style::new().fg_light_gray().bg_dark_blue(),
-        description_title: Style::new().fg_light_gray().modifiers(Modifiers::BOLD),
+        description_title: Style::new().fg_light_gray().bold(),
         logo: Logo {
             rat: cur.white,
             rat_eye: cur.black,
@@ -166,21 +160,16 @@ pub fn init_theme(index: usize) {
         },
         email: Email {
             tabs: Style::new().fg_mid_gray().bg_dark_blue(),
-            tabs_selected: Style::new()
-                .fg_white()
-                .bg_dark_blue()
-                .modifiers(Modifiers::BOLD),
+            tabs_selected: Style::new().fg_white().bg_dark_blue().bold(),
             inbox: Style::new().bg_dark_blue().fg_light_gray(),
             item: Style::new().fg_light_gray(),
             selected_item: Style::new().fg_light_yellow(),
-            header: Style::new().modifiers(Modifiers::BOLD),
+            header: Style::new().bold(),
             header_value: Style::new().fg_light_gray(),
             body: Style::new().bg_dark_blue().fg_light_gray(),
         },
         traceroute: Traceroute {
-            header: Style::new()
-                .bg_dark_blue()
-                .modifiers(Modifiers::BOLD | Modifiers::UNDERLINE),
+            header: Style::new().bg_dark_blue().bold().underlined(),
             title: Style::new().fg_white().bold(),
             selected: Style::new().fg_light_yellow(),
             ping: Style::new().fg_white(),
@@ -195,7 +184,7 @@ pub fn init_theme(index: usize) {
         },
         recipe: Recipe {
             ingredients: Style::new().bg_dark_blue().fg_light_gray(),
-            ingredients_header: Style::new().modifiers(Modifiers::BOLD | Modifiers::UNDERLINE),
+            ingredients_header: Style::new().bold().underlined(),
             selected: Style::new().fg_light_yellow(),
         },
         weather: Weather {

@@ -8,38 +8,39 @@ extern crate self as tui_theme;
 
 pub use color::*;
 pub use style::*;
-use terminal_colorsaurus::ColorScheme;
 pub use theme::*;
 pub use tui_theme_derive::*;
 pub mod profile {
     pub use termprofile::*;
 }
 
-pub enum ThemeChoice {
+pub enum ThemeMode {
     Dark,
     Light,
+}
+
+impl From<terminal_colorsaurus::ThemeMode> for ThemeMode {
+    fn from(value: terminal_colorsaurus::ThemeMode) -> Self {
+        match value {
+            terminal_colorsaurus::ThemeMode::Dark => ThemeMode::Dark,
+            terminal_colorsaurus::ThemeMode::Light => ThemeMode::Light,
+        }
+    }
 }
 
 pub struct Adaptive<T> {
     dark: T,
     light: T,
-    choice: ThemeChoice,
+    choice: ThemeMode,
 }
 
 impl<T> Adaptive<T> {
     pub fn auto(dark: T, light: T) -> Self {
         let theme = color_scheme();
-        Self::new(
-            dark,
-            light,
-            match theme {
-                ColorScheme::Light => ThemeChoice::Light,
-                ColorScheme::Dark => ThemeChoice::Dark,
-            },
-        )
+        Self::new(dark, light, theme)
     }
 
-    pub fn new(dark: T, light: T, theme: ThemeChoice) -> Self {
+    pub fn new(dark: T, light: T, theme: ThemeMode) -> Self {
         Self {
             dark,
             light,
@@ -49,8 +50,8 @@ impl<T> Adaptive<T> {
 
     pub fn adapt(&self) -> &T {
         match self.choice {
-            ThemeChoice::Dark => &self.dark,
-            ThemeChoice::Light => &self.light,
+            ThemeMode::Dark => &self.dark,
+            ThemeMode::Light => &self.light,
         }
     }
 }

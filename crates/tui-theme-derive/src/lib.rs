@@ -233,9 +233,9 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
             #color_trait_fns
         }
 
-        impl<T, U> #color_trait<T> for U
+        impl<'a, T, U> #color_trait<T> for U
         where
-            U: #tui_theme::Stylize<T>,
+            U: #tui_theme::Stylize<'a, T>,
         {
             #color_impl_fns
         }
