@@ -8,6 +8,7 @@ use convert_case::{Case, Casing};
 use tui_theme::Color;
 
 fn main() -> io::Result<()> {
+    // palettes created with https://www.tints.dev
     let palette_dir = Path::new("../tui-theme/src/palette");
     fs::remove_dir_all(palette_dir)?;
     fs::create_dir_all(palette_dir)?;

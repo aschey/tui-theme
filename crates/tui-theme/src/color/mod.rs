@@ -199,26 +199,34 @@ macro_rules! color_op {
     };
 }
 
+pub fn terminal_foreground_rgb() -> Rgb {
+    color_palette()
+        .map(|p| scale_color(&p.foreground))
+        .unwrap_or_default()
+}
+
+pub fn terminal_background_rgb() -> Rgb {
+    color_palette()
+        .map(|p| scale_color(&p.background))
+        .unwrap_or_default()
+}
+
+fn scale_color(color: &terminal_colorsaurus::Color) -> Rgb {
+    let color = color.scale_to_8bit();
+    Rgb::new(
+        color.0 as f32 / 255.,
+        color.1 as f32 / 255.,
+        color.2 as f32 / 255.,
+    )
+}
+
 impl Color {
-    pub fn terminal_foreground() -> Self {
-        color_palette()
-            .map(|p| Self::scale_color(&p.foreground))
-            .unwrap_or_default()
-    }
-
     pub fn terminal_background() -> Self {
-        color_palette()
-            .map(|p| Self::scale_color(&p.background))
-            .unwrap_or_default()
+        terminal_background_rgb().into()
     }
 
-    fn scale_color(color: &terminal_colorsaurus::Color) -> Self {
-        let color = color.scale_to_8bit();
-        Self::Rgb(Rgb::new(
-            color.0 as f32 / 255.,
-            color.1 as f32 / 255.,
-            color.2 as f32 / 255.,
-        ))
+    pub fn terminal_foreground() -> Self {
+        terminal_foreground_rgb().into()
     }
 
     pub fn is_compatible(&self) -> bool {

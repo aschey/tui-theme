@@ -6,8 +6,7 @@ use ratatui::symbols;
 use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
 use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding, Widget};
 use time::OffsetDateTime;
-use tui_theme::profile::TermProfile;
-use tui_theme::{Color, Style, is_supported};
+use tui_theme::{Color, Style};
 
 use crate::theme::{
     AppThemeStyle, WeatherColorExt, WeatherColorTheme as _, WeatherStyleExt as _,
@@ -148,8 +147,10 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
     };
 
     let (filled_color, unfilled_color) = if enhanced_color_support() {
-        let Color::Oklch(color) = Color::progress_value() else {
-            unreachable!()
+        let color = match Color::progress_value() {
+            Color::Oklch(color) => color,
+            // ANSI theme won't have an Oklch value, default to a blue-ish value
+            _ => palette::Oklch::new_const(0.7664, 0.1110, palette::OklabHue::new(259.88)),
         };
         let color = Okhsv::from_color(color);
         let hue = color.hue - (percent as f32 * 0.6);

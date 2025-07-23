@@ -1,4 +1,6 @@
-use tui_theme::palette::{Catppuccin, RosePine};
+use std::sync::LazyLock;
+
+use tui_theme::palette::{Catppuccin, Everforest, RosePine};
 use tui_theme::profile::TermProfile;
 use tui_theme::{Color, SetTheme, Style, Theme, is_supported};
 
@@ -115,34 +117,62 @@ const BASIC_ANSI_THEME: Colors = Colors {
     selected: Color::AnsiYellow,
 };
 
-const THEMES: [Colors; 2] = [
-    Colors {
-        base1: Catppuccin::GRAY_900,
-        base2: Catppuccin::GRAY_950,
-        primary: Catppuccin::BLUE_300,
-        accent: Catppuccin::BLUE_300,
-        success: Catppuccin::GREEN_300,
-        warning: Catppuccin::YELLOW_300,
-        danger: Catppuccin::ROSEWATER_300,
-        text: Catppuccin::GRAY_300,
-        text_muted: Catppuccin::GRAY_500,
-        text_bright: Catppuccin::GRAY_100,
-        selected: Catppuccin::YELLOW_300,
-    },
-    Colors {
-        base1: RosePine::GRAY_900,
-        base2: RosePine::GRAY_950,
-        primary: RosePine::PINE_300,
-        accent: RosePine::ROSE_300,
-        success: RosePine::FOAM_300,
-        warning: RosePine::GOLD_300,
-        danger: RosePine::ROSE_300,
-        text: RosePine::GRAY_300,
-        text_muted: RosePine::GRAY_500,
-        text_bright: RosePine::GRAY_100,
-        selected: RosePine::GOLD_300,
-    },
-];
+static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
+    [
+        Colors {
+            base1: Color::terminal_background(),
+            base2: Color::terminal_background().darken(0.15),
+            primary: Color::AnsiBlue,
+            accent: Color::AnsiCyan,
+            success: Color::AnsiGreen,
+            warning: Color::AnsiYellow,
+            danger: Color::AnsiRed,
+            text: Color::terminal_foreground(),
+            text_muted: Color::terminal_foreground().darken(0.15),
+            text_bright: Color::terminal_foreground().lighten(0.15),
+            selected: Color::AnsiYellow,
+        },
+        Colors {
+            base1: Catppuccin::GRAY_900,
+            base2: Catppuccin::GRAY_950,
+            primary: Catppuccin::BLUE_300,
+            accent: Catppuccin::BLUE_300,
+            success: Catppuccin::GREEN_300,
+            warning: Catppuccin::YELLOW_300,
+            danger: Catppuccin::ROSEWATER_300,
+            text: Catppuccin::GRAY_300,
+            text_muted: Catppuccin::GRAY_500,
+            text_bright: Catppuccin::GRAY_100,
+            selected: Catppuccin::YELLOW_300,
+        },
+        Colors {
+            base1: Everforest::BLUE_GRAY_900,
+            base2: Everforest::BLUE_GRAY_950,
+            primary: Everforest::BLUE_GRAY_300,
+            accent: Everforest::BLUE_300,
+            success: Everforest::GREEN_300,
+            warning: Everforest::YELLOW_300,
+            danger: Everforest::RED_300,
+            text: Everforest::BLUE_300,
+            text_muted: Everforest::BLUE_GRAY_500,
+            text_bright: Everforest::BLUE_GRAY_100,
+            selected: Everforest::YELLOW_300,
+        },
+        Colors {
+            base1: RosePine::GRAY_900,
+            base2: RosePine::GRAY_950,
+            primary: RosePine::PINE_300,
+            accent: RosePine::ROSE_300,
+            success: RosePine::FOAM_300,
+            warning: RosePine::GOLD_300,
+            danger: RosePine::ROSE_300,
+            text: RosePine::GRAY_300,
+            text_muted: RosePine::GRAY_500,
+            text_bright: RosePine::GRAY_100,
+            selected: RosePine::GOLD_300,
+        },
+    ]
+});
 
 pub fn num_themes() -> usize {
     THEMES.len()
