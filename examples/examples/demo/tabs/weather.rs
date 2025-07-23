@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use palette::Okhsv;
+use palette::{FromColor, Okhsv};
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Direction, Layout, Margin, Rect};
 use ratatui::symbols;
@@ -8,7 +8,7 @@ use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding
 use time::OffsetDateTime;
 use tui_theme::{Color, Style};
 
-use crate::theme::{AppThemeStyle, WeatherColorTheme as _, WeatherStyleExt as _};
+use crate::theme::{AppThemeStyle, WeatherColorExt, WeatherColorTheme as _, WeatherStyleExt as _};
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct WeatherTab {
@@ -23,7 +23,7 @@ impl WeatherTab {
 
     /// Simulate a download indicator by incrementing the row index.
     pub fn increase(&mut self) {
-        self.download_progress = self.download_progress.saturating_add(1);
+        self.download_progress = (self.download_progress + 1).min(34);
     }
 }
 
@@ -137,11 +137,15 @@ pub fn render_gauge(progress: usize, area: Rect, buf: &mut Buffer) {
 
 #[allow(clippy::cast_possible_truncation)]
 fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
-    // cycle color hue based on the percent for a neat effect yellow -> red
-    let hue = 90.0 - (percent as f32 * 0.6);
+    let Color::Oklch(color) = Color::progress_value() else {
+        unreachable!()
+    };
+    let color = Okhsv::from_color(color);
+    let hue = color.hue - (percent as f32 * 0.6);
+
     let value = Okhsv::max_value();
-    let filled_color = color_from_oklab(hue, Okhsv::max_saturation(), value);
-    let unfilled_color = color_from_oklab(hue, Okhsv::max_saturation(), value * 0.5);
+    let filled_color = Okhsv::new(hue, Okhsv::max_saturation(), value);
+    let unfilled_color = Okhsv::new(hue, Okhsv::max_saturation(), value * 0.5);
     let label = if percent < 100.0 {
         format!("Downloading: {percent}%")
     } else {
@@ -151,12 +155,8 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
         .ratio(percent / 100.0)
         .label(label)
         .fg_line_gauge()
-        .filled_style(Style::new().fg(filled_color))
-        .unfilled_style(Style::new().fg(unfilled_color))
+        .filled_style(Style::new().fg(filled_color.into()))
+        .unfilled_style(Style::new().fg(unfilled_color.into()))
         .line_set(symbols::line::THICK)
         .render(area, buf);
-}
-
-fn color_from_oklab(hue: f32, saturation: f32, value: f32) -> Color {
-    Okhsv::new(hue, saturation, value).into()
 }

@@ -25,20 +25,20 @@ const RATATUI_LOGO: [&str; 32] = [
     "           ████████████████     ",
     "           ████████████████     ",
     "            ███ ██████████      ",
-    "          ██    █████████       ",
-    "         █xx█   █████████       ",
-    "        █xxxx█ ██████████       ",
-    "       █xx█xxx█ █████████       ",
-    "      █xx██xxxx█ ████████       ",
-    "     █xxxxxxxxxx█ ██████████    ",
-    "    █xxxxxxxxxxxx█ ██████████   ",
-    "   █xxxxxxx██xxxxx█ █████████   ",
-    "  █xxxxxxxxx██xxxxx█ ████  ███  ",
-    " █xxxxxxxxxxxxxxxxxx█ ██   ███  ",
-    "█xxxxxxxxxxxxxxxxxxxx█ █   ███  ",
-    "█xxxxxxxxxxxxxxxxxxxxx█   ███   ",
-    " █xxxxxxxxxxxxxxxxxxxxx█ ███    ",
-    "  █xxxxxxxxxxxxxxxxxxxxx█ █     ",
+    "          ▒▒    █████████       ",
+    "         ▒xx▒   █████████       ",
+    "        ▒xxxx▒ ██████████       ",
+    "       ▒xx█xxx▒ █████████       ",
+    "      ▒xx██xxxx▒ ████████       ",
+    "     ▒xxxxxxxxxx▒ ██████████    ",
+    "    ▒xxxxxxxxxxxx▒ ██████████   ",
+    "   ▒xxxxxxx██xxxxx▒ █████████   ",
+    "  ▒xxxxxxxxx██xxxxx▒ ████  ███  ",
+    " ▒xxxxxxxxxxxxxxxxxx▒ ██   ███  ",
+    "▒xxxxxxxxxxxxxxxxxxxx▒ █   ███  ",
+    "▒xxxxxxxxxxxxxxxxxxxxx▒   ███   ",
+    " ▒xxxxxxxxxxxxxxxxxxxxx▒ ███    ",
+    "  ▒xxxxxxxxxxxxxxxxxxxxx▒ █     ",
 ];
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
@@ -117,6 +117,7 @@ pub fn render_logo(selected_row: usize, area: Rect, buf: &mut Buffer) {
             let cell = &mut buf[(x, y)];
             let rat_color = Color::rat().into();
             let term_color = Color::term().into();
+            let border_color = Color::term_border().into();
             match (ch1, ch2) {
                 ('█', '█') => {
                     cell.set_char('█');
@@ -155,6 +156,29 @@ pub fn render_logo(selected_row: usize, area: Rect, buf: &mut Buffer) {
                     cell.set_char('▄');
                     cell.fg = rat_color;
                     cell.bg = eye_color;
+                }
+                ('▒', '▒') => {
+                    cell.set_char('█');
+                    cell.fg = border_color;
+                    cell.bg = border_color;
+                }
+                ('▒', ' ') => {
+                    cell.set_char('▀');
+                    cell.fg = border_color;
+                }
+                (' ', '▒') => {
+                    cell.set_char('▄');
+                    cell.fg = border_color;
+                }
+                ('▒', 'x') => {
+                    cell.set_char('▀');
+                    cell.fg = border_color;
+                    cell.bg = term_color;
+                }
+                ('x', '▒') => {
+                    cell.set_char('▄');
+                    cell.fg = border_color;
+                    cell.bg = term_color;
                 }
                 (_, _) => {}
             };
