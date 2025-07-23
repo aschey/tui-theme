@@ -12,10 +12,10 @@ use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Tabs, Widget};
 use ratatui::{DefaultTerminal, Frame};
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
-use tui_theme::SetTheme;
+use tui_theme::Style;
 
 use crate::tabs::{AboutTab, EmailTab, RecipeTab, TracerouteTab, WeatherTab};
-use crate::theme::{AppTheme, AppThemeStyle, init_theme, num_themes};
+use crate::theme::{AppThemeStyle, AppThemeStyleExt as _, KeyBindingStyle, init_theme, num_themes};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct App {
@@ -155,12 +155,12 @@ impl App {
     fn render_title_bar(&self, area: Rect, buf: &mut Buffer) {
         let layout = Layout::horizontal([Constraint::Min(0), Constraint::Length(43)]);
         let [title, tabs] = layout.areas(area);
-
-        Span::styled("Ratatui", AppTheme::current().app_title).render(title, buf);
+        Block::new().style_app_title().render(area, buf);
+        Span::raw("Ratatui").style_app_title().render(title, buf);
         let titles = Tab::iter().map(Tab::title);
         Tabs::new(titles)
             .style_main_tabs()
-            .highlight_style(AppTheme::current().tabs_selected)
+            .highlight_style(Style::main_tabs_selected())
             .select(self.tab as usize)
             .divider("")
             .padding("", "")
@@ -189,14 +189,12 @@ impl App {
         let spans = keys
             .iter()
             .flat_map(|(key, desc)| {
-                let key = Span::styled(format!(" {key} "), AppTheme::current().key_binding.key);
-                let desc = Span::styled(
-                    format!(" {desc} "),
-                    AppTheme::current().key_binding.description,
-                );
+                let key = Span::raw(format!(" {key} ")).style_key();
+                let desc = Span::raw(format!(" {desc} ")).style_key_description();
                 [key, desc]
             })
             .collect_vec();
+        Block::new().style_app_title().render(area, buf);
         Line::from(spans).centered().render(area, buf);
     }
 }

@@ -6,9 +6,9 @@ use ratatui::symbols;
 use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
 use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding, Widget};
 use time::OffsetDateTime;
-use tui_theme::{Color, SetTheme, Style};
+use tui_theme::{Color, Style};
 
-use crate::theme::{AppTheme, AppThemeStyle, WeatherColorTheme as _};
+use crate::theme::{AppThemeStyle, WeatherColorTheme as _, WeatherStyleExt as _};
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct WeatherTab {
@@ -60,14 +60,11 @@ impl Widget for WeatherTab {
 
 fn render_calendar(area: Rect, buf: &mut Buffer) {
     let date = OffsetDateTime::now_utc().date();
-    Monthly::new(
-        date,
-        CalendarEventStore::today(AppTheme::current().weather.calendar_day),
-    )
-    .block(Block::new().padding(Padding::new(0, 0, 2, 0)))
-    .show_month_header(Style::new().bold())
-    .show_weekdays_header(Style::new().italic())
-    .render(area, buf);
+    Monthly::new(date, CalendarEventStore::today(Style::calendar_day()))
+        .block(Block::new().padding(Padding::new(0, 0, 2, 0)))
+        .show_month_header(Style::new().bold())
+        .show_weekdays_header(Style::new().italic())
+        .render(area, buf);
 }
 
 fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
@@ -80,7 +77,6 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
         ("Thu", 69),
         ("Fri", 73),
     ];
-    let cur = AppTheme::current().weather;
     let data = data
         .into_iter()
         .map(|(label, value)| {
@@ -90,11 +86,15 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
                 // See https://github.com/ratatui/ratatui/issues/513 for more info
                 // (the demo GIFs hack around this by hacking the calculation in bars.rs)
                 .text_value(format!("{value}°"))
-                .style(if value > 70 { cur.bar1 } else { cur.bar2 })
-                .value_style(if value > 70 {
-                    cur.bar_value1
+                .style(if value > 70 {
+                    Style::bar1()
                 } else {
-                    cur.bar_value2
+                    Style::bar2()
+                })
+                .value_style(if value > 70 {
+                    Style::bar_value1()
+                } else {
+                    Style::bar_value2()
                 })
                 .label(label.into())
         })

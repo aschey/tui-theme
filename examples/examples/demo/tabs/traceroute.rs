@@ -7,9 +7,9 @@ use ratatui::widgets::{
     Block, BorderType, Clear, Padding, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
     Sparkline, StatefulWidget, Table, TableState, Widget,
 };
-use tui_theme::SetTheme;
+use tui_theme::{Color, Style};
 
-use crate::theme::{AppTheme, AppThemeStyle, MapStyle, TracerouteStyle};
+use crate::theme::{AppThemeStyle as _, TracerouteColorExt, TracerouteStyle, TracerouteStyleExt};
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct TracerouteTab {
@@ -57,7 +57,7 @@ fn render_hops(selected_row: usize, area: Rect, buf: &mut Buffer) {
     StatefulWidget::render(
         Table::new(rows, [Constraint::Max(100), Constraint::Length(15)])
             .header(Row::new(vec!["Host", "Address"]).style_header())
-            .row_highlight_style(AppTheme::current().traceroute.selected)
+            .row_highlight_style(Style::selected())
             .block(block),
         area,
         buf,
@@ -102,15 +102,18 @@ pub fn render_ping(progress: usize, area: Rect, buf: &mut Buffer) {
 }
 
 fn render_map(selected_row: usize, area: Rect, buf: &mut Buffer) {
-    let theme = AppTheme::current().traceroute.map;
     let path: Option<(&Hop, &Hop)> = HOPS.iter().tuple_windows().nth(selected_row);
     let map = Map {
         resolution: MapResolution::High,
-        color: theme.color.into(),
+        color: Color::map_color().into(),
     };
     Canvas::default()
-        .background_color(theme.background_color.into())
-        .block(Block::new().padding(Padding::new(1, 0, 1, 0)).style_main())
+        .background_color(Color::map_background_color().into())
+        .block(
+            Block::new()
+                .padding(Padding::new(1, 0, 1, 0))
+                .style_map_main(),
+        )
         .marker(Marker::HalfBlock)
         // picked to show Australia for the demo as it's the most interesting part of the map
         // (and the only part with hops ;))
@@ -124,14 +127,14 @@ fn render_map(selected_row: usize, area: Rect, buf: &mut Buffer) {
                     path.0.location.1,
                     path.1.location.0,
                     path.1.location.1,
-                    theme.path.into(),
+                    Color::map_path().into(),
                 ));
                 context.draw(&Points {
-                    color: theme.source.into(),
+                    color: Color::map_source().into(),
                     coords: &[path.0.location], // sydney
                 });
                 context.draw(&Points {
-                    color: theme.destination.into(),
+                    color: Color::map_destination().into(),
                     coords: &[path.1.location], // perth
                 });
             }

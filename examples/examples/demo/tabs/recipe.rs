@@ -7,9 +7,9 @@ use ratatui::widgets::{
     Block, Clear, Padding, Paragraph, Row, Scrollbar, ScrollbarOrientation, ScrollbarState,
     StatefulWidget, Table, TableState, Widget, Wrap,
 };
-use tui_theme::SetTheme;
+use tui_theme::Style;
 
-use crate::theme::{AppTheme, AppThemeStyle, RecipeStyle};
+use crate::theme::{AppThemeStyle, RecipeStyle, RecipeStyleExt as _};
 
 #[derive(Debug, Default, Clone, Copy)]
 struct Ingredient {
@@ -161,7 +161,7 @@ fn render_ingredients(selected_row: usize, area: Rect, buf: &mut Buffer) {
         Table::new(rows, [Constraint::Length(7), Constraint::Length(30)])
             .block(Block::new().style_ingredients())
             .header(Row::new(vec!["Qty", "Ingredient"]).style_ingredients_header())
-            .row_highlight_style(AppTheme::current().recipe.selected),
+            .row_highlight_style(Style::selected()),
         area,
         buf,
         &mut state,

@@ -2,9 +2,9 @@ use itertools::Itertools;
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Alignment, Constraint, Layout, Margin, Rect};
 use ratatui::widgets::{Block, Borders, Clear, Padding, Paragraph, Widget, Wrap};
-use tui_theme::SetTheme;
+use tui_theme::Color;
 
-use crate::theme::{AppTheme, AppThemeStyle};
+use crate::theme::{AppThemeStyle, LogoColorExt};
 
 const RATATUI_LOGO: [&str; 32] = [
     "               ███              ",
@@ -101,11 +101,10 @@ fn render_crate_description(area: Rect, buf: &mut Buffer) {
 /// rat's eye. The eye color alternates between two colors based on the selected row.
 #[allow(clippy::cast_possible_truncation)]
 pub fn render_logo(selected_row: usize, area: Rect, buf: &mut Buffer) {
-    let cur = AppTheme::current().logo;
     let eye_color = if selected_row % 2 == 0 {
-        cur.rat_eye.into()
+        Color::rat_eye().into()
     } else {
-        cur.rat_eye_alt.into()
+        Color::rat_eye_alt().into()
     };
     let area = area.inner(Margin {
         vertical: 0,
@@ -116,8 +115,8 @@ pub fn render_logo(selected_row: usize, area: Rect, buf: &mut Buffer) {
             let x = area.left() + x as u16;
             let y = area.top() + y as u16;
             let cell = &mut buf[(x, y)];
-            let rat_color = cur.rat.into();
-            let term_color = cur.term.into();
+            let rat_color = Color::rat().into();
+            let term_color = Color::term().into();
             match (ch1, ch2) {
                 ('█', '█') => {
                     cell.set_char('█');

@@ -3,7 +3,8 @@ use std::io::stdout;
 use anstyle_crossterm::to_crossterm;
 use termprofile::ProfileColor;
 use tui_theme::{
-    Color, SetTheme, Style, Stylize, Theme, load_color_palette, load_profile, palette, profile,
+    Color, SetTheme, Style, Styled, Stylize, Theme, load_color_palette, load_profile, palette,
+    profile,
 };
 
 #[derive(Clone, Default, Debug)]
@@ -54,6 +55,9 @@ fn main() {
     load_color_palette();
 
     ratatui::style::Style::new().fg_primary2();
+    Color::primary2();
+    Style::primary();
+    ratatui::style::Color::primary2();
     let a: Option<Color> = ProfileColor::new(Color::AnsiReset)
         .try_adapt(&profile().unwrap())
         .map(Into::into);
@@ -88,6 +92,10 @@ fn main() {
     };
     theme.set_global();
     "a".fg_primary2();
+    "a".fg(Color::AnsiRed);
+    "a".fg(ratatui::style::Color::Red);
+    "a".set_style(Style::new());
+    "a".set_style(ratatui::style::Style::new());
     println!("{:?}", AppTheme::current());
 
     let theme2 = AppStyleTheme {

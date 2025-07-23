@@ -7,11 +7,13 @@ pub struct AppTheme {
     pub content: Style,
     pub app_title: Style,
     pub main_tabs: Style,
-    pub tabs_selected: Style,
+    pub main_tabs_selected: Style,
     pub borders: Style,
     pub description: Style,
     pub description_title: Style,
+    #[subtheme]
     pub key_binding: KeyBinding,
+    #[subtheme]
     pub logo: Logo,
     #[subtheme]
     pub email: Email,
@@ -23,10 +25,10 @@ pub struct AppTheme {
     pub weather: Weather,
 }
 
-#[derive(Default, Clone, Debug)]
+#[derive(Theme, Default, Clone, Debug)]
 pub struct KeyBinding {
     pub key: Style,
-    pub description: Style,
+    pub key_description: Style,
 }
 
 #[derive(Theme, Default, Clone, Debug)]
@@ -55,17 +57,12 @@ pub struct Traceroute {
     pub title: Style,
     pub selected: Style,
     pub ping: Style,
-    pub map: Map,
-}
-
-#[derive(Theme, Default, Clone, Debug)]
-pub struct Map {
-    pub main: Style,
-    pub color: Color,
-    pub path: Color,
-    pub source: Color,
-    pub destination: Color,
-    pub background_color: Color,
+    pub map_main: Style,
+    pub map_color: Color,
+    pub map_path: Color,
+    pub map_source: Color,
+    pub map_destination: Color,
+    pub map_background_color: Color,
 }
 
 #[derive(Theme, Default, Clone, Debug)]
@@ -104,7 +101,7 @@ pub struct Colors {
 
 const THEMES: [Colors; 2] = [
     Colors {
-        dark_blue: Catppuccin::BLUE_950,
+        dark_blue: Catppuccin::BLUE_900,
         light_blue: Catppuccin::BLUE_300,
         light_yellow: Catppuccin::YELLOW_300,
         light_green: Catppuccin::GREEN_300,
@@ -138,25 +135,24 @@ pub fn num_themes() -> usize {
 pub fn init_theme(index: usize) {
     let colors = &THEMES[index];
     colors.set_global();
-    let cur = Colors::current();
     let theme = AppTheme {
         root: Style::new().bg_dark_blue(),
         content: Style::new().bg_dark_blue().fg_light_gray(),
-        app_title: Style::new().fg_white().bg_dark_blue().bold(),
-        main_tabs: Style::new().fg_mid_gray().bg_dark_blue(),
-        tabs_selected: Style::new().fg_white().bg_dark_blue().bold().reversed(),
+        app_title: Style::new().fg_white().bg_black().bold(),
+        main_tabs: Style::new().fg_mid_gray().bg_black(),
+        main_tabs_selected: Style::new().fg_white().bg_dark_blue().bold().reversed(),
         borders: Style::new().fg_light_gray(),
         description: Style::new().fg_light_gray().bg_dark_blue(),
         description_title: Style::new().fg_light_gray().bold(),
         logo: Logo {
-            rat: cur.white,
-            rat_eye: cur.black,
-            rat_eye_alt: cur.red,
-            term: cur.black,
+            rat: Color::white(),
+            rat_eye: Color::black(),
+            rat_eye_alt: Color::red(),
+            term: Color::black(),
         },
         key_binding: KeyBinding {
             key: Style::new().fg_black().bg_dark_gray(),
-            description: Style::new().fg_dark_gray().bg_black(),
+            key_description: Style::new().fg_dark_gray().bg_black(),
         },
         email: Email {
             tabs: Style::new().fg_mid_gray().bg_dark_blue(),
@@ -173,14 +169,12 @@ pub fn init_theme(index: usize) {
             title: Style::new().fg_white().bold(),
             selected: Style::new().fg_light_yellow(),
             ping: Style::new().fg_white(),
-            map: Map {
-                main: Style::new().bg_dark_blue(),
-                background_color: cur.dark_blue,
-                color: cur.light_gray,
-                path: cur.light_blue,
-                source: cur.light_green,
-                destination: cur.light_red,
-            },
+            map_main: Style::new().bg_dark_blue(),
+            map_background_color: Color::dark_blue(),
+            map_color: Color::dark_gray(),
+            map_path: Color::light_blue(),
+            map_source: Color::light_green(),
+            map_destination: Color::light_red(),
         },
         recipe: Recipe {
             ingredients: Style::new().bg_dark_blue().fg_light_gray(),
@@ -193,9 +187,9 @@ pub fn init_theme(index: usize) {
             bar_value1: Style::new().fg_mid_gray().bg_red().bold(),
             bar_value2: Style::new().fg_mid_gray().bg_light_yellow().bold(),
             calendar_day: Style::new().fg_red().bold(),
-            progress: cur.light_yellow,
-            progress_value: cur.mid_gray,
-            line_gauge: cur.light_blue,
+            progress: Color::light_yellow(),
+            progress_value: Color::mid_gray(),
+            line_gauge: Color::light_blue(),
         },
     };
 

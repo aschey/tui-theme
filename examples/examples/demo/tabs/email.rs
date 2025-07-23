@@ -7,10 +7,10 @@ use ratatui::widgets::{
     Block, BorderType, Borders, Clear, List, ListItem, ListState, Padding, Paragraph, Scrollbar,
     ScrollbarState, StatefulWidget, Tabs, Widget,
 };
-use tui_theme::SetTheme;
+use tui_theme::Style;
 use unicode_width::UnicodeWidthStr;
 
-use crate::theme::{AppTheme, EmailStyle};
+use crate::theme::{EmailStyle, EmailStyleExt as _};
 
 #[derive(Debug, Default)]
 pub struct Email {
@@ -80,10 +80,9 @@ impl Widget for EmailTab {
 fn render_inbox(selected_index: usize, area: Rect, buf: &mut Buffer) {
     let vertical = Layout::vertical([Constraint::Length(1), Constraint::Min(0)]);
     let [tabs, inbox] = vertical.areas(area);
-    let theme = AppTheme::current().email;
     Tabs::new(vec![" Inbox ", " Sent ", " Drafts "])
         .style_tabs()
-        .highlight_style(theme.tabs_selected)
+        .highlight_style(Style::tabs_selected())
         .select(0)
         .divider("")
         .render(tabs, buf);
@@ -102,7 +101,7 @@ fn render_inbox(selected_index: usize, area: Rect, buf: &mut Buffer) {
     StatefulWidget::render(
         List::new(items)
             .style_inbox()
-            .highlight_style(theme.selected_item)
+            .highlight_style(Style::selected_item())
             .highlight_symbol(highlight_symbol),
         inbox,
         buf,

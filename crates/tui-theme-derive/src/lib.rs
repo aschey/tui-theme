@@ -9,7 +9,11 @@ fn style_fields(fields: &Fields) -> Vec<&Ident> {
     fields
         .iter()
         .filter_map(|f| {
-            if f.ty.to_token_stream().to_string() == "Style" {
+            let ty = f.ty.to_token_stream().to_string().replace(" ", "");
+            if matches!(
+                ty.as_str(),
+                "Style" | "tui_theme::Style" | "ratatui::style::Style"
+            ) {
                 f.ident.as_ref()
             } else {
                 None
@@ -22,7 +26,11 @@ fn color_fields(fields: &Fields) -> Vec<&Ident> {
     fields
         .iter()
         .filter_map(|f| {
-            if f.ty.to_token_stream().to_string() == "Color" {
+            let ty = f.ty.to_token_stream().to_string().replace(" ", "");
+            if matches!(
+                ty.as_str(),
+                "Color" | "tui_theme::Color" | "ratatui::style::Color"
+            ) {
                 f.ident.as_ref()
             } else {
                 None
@@ -76,7 +84,9 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
         .collect();
 
     let style_trait = Ident::new(&(struct_name.to_string() + "Style"), Span::call_site());
+    let style_ext_trait = Ident::new(&(struct_name.to_string() + "StyleExt"), Span::call_site());
     let color_trait = Ident::new(&(struct_name.to_string() + "ColorTheme"), Span::call_site());
+    let color_ext_trait = Ident::new(&(struct_name.to_string() + "ColorExt"), Span::call_site());
 
     let Data::Struct(data_struct) = &input.data else {
         bail!(input.span(), "Theme can only be derived on structs");
@@ -95,6 +105,7 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
         })
         .collect();
     let tui_theme = get_import("tui-theme");
+    let ratatui = get_import("ratatui");
 
     let style_impl_fns: TokenStream = style_fields
         .iter()
@@ -120,6 +131,28 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
                 fn #fg_fn(self) -> T;
                 fn #bg_fn(self) -> T;
                 fn #underline_fn(self) -> T;
+            }
+        })
+        .collect();
+
+    let color_extension_fns: TokenStream = color_fields
+        .iter()
+        .map(|f| {
+            let color_fn = Ident::new(&f.to_string(), Span::call_site());
+
+            quote! {
+                fn #color_fn() -> Self;
+            }
+        })
+        .collect();
+
+    let style_ext_fns: TokenStream = style_fields
+        .iter()
+        .map(|f| {
+            let style_fn = Ident::new(&f.to_string(), Span::call_site());
+
+            quote! {
+                fn #style_fn() -> Self;
             }
         })
         .collect();
@@ -165,6 +198,34 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
                     #struct_name::with_theme(|t| self.underline_color(t.#f))
                 }
 
+            }
+        })
+        .collect();
+
+    let color_ext_impl_fns: TokenStream = color_fields
+        .iter()
+        .map(|f| {
+            let color_fn = Ident::new(&f.to_string(), Span::call_site());
+
+            quote! {
+                fn #color_fn() -> Self {
+                    use #tui_theme::SetTheme;
+                    #struct_name::with_theme(|t| t.#f.into())
+                }
+            }
+        })
+        .collect();
+
+    let style_ext_impl_fns: TokenStream = style_fields
+        .iter()
+        .map(|f| {
+            let style_fn = Ident::new(&f.to_string(), Span::call_site());
+
+            quote! {
+                fn #style_fn() -> Self {
+                    use #tui_theme::SetTheme;
+                    #struct_name::with_theme(|t| t.#f.into())
+                }
             }
         })
         .collect();
@@ -238,6 +299,30 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
             U: #tui_theme::Stylize<'a, T>,
         {
             #color_impl_fns
+        }
+
+        pub trait #color_ext_trait {
+            #color_extension_fns
+        }
+
+        impl #color_ext_trait for #tui_theme::Color {
+            #color_ext_impl_fns
+        }
+
+        impl #color_ext_trait for #ratatui::style::Color {
+            #color_ext_impl_fns
+        }
+
+        pub trait #style_ext_trait {
+            #style_ext_fns
+        }
+
+        impl #style_ext_trait for #tui_theme::Style {
+            #style_ext_impl_fns
+        }
+
+        impl #style_ext_trait for #ratatui::style::Style {
+            #style_ext_impl_fns
         }
 
     })
