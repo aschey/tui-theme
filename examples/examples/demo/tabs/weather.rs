@@ -6,9 +6,13 @@ use ratatui::symbols;
 use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
 use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding, Widget};
 use time::OffsetDateTime;
-use tui_theme::{Color, Style};
+use tui_theme::profile::TermProfile;
+use tui_theme::{Color, Style, is_supported};
 
-use crate::theme::{AppThemeStyle, WeatherColorExt, WeatherColorTheme as _, WeatherStyleExt as _};
+use crate::theme::{
+    AppThemeStyle, WeatherColorExt, WeatherColorTheme as _, WeatherStyleExt as _,
+    enhanced_color_support,
+};
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct WeatherTab {
@@ -137,26 +141,32 @@ pub fn render_gauge(progress: usize, area: Rect, buf: &mut Buffer) {
 
 #[allow(clippy::cast_possible_truncation)]
 fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
-    let Color::Oklch(color) = Color::progress_value() else {
-        unreachable!()
-    };
-    let color = Okhsv::from_color(color);
-    let hue = color.hue - (percent as f32 * 0.6);
-
-    let value = Okhsv::max_value();
-    let filled_color = Okhsv::new(hue, Okhsv::max_saturation(), value);
-    let unfilled_color = Okhsv::new(hue, Okhsv::max_saturation(), value * 0.5);
     let label = if percent < 100.0 {
         format!("Downloading: {percent}%")
     } else {
         "Download Complete!".into()
     };
+
+    let (filled_color, unfilled_color) = if enhanced_color_support() {
+        let Color::Oklch(color) = Color::progress_value() else {
+            unreachable!()
+        };
+        let color = Okhsv::from_color(color);
+        let hue = color.hue - (percent as f32 * 0.6);
+
+        let value = Okhsv::max_value();
+        let filled_color = Okhsv::new(hue, Okhsv::max_saturation(), value);
+        let unfilled_color = Okhsv::new(hue, Okhsv::max_saturation(), value * 0.5);
+        (filled_color.into(), unfilled_color.into())
+    } else {
+        (Color::AnsiMagenta, Color::AnsiReset)
+    };
     LineGauge::default()
         .ratio(percent / 100.0)
         .label(label)
         .fg_line_gauge()
-        .filled_style(Style::new().fg(filled_color.into()))
-        .unfilled_style(Style::new().fg(unfilled_color.into()))
+        .filled_style(Style::new().fg(filled_color))
+        .unfilled_style(Style::new().fg(unfilled_color))
         .line_set(symbols::line::THICK)
         .render(area, buf);
 }

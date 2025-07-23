@@ -77,6 +77,10 @@ pub fn profile() -> Result<TermProfile, ProfileError> {
     TERM_PROFILE.get().copied().ok_or(ProfileError::NotLoaded)
 }
 
+pub fn is_supported(term_profile: TermProfile) -> Result<bool, ProfileError> {
+    profile().map(|p| p >= term_profile)
+}
+
 pub fn color_palette() -> Result<ColorPalette, PaletteError> {
     match COLOR_PALETTE.get() {
         Some(res) => res.clone(),

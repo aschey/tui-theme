@@ -1,5 +1,6 @@
 use tui_theme::palette::{Catppuccin, RosePine};
-use tui_theme::{Color, SetTheme, Style, Theme};
+use tui_theme::profile::TermProfile;
+use tui_theme::{Color, SetTheme, Style, Theme, is_supported};
 
 #[derive(Theme, Default, Clone, Debug)]
 pub struct AppTheme {
@@ -100,6 +101,20 @@ pub struct Colors {
     selected: Color,
 }
 
+const BASIC_ANSI_THEME: Colors = Colors {
+    base1: Color::AnsiReset,
+    base2: Color::AnsiReset,
+    primary: Color::AnsiBlue,
+    accent: Color::AnsiCyan,
+    success: Color::AnsiGreen,
+    warning: Color::AnsiYellow,
+    danger: Color::AnsiRed,
+    text: Color::AnsiReset,
+    text_muted: Color::AnsiGray,
+    text_bright: Color::AnsiWhite,
+    selected: Color::AnsiYellow,
+};
+
 const THEMES: [Colors; 2] = [
     Colors {
         base1: Catppuccin::GRAY_900,
@@ -133,17 +148,28 @@ pub fn num_themes() -> usize {
     THEMES.len()
 }
 
+pub fn enhanced_color_support() -> bool {
+    matches!(is_supported(TermProfile::Ansi256), Ok(true))
+}
+
 pub fn init_theme(index: usize) {
-    let colors = &THEMES[index];
+    let enhanced = enhanced_color_support();
+    let colors = if enhanced {
+        &THEMES[index]
+    } else {
+        &BASIC_ANSI_THEME
+    };
     colors.set_global();
+    let base1 = Style::new().fg_text().bg_base1();
+    let muted = Style::new().fg_text_muted().bg_base2();
     let theme = AppTheme {
-        root: Style::new().bg_base1(),
-        content: Style::new().fg_text().bg_base1(),
+        root: base1,
+        content: base1,
         app_title: Style::new().fg_text_bright().bg_base2().bold(),
-        main_tabs: Style::new().fg_text_muted().bg_base2(),
+        main_tabs: muted,
         main_tabs_selected: Style::new().fg_text_bright().bg_base1().bold().reversed(),
         borders: Style::new().fg_text_muted(),
-        description: Style::new().fg_text().bg_base1(),
+        description: base1,
         description_title: Style::new().fg_text().bold(),
         logo: Logo {
             rat: Color::text_bright(),
@@ -153,18 +179,22 @@ pub fn init_theme(index: usize) {
             term_border: Color::accent(),
         },
         key_binding: KeyBinding {
-            key: Style::new().fg_text_muted().bg_base2(),
-            key_description: Style::new().fg_base2().bg_text_muted(),
+            key: if enhanced { muted } else { base1 },
+            key_description: if enhanced {
+                Style::new().fg_base2().bg_text_muted()
+            } else {
+                muted
+            },
         },
         email: Email {
-            tabs: Style::new().fg_text().bg_base1(),
+            tabs: base1,
             tabs_selected: Style::new().fg_text_bright().bg_base1().bold(),
-            inbox: Style::new().bg_base1().fg_text(),
+            inbox: base1,
             item: Style::new().fg_text(),
             selected_item: Style::new().fg_selected(),
             header: Style::new().bold(),
             header_value: Style::new().fg_text(),
-            body: Style::new().bg_base1().fg_text(),
+            body: base1,
         },
         traceroute: Traceroute {
             header: Style::new().bg_base1().bold().underlined(),
@@ -179,15 +209,29 @@ pub fn init_theme(index: usize) {
             map_destination: Color::danger(),
         },
         recipe: Recipe {
-            ingredients: Style::new().bg_base1().fg_text(),
+            ingredients: base1,
             ingredients_header: Style::new().bold().underlined(),
             selected: Style::new().fg_selected(),
         },
         weather: Weather {
             bar1: Style::new().fg_danger(),
             bar2: Style::new().fg_warning(),
-            bar_value1: Style::new().fg_base2().bg_danger().bold(),
-            bar_value2: Style::new().fg_base2().bg_warning().bold(),
+            bar_value1: Style::new()
+                .fg_base2()
+                .bg(if enhanced {
+                    Color::danger()
+                } else {
+                    Color::AnsiReset
+                })
+                .bold(),
+            bar_value2: Style::new()
+                .fg_base2()
+                .bg(if enhanced {
+                    Color::warning()
+                } else {
+                    Color::AnsiReset
+                })
+                .bold(),
             calendar_day: Style::new().fg_danger().bold(),
             progress: Color::warning(),
             progress_value: Color::accent(),
