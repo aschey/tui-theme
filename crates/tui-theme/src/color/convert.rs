@@ -5,10 +5,7 @@ use palette::{
 };
 use termprofile::TermProfile;
 
-use super::{
-    Color, indexed_to_rgb, profile, terminal_background_rgb,
-    terminal_foreground_rgb,
-};
+use super::{Color, indexed_to_rgb, profile, terminal_background_rgb, terminal_foreground_rgb};
 
 impl Color {
     pub fn to_rgb_fg(self) -> Rgb {
@@ -17,6 +14,25 @@ impl Color {
 
     pub fn to_rgb_bg(self) -> Rgb {
         self.to_rgb(false)
+    }
+
+    pub fn to_hex_fg(self) -> String {
+        self.to_hex(true)
+    }
+
+    pub fn to_hex_bg(self) -> String {
+        self.to_hex(false)
+    }
+
+    pub fn to_hex(self, is_fg: bool) -> String {
+        let rgb = self.to_rgb(is_fg);
+        format!(
+            "#{:02x}{:02x}{:02x}",
+            (rgb.red * 255.0) as u8,
+            (rgb.green * 255.0) as u8,
+            (rgb.blue * 255.0) as u8
+        )
+        .to_uppercase()
     }
 
     fn to_rgb(self, is_fg: bool) -> Rgb {

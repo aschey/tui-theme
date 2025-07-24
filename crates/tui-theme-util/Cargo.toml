@@ -11,3 +11,5 @@ tui-theme = { workspace = true }
 regex = { workspace = true }
 palette = { workspace = true }
 convert_case = { workspace = true }
+open = { workspace = true }
+base64 = { workspace = true }

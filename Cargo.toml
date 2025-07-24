@@ -21,6 +21,8 @@ thiserror = "2"
 bitflags = "2"
 convert_case = "0.8"
 proc-macro-crate = "3"
+open = "5"
+base64 = "0.22"
 
 crossterm = "0.28"
 anstyle-crossterm = "3"
