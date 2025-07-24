@@ -48,9 +48,9 @@ impl Style {
     /// Returns a `Style` resetting all properties.
     pub const fn reset() -> Self {
         Self {
-            fg: Some(Color::AnsiReset),
-            bg: Some(Color::AnsiReset),
-            underline_color: Some(Color::AnsiReset),
+            fg: Some(Color::Reset),
+            bg: Some(Color::Reset),
+            underline_color: Some(Color::Reset),
             add_modifier: Modifier::empty(),
             sub_modifier: Modifier::all(),
         }
@@ -106,22 +106,22 @@ impl Style {
         self
     }
 
-    color!(pub const Color::AnsiBlack, black(), on_black() -> Self);
-    color!(pub const Color::AnsiRed, red(), on_red() -> Self);
-    color!(pub const Color::AnsiGreen, green(), on_green() -> Self);
-    color!(pub const Color::AnsiYellow, yellow(), on_yellow() -> Self);
-    color!(pub const Color::AnsiBlue, blue(), on_blue() -> Self);
-    color!(pub const Color::AnsiMagenta, magenta(), on_magenta() -> Self);
-    color!(pub const Color::AnsiCyan, cyan(), on_cyan() -> Self);
-    color!(pub const Color::AnsiGray, gray(), on_gray() -> Self);
-    color!(pub const Color::AnsiDarkGray, dark_gray(), on_dark_gray() -> Self);
-    color!(pub const Color::AnsiLightRed, light_red(), on_light_red() -> Self);
-    color!(pub const Color::AnsiLightGreen, light_green(), on_light_green() -> Self);
-    color!(pub const Color::AnsiLightYellow, light_yellow(), on_light_yellow() -> Self);
-    color!(pub const Color::AnsiLightBlue, light_blue(), on_light_blue() -> Self);
-    color!(pub const Color::AnsiLightMagenta, light_magenta(), on_light_magenta() -> Self);
-    color!(pub const Color::AnsiLightCyan, light_cyan(), on_light_cyan() -> Self);
-    color!(pub const Color::AnsiWhite, white(), on_white() -> Self);
+    color!(pub const Color::Black, black(), on_black() -> Self);
+    color!(pub const Color::Red, red(), on_red() -> Self);
+    color!(pub const Color::Green, green(), on_green() -> Self);
+    color!(pub const Color::Yellow, yellow(), on_yellow() -> Self);
+    color!(pub const Color::Blue, blue(), on_blue() -> Self);
+    color!(pub const Color::Magenta, magenta(), on_magenta() -> Self);
+    color!(pub const Color::Cyan, cyan(), on_cyan() -> Self);
+    color!(pub const Color::Gray, gray(), on_gray() -> Self);
+    color!(pub const Color::DarkGray, dark_gray(), on_dark_gray() -> Self);
+    color!(pub const Color::LightRed, light_red(), on_light_red() -> Self);
+    color!(pub const Color::LightGreen, light_green(), on_light_green() -> Self);
+    color!(pub const Color::LightYellow, light_yellow(), on_light_yellow() -> Self);
+    color!(pub const Color::LightBlue, light_blue(), on_light_blue() -> Self);
+    color!(pub const Color::LightMagenta, light_magenta(), on_light_magenta() -> Self);
+    color!(pub const Color::LightCyan, light_cyan(), on_light_cyan() -> Self);
+    color!(pub const Color::White, white(), on_white() -> Self);
 
     modifier!(pub const Modifier::BOLD, bold(), not_bold() -> Self);
     modifier!(pub const Modifier::DIM, dim(), not_dim() -> Self);

@@ -156,7 +156,7 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
         let unfilled_color = Okhsv::new(hue, Okhsv::max_saturation(), value * 0.5);
         (filled_color.into(), unfilled_color.into())
     } else {
-        (Color::AnsiMagenta, Color::AnsiReset)
+        (Color::Magenta, Color::Reset)
     };
     LineGauge::default()
         .ratio(percent / 100.0)

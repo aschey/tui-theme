@@ -61,22 +61,22 @@ pub trait Stylize<'a, T>: Sized {
     fn add_modifier(self, modifier: Modifier) -> T;
     fn remove_modifier(self, modifier: Modifier) -> T;
 
-    color!(Color::AnsiBlack, black(), on_black() -> T);
-    color!(Color::AnsiRed, red(), on_red() -> T);
-    color!(Color::AnsiGreen, green(), on_green() -> T);
-    color!(Color::AnsiYellow, yellow(), on_yellow() -> T);
-    color!(Color::AnsiBlue, blue(), on_blue() -> T);
-    color!(Color::AnsiMagenta, magenta(), on_magenta() -> T);
-    color!(Color::AnsiCyan, cyan(), on_cyan() -> T);
-    color!(Color::AnsiGray, gray(), on_gray() -> T);
-    color!(Color::AnsiDarkGray, dark_gray(), on_dark_gray() -> T);
-    color!(Color::AnsiLightRed, light_red(), on_light_red() -> T);
-    color!(Color::AnsiLightGreen, light_green(), on_light_green() -> T);
-    color!(Color::AnsiLightYellow, light_yellow(), on_light_yellow() -> T);
-    color!(Color::AnsiLightBlue, light_blue(), on_light_blue() -> T);
-    color!(Color::AnsiLightMagenta, light_magenta(), on_light_magenta() -> T);
-    color!(Color::AnsiLightCyan, light_cyan(), on_light_cyan() -> T);
-    color!(Color::AnsiWhite, white(), on_white() -> T);
+    color!(Color::Black, black(), on_black() -> T);
+    color!(Color::Red, red(), on_red() -> T);
+    color!(Color::Green, green(), on_green() -> T);
+    color!(Color::Yellow, yellow(), on_yellow() -> T);
+    color!(Color::Blue, blue(), on_blue() -> T);
+    color!(Color::Magenta, magenta(), on_magenta() -> T);
+    color!(Color::Cyan, cyan(), on_cyan() -> T);
+    color!(Color::Gray, gray(), on_gray() -> T);
+    color!(Color::DarkGray, dark_gray(), on_dark_gray() -> T);
+    color!(Color::LightRed, light_red(), on_light_red() -> T);
+    color!(Color::LightGreen, light_green(), on_light_green() -> T);
+    color!(Color::LightYellow, light_yellow(), on_light_yellow() -> T);
+    color!(Color::LightBlue, light_blue(), on_light_blue() -> T);
+    color!(Color::LightMagenta, light_magenta(), on_light_magenta() -> T);
+    color!(Color::LightCyan, light_cyan(), on_light_cyan() -> T);
+    color!(Color::White, white(), on_white() -> T);
 
     modifier!(Modifier::BOLD, bold(), not_bold() -> T);
     modifier!(Modifier::DIM, dim(), not_dim() -> T);

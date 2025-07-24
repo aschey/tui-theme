@@ -13,12 +13,12 @@ pub struct AppTheme {
 }
 
 pub const ANSI: AppTheme = AppTheme {
-    primary: Color::AnsiCyan,
-    secondary: Color::AnsiBlue,
-    accent: Color::AnsiMagenta,
-    foreground: Color::AnsiReset,
-    background: Color::AnsiReset,
-    success: Color::AnsiGreen,
-    warning: Color::AnsiYellow,
-    error: Color::AnsiRed,
+    primary: Color::Cyan,
+    secondary: Color::Blue,
+    accent: Color::Magenta,
+    foreground: Color::Reset,
+    background: Color::Reset,
+    success: Color::Green,
+    warning: Color::Yellow,
+    error: Color::Red,
 };

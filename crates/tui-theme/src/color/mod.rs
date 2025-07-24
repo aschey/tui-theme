@@ -7,7 +7,6 @@ use ::palette::{
     Darken, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch,
     Xyz, Yxy,
 };
-use palette::FromColor;
 use terminal_colorsaurus::{ColorPalette, QueryOptions};
 use termprofile::TermProfile;
 
@@ -114,44 +113,44 @@ pub enum Color {
     Xyz(Xyz),
     Yxy(Yxy),
     #[default]
-    AnsiReset,
+    Reset,
     /// ANSI Color: Black. Foreground: 30, Background: 40
-    AnsiBlack,
+    Black,
     /// ANSI Color: Red. Foreground: 31, Background: 41
-    AnsiRed,
+    Red,
     /// ANSI Color: Green. Foreground: 32, Background: 42
-    AnsiGreen,
+    Green,
     /// ANSI Color: Yellow. Foreground: 33, Background: 43
-    AnsiYellow,
+    Yellow,
     /// ANSI Color: Blue. Foreground: 34, Background: 44
-    AnsiBlue,
+    Blue,
     /// ANSI Color: Magenta. Foreground: 35, Background: 45
-    AnsiMagenta,
+    Magenta,
     /// ANSI Color: Cyan. Foreground: 36, Background: 46
-    AnsiCyan,
+    Cyan,
     /// ANSI Color: White. Foreground: 37, Background: 47
     ///
     /// Note that this is sometimes called `silver` or `white` but we use `white` for bright white
-    AnsiGray,
+    Gray,
     /// ANSI Color: Bright Black. Foreground: 90, Background: 100
     ///
     /// Note that this is sometimes called `light black` or `bright black` but we use `dark gray`
-    AnsiDarkGray,
+    DarkGray,
     /// ANSI Color: Bright Red. Foreground: 91, Background: 101
-    AnsiLightRed,
+    LightRed,
     /// ANSI Color: Bright Green. Foreground: 92, Background: 102
-    AnsiLightGreen,
+    LightGreen,
     /// ANSI Color: Bright Yellow. Foreground: 93, Background: 103
-    AnsiLightYellow,
+    LightYellow,
     /// ANSI Color: Bright Blue. Foreground: 94, Background: 104
-    AnsiLightBlue,
+    LightBlue,
     /// ANSI Color: Bright Magenta. Foreground: 95, Background: 105
-    AnsiLightMagenta,
+    LightMagenta,
     /// ANSI Color: Bright Cyan. Foreground: 96, Background: 106
-    AnsiLightCyan,
+    LightCyan,
     /// ANSI Color: Bright White. Foreground: 97, Background: 107
     /// Sometimes called `bright white` or `light white` in some terminals
-    AnsiWhite,
+    White,
     /// An 8-bit 256 color.
     ///
     /// See also <https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit>
@@ -178,23 +177,23 @@ macro_rules! color_op {
             Self::Xyz(val) => Self::Xyz(val.lighten_fixed($factor)),
             Self::Yxy(val) => Self::Yxy(val.lighten_fixed($factor)),
             Self::Indexed(i) => indexed_to_color(*i).$op($factor),
-            Self::AnsiReset => Self::AnsiReset,
-            Self::AnsiBlack => indexed_to_color(0).$op($factor),
-            Self::AnsiRed => indexed_to_color(1).$op($factor),
-            Self::AnsiGreen => indexed_to_color(2).$op($factor),
-            Self::AnsiYellow => indexed_to_color(3).$op($factor),
-            Self::AnsiBlue => indexed_to_color(4).$op($factor),
-            Self::AnsiMagenta => indexed_to_color(5).$op($factor),
-            Self::AnsiCyan => indexed_to_color(6).$op($factor),
-            Self::AnsiGray => indexed_to_color(7).$op($factor),
-            Self::AnsiDarkGray => indexed_to_color(8).$op($factor),
-            Self::AnsiLightRed => indexed_to_color(9).$op($factor),
-            Self::AnsiLightGreen => indexed_to_color(10).$op($factor),
-            Self::AnsiLightYellow => indexed_to_color(11).$op($factor),
-            Self::AnsiLightBlue => indexed_to_color(12).$op($factor),
-            Self::AnsiLightMagenta => indexed_to_color(13).$op($factor),
-            Self::AnsiLightCyan => indexed_to_color(14).$op($factor),
-            Self::AnsiWhite => indexed_to_color(15).$op($factor),
+            Self::Reset => Self::Reset,
+            Self::Black => indexed_to_color(0).$op($factor),
+            Self::Red => indexed_to_color(1).$op($factor),
+            Self::Green => indexed_to_color(2).$op($factor),
+            Self::Yellow => indexed_to_color(3).$op($factor),
+            Self::Blue => indexed_to_color(4).$op($factor),
+            Self::Magenta => indexed_to_color(5).$op($factor),
+            Self::Cyan => indexed_to_color(6).$op($factor),
+            Self::Gray => indexed_to_color(7).$op($factor),
+            Self::DarkGray => indexed_to_color(8).$op($factor),
+            Self::LightRed => indexed_to_color(9).$op($factor),
+            Self::LightGreen => indexed_to_color(10).$op($factor),
+            Self::LightYellow => indexed_to_color(11).$op($factor),
+            Self::LightBlue => indexed_to_color(12).$op($factor),
+            Self::LightMagenta => indexed_to_color(13).$op($factor),
+            Self::LightCyan => indexed_to_color(14).$op($factor),
+            Self::White => indexed_to_color(15).$op($factor),
         }
     };
 }
@@ -232,23 +231,23 @@ impl Color {
     pub fn is_compatible(&self) -> bool {
         let color_support = profile().unwrap_or(TermProfile::TrueColor);
         match self {
-            Self::AnsiWhite
-            | Self::AnsiGray
-            | Self::AnsiBlue
-            | Self::AnsiCyan
-            | Self::AnsiMagenta
-            | Self::AnsiGreen
-            | Self::AnsiYellow
-            | Self::AnsiRed
-            | Self::AnsiLightBlue
-            | Self::AnsiLightRed
-            | Self::AnsiLightGreen
-            | Self::AnsiLightCyan
-            | Self::AnsiLightMagenta
-            | Self::AnsiLightYellow
-            | Self::AnsiReset
-            | Self::AnsiBlack
-            | Self::AnsiDarkGray => color_support >= TermProfile::Ansi16,
+            Self::White
+            | Self::Gray
+            | Self::Blue
+            | Self::Cyan
+            | Self::Magenta
+            | Self::Green
+            | Self::Yellow
+            | Self::Red
+            | Self::LightBlue
+            | Self::LightRed
+            | Self::LightGreen
+            | Self::LightCyan
+            | Self::LightMagenta
+            | Self::LightYellow
+            | Self::Reset
+            | Self::Black
+            | Self::DarkGray => color_support >= TermProfile::Ansi16,
             Self::Indexed(index) if *index < 16 => color_support >= TermProfile::Ansi16,
             Self::Indexed(_) => color_support >= TermProfile::Ansi256,
             Self::Rgb(_)

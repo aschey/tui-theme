@@ -104,17 +104,17 @@ pub struct Colors {
 }
 
 const BASIC_ANSI_THEME: Colors = Colors {
-    base1: Color::AnsiReset,
-    base2: Color::AnsiReset,
-    primary: Color::AnsiBlue,
-    accent: Color::AnsiCyan,
-    success: Color::AnsiGreen,
-    warning: Color::AnsiYellow,
-    danger: Color::AnsiRed,
-    text: Color::AnsiReset,
-    text_muted: Color::AnsiGray,
-    text_bright: Color::AnsiWhite,
-    selected: Color::AnsiYellow,
+    base1: Color::Reset,
+    base2: Color::Reset,
+    primary: Color::Blue,
+    accent: Color::Cyan,
+    success: Color::Green,
+    warning: Color::Yellow,
+    danger: Color::Red,
+    text: Color::Reset,
+    text_muted: Color::Gray,
+    text_bright: Color::White,
+    selected: Color::Yellow,
 };
 
 static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
@@ -124,15 +124,15 @@ static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
         Colors {
             base1: bg,
             base2: bg.darken(0.15),
-            primary: Color::AnsiBlue,
-            accent: Color::AnsiCyan,
-            success: Color::AnsiGreen,
-            warning: Color::AnsiYellow,
-            danger: Color::AnsiRed,
+            primary: Color::Blue,
+            accent: Color::Cyan,
+            success: Color::Green,
+            warning: Color::Yellow,
+            danger: Color::Red,
             text: Color::terminal_foreground(),
             text_muted: fg.darken(0.15),
             text_bright: fg.lighten(0.15),
-            selected: Color::AnsiYellow,
+            selected: Color::Yellow,
         },
         Colors {
             base1: Catppuccin::GRAY_900,
@@ -247,11 +247,11 @@ pub fn init_theme(index: usize) {
             bar2: Style::new().fg_warning(),
             bar_value1: Style::new()
                 .fg_base2()
-                .bg(ProfileVariant::new(Color::danger()).ansi_16(Color::AnsiReset))
+                .bg(ProfileVariant::new(Color::danger()).ansi_16(Color::Reset))
                 .bold(),
             bar_value2: Style::new()
                 .fg_base2()
-                .bg(ProfileVariant::new(Color::warning()).ansi_16(Color::AnsiReset))
+                .bg(ProfileVariant::new(Color::warning()).ansi_16(Color::Reset))
                 .bold(),
             calendar_day: Style::new().fg_danger().bold(),
             progress: Color::warning(),

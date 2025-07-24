@@ -58,7 +58,7 @@ fn main() {
     Color::primary2();
     Style::primary();
     ratatui::style::Color::primary2();
-    let a: Option<Color> = ProfileColor::new(Color::AnsiReset)
+    let a: Option<Color> = ProfileColor::new(Color::Reset)
         .try_adapt(&profile().unwrap())
         .map(Into::into);
     let fg = Color::terminal_background();
@@ -77,12 +77,12 @@ fn main() {
 
     let theme = AppTheme {
         color: AppColorTheme {
-            primary: Color::AnsiRed,
-            secondary: Color::AnsiBlue,
+            primary: Color::Red,
+            secondary: Color::Blue,
         },
         color2: AppColorTheme2 {
-            primary2: Color::AnsiRed,
-            secondary2: Color::AnsiBlue,
+            primary2: Color::Red,
+            secondary2: Color::Blue,
         },
 
         borders: BorderTheme {
@@ -92,7 +92,7 @@ fn main() {
     };
     theme.set_global();
     "a".fg_primary2();
-    "a".fg(Color::AnsiRed);
+    "a".fg(Color::Red);
     "a".fg(ratatui::style::Color::Red);
     "a".set_style(Style::new());
     "a".set_style(ratatui::style::Style::new());
