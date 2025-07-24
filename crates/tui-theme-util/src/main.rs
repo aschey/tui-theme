@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::fs;
 use std::fs::File;
 use std::io::{self, Read, Write};
@@ -59,11 +60,24 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
     writeln!(out, "// Auto-generated file. Do not edit.\n")?;
     writeln!(out, "pub struct {name_caps} {{}}\n")?;
     writeln!(out, "impl {name_caps} {{")?;
+    let mut color_groups: HashMap<String, Vec<String>> = HashMap::new();
     for line in lines {
         let parts: Vec<_> = line.split(": ").collect();
         let [name, val] = parts.as_slice() else {
             panic!("invalid format");
         };
+        let name = name
+            .replacen("--", "", 1)
+            .replace("-", "_")
+            .replacen("color_", "", 1)
+            .to_ascii_uppercase();
+
+        let name_base = name.split("_").next().unwrap();
+        if let Some(colors) = color_groups.get_mut(name_base) {
+            colors.push(name.clone());
+        } else {
+            color_groups.insert(name_base.to_string(), vec![name.clone()]);
+        }
 
         let color: Color = val.parse().unwrap();
         let Color::Oklch(color) = color else {
@@ -73,7 +87,17 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
             out,
             "    #[allow(clippy::excessive_precision, clippy::approx_constant)]"
         )?;
-        writeln!(out, "{}", generate_const(name, color))?;
+        writeln!(out, "{}", generate_const(&name, color))?;
+    }
+
+    for (color_group, colors) in color_groups {
+        let color_array_vals: Vec<_> = colors.iter().map(|c| format!("Self::{c}")).collect();
+        writeln!(
+            out,
+            "    pub const {color_group}: [Color; {}] = [{}];\n",
+            colors.len(),
+            color_array_vals.join(",")
+        )?;
     }
     writeln!(out, "}}")?;
 
@@ -81,14 +105,9 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
 }
 
 fn generate_const(name: &str, color: ::palette::Oklch) -> String {
-    let name = name
-        .replacen("--", "", 1)
-        .replace("-", "_")
-        .replacen("color_", "", 1)
-        .to_ascii_uppercase();
     format!(
         "    pub const {name}: Color = Color::Oklch(::palette::Oklch::new_const({:.4}, {:.4}, \
-         ::palette::OklabHue::new({:.4})));",
+         ::palette::OklabHue::new({:.4})));\n",
         color.l,
         color.chroma,
         color.hue.into_raw_degrees()
