@@ -8,6 +8,7 @@ extern crate self as tui_theme;
 
 pub use color::*;
 pub use style::*;
+use termprofile::TermProfile;
 pub use theme::*;
 pub use tui_theme_derive::*;
 pub mod profile {
@@ -53,6 +54,69 @@ impl<T> Adaptive<T> {
             ThemeMode::Dark => &self.dark,
             ThemeMode::Light => &self.light,
         }
+    }
+}
+
+pub struct ProfileVariant<T> {
+    default_value: T,
+    ansi_256: Option<T>,
+    ansi_16: Option<T>,
+    ascii: Option<T>,
+    no_tty: Option<T>,
+}
+
+impl<T> ProfileVariant<T> {
+    pub fn new(default_value: T) -> Self {
+        Self {
+            default_value,
+            ansi_256: None,
+            ansi_16: None,
+            ascii: None,
+            no_tty: None,
+        }
+    }
+
+    pub fn ansi_16(mut self, value: T) -> Self {
+        self.ansi_16 = Some(value);
+        self
+    }
+
+    pub fn adapt(self) -> T {
+        let current_profile = profile().unwrap_or(TermProfile::TrueColor);
+        if current_profile <= TermProfile::NoTty
+            && let Some(no_tty) = self.no_tty
+        {
+            return no_tty;
+        }
+        if current_profile <= TermProfile::Ascii
+            && let Some(ascii) = self.ascii
+        {
+            return ascii;
+        }
+        if current_profile <= TermProfile::Ansi16
+            && let Some(ansi_16) = self.ansi_16
+        {
+            return ansi_16;
+        }
+        if current_profile <= TermProfile::Ansi256
+            && let Some(ansi_256) = self.ansi_256
+        {
+            return ansi_256;
+        }
+
+        self.default_value
+    }
+}
+
+impl From<ProfileVariant<Color>> for Color {
+    fn from(value: ProfileVariant<Color>) -> Self {
+        value.adapt()
+    }
+}
+
+impl From<ProfileVariant<Style>> for Style {
+    fn from(value: ProfileVariant<Style>) -> Self {
+        value.adapt()
     }
 }
 

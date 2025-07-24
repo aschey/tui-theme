@@ -56,18 +56,27 @@ impl Style {
         }
     }
 
-    pub const fn fg(mut self, color: Color) -> Self {
-        self.fg = Some(color);
+    pub fn fg<C>(mut self, color: C) -> Self
+    where
+        C: Into<Color>,
+    {
+        self.fg = Some(color.into());
         self
     }
 
-    pub const fn bg(mut self, color: Color) -> Self {
-        self.bg = Some(color);
+    pub fn bg<C>(mut self, color: C) -> Self
+    where
+        C: Into<Color>,
+    {
+        self.bg = Some(color.into());
         self
     }
 
-    pub const fn underline_color(mut self, color: Color) -> Self {
-        self.underline_color = Some(color);
+    pub fn underline_color<C>(mut self, color: C) -> Self
+    where
+        C: Into<Color>,
+    {
+        self.underline_color = Some(color.into());
         self
     }
 

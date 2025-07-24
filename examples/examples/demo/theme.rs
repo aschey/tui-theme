@@ -2,7 +2,7 @@ use std::sync::LazyLock;
 
 use tui_theme::palette::{Catppuccin, Everforest, RosePine};
 use tui_theme::profile::TermProfile;
-use tui_theme::{Color, SetTheme, Style, Theme, is_supported};
+use tui_theme::{Color, ProfileVariant, SetTheme, Style, Theme, is_supported};
 
 #[derive(Theme, Default, Clone, Debug)]
 pub struct AppTheme {
@@ -118,18 +118,20 @@ const BASIC_ANSI_THEME: Colors = Colors {
 };
 
 static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
+    let bg = Color::terminal_background();
+    let fg = Color::terminal_foreground();
     [
         Colors {
-            base1: Color::terminal_background(),
-            base2: Color::terminal_background().darken(0.15),
+            base1: bg,
+            base2: bg.darken(0.15),
             primary: Color::AnsiBlue,
             accent: Color::AnsiCyan,
             success: Color::AnsiGreen,
             warning: Color::AnsiYellow,
             danger: Color::AnsiRed,
             text: Color::terminal_foreground(),
-            text_muted: Color::terminal_foreground().darken(0.15),
-            text_bright: Color::terminal_foreground().lighten(0.15),
+            text_muted: fg.darken(0.15),
+            text_bright: fg.lighten(0.15),
             selected: Color::AnsiYellow,
         },
         Colors {
@@ -183,8 +185,7 @@ pub fn enhanced_color_support() -> bool {
 }
 
 pub fn init_theme(index: usize) {
-    let enhanced = enhanced_color_support();
-    let colors = if enhanced {
+    let colors = if enhanced_color_support() {
         &THEMES[index]
     } else {
         &BASIC_ANSI_THEME
@@ -209,12 +210,10 @@ pub fn init_theme(index: usize) {
             term_border: Color::accent(),
         },
         key_binding: KeyBinding {
-            key: if enhanced { muted } else { base1 },
-            key_description: if enhanced {
-                Style::new().fg_base2().bg_text_muted()
-            } else {
-                muted
-            },
+            key: ProfileVariant::new(muted).ansi_16(base1).into(),
+            key_description: ProfileVariant::new(Style::new().fg_base2().bg_text_muted())
+                .ansi_16(muted)
+                .into(),
         },
         email: Email {
             tabs: base1,
@@ -248,19 +247,11 @@ pub fn init_theme(index: usize) {
             bar2: Style::new().fg_warning(),
             bar_value1: Style::new()
                 .fg_base2()
-                .bg(if enhanced {
-                    Color::danger()
-                } else {
-                    Color::AnsiReset
-                })
+                .bg(ProfileVariant::new(Color::danger()).ansi_16(Color::AnsiReset))
                 .bold(),
             bar_value2: Style::new()
                 .fg_base2()
-                .bg(if enhanced {
-                    Color::warning()
-                } else {
-                    Color::AnsiReset
-                })
+                .bg(ProfileVariant::new(Color::warning()).ansi_16(Color::AnsiReset))
                 .bold(),
             calendar_day: Style::new().fg_danger().bold(),
             progress: Color::warning(),

@@ -21,11 +21,11 @@ macro_rules! color {
     };
 
     (pub const $variant:expr, $color:ident(), $on_color:ident() -> $ty:ty) => {
-        pub const fn $color(self) -> $ty {
+        pub fn $color(self) -> $ty {
             self.fg($variant)
         }
 
-        pub const fn $on_color(self) -> $ty {
+        pub fn $on_color(self) -> $ty {
             self.bg($variant)
         }
     };

@@ -177,24 +177,24 @@ macro_rules! color_op {
             Self::Oklch(val) => Self::Oklch(val.$op($factor)),
             Self::Xyz(val) => Self::Xyz(val.lighten_fixed($factor)),
             Self::Yxy(val) => Self::Yxy(val.lighten_fixed($factor)),
-            Self::Indexed(i) => indexed_to_rgb(*i).$op($factor),
+            Self::Indexed(i) => indexed_to_color(*i).$op($factor),
             Self::AnsiReset => Self::AnsiReset,
-            Self::AnsiBlack => indexed_to_rgb(0).$op($factor),
-            Self::AnsiRed => indexed_to_rgb(1).$op($factor),
-            Self::AnsiGreen => indexed_to_rgb(2).$op($factor),
-            Self::AnsiYellow => indexed_to_rgb(3).$op($factor),
-            Self::AnsiBlue => indexed_to_rgb(4).$op($factor),
-            Self::AnsiMagenta => indexed_to_rgb(5).$op($factor),
-            Self::AnsiCyan => indexed_to_rgb(6).$op($factor),
-            Self::AnsiGray => indexed_to_rgb(7).$op($factor),
-            Self::AnsiDarkGray => indexed_to_rgb(8).$op($factor),
-            Self::AnsiLightRed => indexed_to_rgb(9).$op($factor),
-            Self::AnsiLightGreen => indexed_to_rgb(10).$op($factor),
-            Self::AnsiLightYellow => indexed_to_rgb(11).$op($factor),
-            Self::AnsiLightBlue => indexed_to_rgb(12).$op($factor),
-            Self::AnsiLightMagenta => indexed_to_rgb(13).$op($factor),
-            Self::AnsiLightCyan => indexed_to_rgb(14).$op($factor),
-            Self::AnsiWhite => indexed_to_rgb(15).$op($factor),
+            Self::AnsiBlack => indexed_to_color(0).$op($factor),
+            Self::AnsiRed => indexed_to_color(1).$op($factor),
+            Self::AnsiGreen => indexed_to_color(2).$op($factor),
+            Self::AnsiYellow => indexed_to_color(3).$op($factor),
+            Self::AnsiBlue => indexed_to_color(4).$op($factor),
+            Self::AnsiMagenta => indexed_to_color(5).$op($factor),
+            Self::AnsiCyan => indexed_to_color(6).$op($factor),
+            Self::AnsiGray => indexed_to_color(7).$op($factor),
+            Self::AnsiDarkGray => indexed_to_color(8).$op($factor),
+            Self::AnsiLightRed => indexed_to_color(9).$op($factor),
+            Self::AnsiLightGreen => indexed_to_color(10).$op($factor),
+            Self::AnsiLightYellow => indexed_to_color(11).$op($factor),
+            Self::AnsiLightBlue => indexed_to_color(12).$op($factor),
+            Self::AnsiLightMagenta => indexed_to_color(13).$op($factor),
+            Self::AnsiLightCyan => indexed_to_color(14).$op($factor),
+            Self::AnsiWhite => indexed_to_color(15).$op($factor),
         }
     };
 }
@@ -270,84 +270,6 @@ impl Color {
         }
     }
 
-    pub fn into_adaptive(self) -> Self {
-        if self.is_compatible() {
-            return self;
-        }
-        self.into_anstyle()
-            .map(Into::into)
-            .unwrap_or(Self::AnsiReset)
-    }
-
-    fn into_anstyle(self) -> Option<anstyle::Color> {
-        let value = match self {
-            Color::AnsiReset => return None,
-            Color::AnsiBlack => anstyle::Color::Ansi(anstyle::AnsiColor::Black),
-            Color::AnsiRed => anstyle::Color::Ansi(anstyle::AnsiColor::Red),
-            Color::AnsiGreen => anstyle::Color::Ansi(anstyle::AnsiColor::Green),
-            Color::AnsiYellow => anstyle::Color::Ansi(anstyle::AnsiColor::Yellow),
-            Color::AnsiBlue => anstyle::Color::Ansi(anstyle::AnsiColor::Blue),
-            Color::AnsiMagenta => anstyle::Color::Ansi(anstyle::AnsiColor::Magenta),
-            Color::AnsiCyan => anstyle::Color::Ansi(anstyle::AnsiColor::Cyan),
-            Color::AnsiGray => anstyle::Color::Ansi(anstyle::AnsiColor::White),
-            Color::AnsiDarkGray => anstyle::Color::Ansi(anstyle::AnsiColor::BrightBlack),
-            Color::AnsiLightRed => anstyle::Color::Ansi(anstyle::AnsiColor::BrightRed),
-            Color::AnsiLightGreen => anstyle::Color::Ansi(anstyle::AnsiColor::BrightGreen),
-            Color::AnsiLightYellow => anstyle::Color::Ansi(anstyle::AnsiColor::BrightYellow),
-            Color::AnsiLightBlue => anstyle::Color::Ansi(anstyle::AnsiColor::BrightBlue),
-            Color::AnsiLightMagenta => anstyle::Color::Ansi(anstyle::AnsiColor::BrightMagenta),
-            Color::AnsiLightCyan => anstyle::Color::Ansi(anstyle::AnsiColor::BrightCyan),
-            Color::AnsiWhite => anstyle::Color::Ansi(anstyle::AnsiColor::BrightWhite),
-            Color::Indexed(index) => anstyle::Color::Ansi256(anstyle::Ansi256Color(index)),
-            Color::Rgb(rgb_color) => palette_to_anstyle(rgb_color),
-            Color::Hsl(val) => palette_to_anstyle(Rgb::from_color(val)),
-            Color::Hsluv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Hsv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Hwb(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Lab(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Lch(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Lchuv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Luv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Okhsl(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Okhsv(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Okhwb(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Oklab(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Oklch(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Xyz(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-            Color::Yxy(val) => {
-                palette_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-            }
-        };
-        let profile = profile().unwrap_or(TermProfile::TrueColor);
-        profile.adapt_color(value)
-    }
-
     pub fn lighten(&self, factor: f32) -> Self {
         color_op!(self, lighten, factor)
     }
@@ -365,16 +287,15 @@ impl Color {
     }
 }
 
-fn indexed_to_rgb(index: u8) -> Color {
+fn indexed_to_color(index: u8) -> Color {
     Color::parse_hex(ANSI_HEX[index as usize]).unwrap()
 }
 
-fn palette_to_anstyle(rgb_color: Rgb) -> anstyle::Color {
-    anstyle::Color::Rgb(anstyle::RgbColor(
-        (rgb_color.red * 255.) as u8,
-        (rgb_color.green * 255.) as u8,
-        (rgb_color.blue * 255.) as u8,
-    ))
+pub fn indexed_to_rgb(index: u8) -> Rgb {
+    let Color::Rgb(rgb) = indexed_to_color(index) else {
+        unreachable!()
+    };
+    rgb
 }
 
 const ANSI_HEX: [&str; 256] = [

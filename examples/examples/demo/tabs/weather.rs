@@ -147,12 +147,8 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
     };
 
     let (filled_color, unfilled_color) = if enhanced_color_support() {
-        let color = match Color::progress_value() {
-            Color::Oklch(color) => color,
-            // ANSI theme won't have an Oklch value, default to a blue-ish value
-            _ => palette::Oklch::new_const(0.7664, 0.1110, palette::OklabHue::new(259.88)),
-        };
-        let color = Okhsv::from_color(color);
+        let progress_value = Color::progress_value().to_rgb_fg();
+        let color = Okhsv::from_color(progress_value);
         let hue = color.hue - (percent as f32 * 0.6);
 
         let value = Okhsv::max_value();
