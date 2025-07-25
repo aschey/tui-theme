@@ -621,32 +621,18 @@ impl OneDark {
         ::palette::OklabHue::new(205.1300),
     ));
 
-    pub const MAGENTA: ThemeArray<11> = ThemeArray([
-        Self::MAGENTA_50,
-        Self::MAGENTA_100,
-        Self::MAGENTA_200,
-        Self::MAGENTA_300,
-        Self::MAGENTA_400,
-        Self::MAGENTA_500,
-        Self::MAGENTA_600,
-        Self::MAGENTA_700,
-        Self::MAGENTA_800,
-        Self::MAGENTA_900,
-        Self::MAGENTA_950,
-    ]);
-
-    pub const PEACH: ThemeArray<11> = ThemeArray([
-        Self::PEACH_50,
-        Self::PEACH_100,
-        Self::PEACH_200,
-        Self::PEACH_300,
-        Self::PEACH_400,
-        Self::PEACH_500,
-        Self::PEACH_600,
-        Self::PEACH_700,
-        Self::PEACH_800,
-        Self::PEACH_900,
-        Self::PEACH_950,
+    pub const BLUE: ThemeArray<11> = ThemeArray([
+        Self::BLUE_50,
+        Self::BLUE_100,
+        Self::BLUE_200,
+        Self::BLUE_300,
+        Self::BLUE_400,
+        Self::BLUE_500,
+        Self::BLUE_600,
+        Self::BLUE_700,
+        Self::BLUE_800,
+        Self::BLUE_900,
+        Self::BLUE_950,
     ]);
 
     pub const CYAN: ThemeArray<11> = ThemeArray([
@@ -661,20 +647,6 @@ impl OneDark {
         Self::CYAN_800,
         Self::CYAN_900,
         Self::CYAN_950,
-    ]);
-
-    pub const RED: ThemeArray<11> = ThemeArray([
-        Self::RED_50,
-        Self::RED_100,
-        Self::RED_200,
-        Self::RED_300,
-        Self::RED_400,
-        Self::RED_500,
-        Self::RED_600,
-        Self::RED_700,
-        Self::RED_800,
-        Self::RED_900,
-        Self::RED_950,
     ]);
 
     pub const GRAY: ThemeArray<11> = ThemeArray([
@@ -705,6 +677,48 @@ impl OneDark {
         Self::GREEN_950,
     ]);
 
+    pub const MAGENTA: ThemeArray<11> = ThemeArray([
+        Self::MAGENTA_50,
+        Self::MAGENTA_100,
+        Self::MAGENTA_200,
+        Self::MAGENTA_300,
+        Self::MAGENTA_400,
+        Self::MAGENTA_500,
+        Self::MAGENTA_600,
+        Self::MAGENTA_700,
+        Self::MAGENTA_800,
+        Self::MAGENTA_900,
+        Self::MAGENTA_950,
+    ]);
+
+    pub const PEACH: ThemeArray<11> = ThemeArray([
+        Self::PEACH_50,
+        Self::PEACH_100,
+        Self::PEACH_200,
+        Self::PEACH_300,
+        Self::PEACH_400,
+        Self::PEACH_500,
+        Self::PEACH_600,
+        Self::PEACH_700,
+        Self::PEACH_800,
+        Self::PEACH_900,
+        Self::PEACH_950,
+    ]);
+
+    pub const RED: ThemeArray<11> = ThemeArray([
+        Self::RED_50,
+        Self::RED_100,
+        Self::RED_200,
+        Self::RED_300,
+        Self::RED_400,
+        Self::RED_500,
+        Self::RED_600,
+        Self::RED_700,
+        Self::RED_800,
+        Self::RED_900,
+        Self::RED_950,
+    ]);
+
     pub const YELLOW: ThemeArray<11> = ThemeArray([
         Self::YELLOW_50,
         Self::YELLOW_100,
@@ -719,17 +733,14 @@ impl OneDark {
         Self::YELLOW_950,
     ]);
 
-    pub const BLUE: ThemeArray<11> = ThemeArray([
-        Self::BLUE_50,
-        Self::BLUE_100,
-        Self::BLUE_200,
-        Self::BLUE_300,
-        Self::BLUE_400,
-        Self::BLUE_500,
-        Self::BLUE_600,
-        Self::BLUE_700,
-        Self::BLUE_800,
-        Self::BLUE_900,
-        Self::BLUE_950,
-    ]);
+    pub const ALL_COLORS: [ThemeArray<11>; 8] = [
+        Self::BLUE,
+        Self::CYAN,
+        Self::GRAY,
+        Self::GREEN,
+        Self::MAGENTA,
+        Self::PEACH,
+        Self::RED,
+        Self::YELLOW,
+    ];
 }

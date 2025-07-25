@@ -698,32 +698,18 @@ impl Gruvbox {
         ::palette::OklabHue::new(67.3300),
     ));
 
-    pub const GRAY: ThemeArray<11> = ThemeArray([
-        Self::GRAY_50,
-        Self::GRAY_100,
-        Self::GRAY_200,
-        Self::GRAY_300,
-        Self::GRAY_400,
-        Self::GRAY_500,
-        Self::GRAY_600,
-        Self::GRAY_700,
-        Self::GRAY_800,
-        Self::GRAY_900,
-        Self::GRAY_950,
-    ]);
-
-    pub const ORANGE: ThemeArray<11> = ThemeArray([
-        Self::ORANGE_50,
-        Self::ORANGE_100,
-        Self::ORANGE_200,
-        Self::ORANGE_300,
-        Self::ORANGE_400,
-        Self::ORANGE_500,
-        Self::ORANGE_600,
-        Self::ORANGE_700,
-        Self::ORANGE_800,
-        Self::ORANGE_900,
-        Self::ORANGE_950,
+    pub const AQUA: ThemeArray<11> = ThemeArray([
+        Self::AQUA_50,
+        Self::AQUA_100,
+        Self::AQUA_200,
+        Self::AQUA_300,
+        Self::AQUA_400,
+        Self::AQUA_500,
+        Self::AQUA_600,
+        Self::AQUA_700,
+        Self::AQUA_800,
+        Self::AQUA_900,
+        Self::AQUA_950,
     ]);
 
     pub const BLUE: ThemeArray<11> = ThemeArray([
@@ -740,6 +726,34 @@ impl Gruvbox {
         Self::BLUE_950,
     ]);
 
+    pub const BROWN: ThemeArray<11> = ThemeArray([
+        Self::BROWN_50,
+        Self::BROWN_100,
+        Self::BROWN_200,
+        Self::BROWN_300,
+        Self::BROWN_400,
+        Self::BROWN_500,
+        Self::BROWN_600,
+        Self::BROWN_700,
+        Self::BROWN_800,
+        Self::BROWN_900,
+        Self::BROWN_950,
+    ]);
+
+    pub const GRAY: ThemeArray<11> = ThemeArray([
+        Self::GRAY_50,
+        Self::GRAY_100,
+        Self::GRAY_200,
+        Self::GRAY_300,
+        Self::GRAY_400,
+        Self::GRAY_500,
+        Self::GRAY_600,
+        Self::GRAY_700,
+        Self::GRAY_800,
+        Self::GRAY_900,
+        Self::GRAY_950,
+    ]);
+
     pub const GREEN: ThemeArray<11> = ThemeArray([
         Self::GREEN_50,
         Self::GREEN_100,
@@ -754,18 +768,18 @@ impl Gruvbox {
         Self::GREEN_950,
     ]);
 
-    pub const AQUA: ThemeArray<11> = ThemeArray([
-        Self::AQUA_50,
-        Self::AQUA_100,
-        Self::AQUA_200,
-        Self::AQUA_300,
-        Self::AQUA_400,
-        Self::AQUA_500,
-        Self::AQUA_600,
-        Self::AQUA_700,
-        Self::AQUA_800,
-        Self::AQUA_900,
-        Self::AQUA_950,
+    pub const ORANGE: ThemeArray<11> = ThemeArray([
+        Self::ORANGE_50,
+        Self::ORANGE_100,
+        Self::ORANGE_200,
+        Self::ORANGE_300,
+        Self::ORANGE_400,
+        Self::ORANGE_500,
+        Self::ORANGE_600,
+        Self::ORANGE_700,
+        Self::ORANGE_800,
+        Self::ORANGE_900,
+        Self::ORANGE_950,
     ]);
 
     pub const PURPLE: ThemeArray<11> = ThemeArray([
@@ -782,6 +796,20 @@ impl Gruvbox {
         Self::PURPLE_950,
     ]);
 
+    pub const RED: ThemeArray<11> = ThemeArray([
+        Self::RED_50,
+        Self::RED_100,
+        Self::RED_200,
+        Self::RED_300,
+        Self::RED_400,
+        Self::RED_500,
+        Self::RED_600,
+        Self::RED_700,
+        Self::RED_800,
+        Self::RED_900,
+        Self::RED_950,
+    ]);
+
     pub const YELLOW: ThemeArray<11> = ThemeArray([
         Self::YELLOW_50,
         Self::YELLOW_100,
@@ -796,31 +824,15 @@ impl Gruvbox {
         Self::YELLOW_950,
     ]);
 
-    pub const BROWN: ThemeArray<11> = ThemeArray([
-        Self::BROWN_50,
-        Self::BROWN_100,
-        Self::BROWN_200,
-        Self::BROWN_300,
-        Self::BROWN_400,
-        Self::BROWN_500,
-        Self::BROWN_600,
-        Self::BROWN_700,
-        Self::BROWN_800,
-        Self::BROWN_900,
-        Self::BROWN_950,
-    ]);
-
-    pub const RED: ThemeArray<11> = ThemeArray([
-        Self::RED_50,
-        Self::RED_100,
-        Self::RED_200,
-        Self::RED_300,
-        Self::RED_400,
-        Self::RED_500,
-        Self::RED_600,
-        Self::RED_700,
-        Self::RED_800,
-        Self::RED_900,
-        Self::RED_950,
-    ]);
+    pub const ALL_COLORS: [ThemeArray<11>; 9] = [
+        Self::AQUA,
+        Self::BLUE,
+        Self::BROWN,
+        Self::GRAY,
+        Self::GREEN,
+        Self::ORANGE,
+        Self::PURPLE,
+        Self::RED,
+        Self::YELLOW,
+    ];
 }

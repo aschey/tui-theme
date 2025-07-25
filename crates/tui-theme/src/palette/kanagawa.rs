@@ -1006,6 +1006,20 @@ impl Kanagawa {
         ::palette::OklabHue::new(145.3000),
     ));
 
+    pub const AQUA: ThemeArray<11> = ThemeArray([
+        Self::AQUA_50,
+        Self::AQUA_100,
+        Self::AQUA_200,
+        Self::AQUA_300,
+        Self::AQUA_400,
+        Self::AQUA_500,
+        Self::AQUA_600,
+        Self::AQUA_700,
+        Self::AQUA_800,
+        Self::AQUA_900,
+        Self::AQUA_950,
+    ]);
+
     pub const BLUE: ThemeArray<11> = ThemeArray([
         Self::BLUE_50,
         Self::BLUE_100,
@@ -1018,20 +1032,6 @@ impl Kanagawa {
         Self::BLUE_800,
         Self::BLUE_900,
         Self::BLUE_950,
-    ]);
-
-    pub const GREEN: ThemeArray<11> = ThemeArray([
-        Self::GREEN_50,
-        Self::GREEN_100,
-        Self::GREEN_200,
-        Self::GREEN_300,
-        Self::GREEN_400,
-        Self::GREEN_500,
-        Self::GREEN_600,
-        Self::GREEN_700,
-        Self::GREEN_800,
-        Self::GREEN_900,
-        Self::GREEN_950,
     ]);
 
     pub const EARTH_YELLOW: ThemeArray<11> = ThemeArray([
@@ -1048,102 +1048,18 @@ impl Kanagawa {
         Self::EARTH_YELLOW_950,
     ]);
 
-    pub const RED: ThemeArray<11> = ThemeArray([
-        Self::RED_50,
-        Self::RED_100,
-        Self::RED_200,
-        Self::RED_300,
-        Self::RED_400,
-        Self::RED_500,
-        Self::RED_600,
-        Self::RED_700,
-        Self::RED_800,
-        Self::RED_900,
-        Self::RED_950,
-    ]);
-
-    pub const AQUA: ThemeArray<11> = ThemeArray([
-        Self::AQUA_50,
-        Self::AQUA_100,
-        Self::AQUA_200,
-        Self::AQUA_300,
-        Self::AQUA_400,
-        Self::AQUA_500,
-        Self::AQUA_600,
-        Self::AQUA_700,
-        Self::AQUA_800,
-        Self::AQUA_900,
-        Self::AQUA_950,
-    ]);
-
-    pub const PEACH: ThemeArray<11> = ThemeArray([
-        Self::PEACH_50,
-        Self::PEACH_100,
-        Self::PEACH_200,
-        Self::PEACH_300,
-        Self::PEACH_400,
-        Self::PEACH_500,
-        Self::PEACH_600,
-        Self::PEACH_700,
-        Self::PEACH_800,
-        Self::PEACH_900,
-        Self::PEACH_950,
-    ]);
-
-    pub const ROSY_BROWN: ThemeArray<11> = ThemeArray([
-        Self::ROSY_BROWN_50,
-        Self::ROSY_BROWN_100,
-        Self::ROSY_BROWN_200,
-        Self::ROSY_BROWN_300,
-        Self::ROSY_BROWN_400,
-        Self::ROSY_BROWN_500,
-        Self::ROSY_BROWN_600,
-        Self::ROSY_BROWN_700,
-        Self::ROSY_BROWN_800,
-        Self::ROSY_BROWN_900,
-        Self::ROSY_BROWN_950,
-    ]);
-
-    pub const HONEYDEW: ThemeArray<11> = ThemeArray([
-        Self::HONEYDEW_50,
-        Self::HONEYDEW_100,
-        Self::HONEYDEW_200,
-        Self::HONEYDEW_300,
-        Self::HONEYDEW_400,
-        Self::HONEYDEW_500,
-        Self::HONEYDEW_600,
-        Self::HONEYDEW_700,
-        Self::HONEYDEW_800,
-        Self::HONEYDEW_900,
-        Self::HONEYDEW_950,
-    ]);
-
-    pub const PINK: ThemeArray<11> = ThemeArray([
-        Self::PINK_50,
-        Self::PINK_100,
-        Self::PINK_200,
-        Self::PINK_300,
-        Self::PINK_400,
-        Self::PINK_500,
-        Self::PINK_600,
-        Self::PINK_700,
-        Self::PINK_800,
-        Self::PINK_900,
-        Self::PINK_950,
-    ]);
-
-    pub const VIOLET: ThemeArray<11> = ThemeArray([
-        Self::VIOLET_50,
-        Self::VIOLET_100,
-        Self::VIOLET_200,
-        Self::VIOLET_300,
-        Self::VIOLET_400,
-        Self::VIOLET_500,
-        Self::VIOLET_600,
-        Self::VIOLET_700,
-        Self::VIOLET_800,
-        Self::VIOLET_900,
-        Self::VIOLET_950,
+    pub const EGGPLANT: ThemeArray<11> = ThemeArray([
+        Self::EGGPLANT_50,
+        Self::EGGPLANT_100,
+        Self::EGGPLANT_200,
+        Self::EGGPLANT_300,
+        Self::EGGPLANT_400,
+        Self::EGGPLANT_500,
+        Self::EGGPLANT_600,
+        Self::EGGPLANT_700,
+        Self::EGGPLANT_800,
+        Self::EGGPLANT_900,
+        Self::EGGPLANT_950,
     ]);
 
     pub const GRAY: ThemeArray<11> = ThemeArray([
@@ -1160,18 +1076,32 @@ impl Kanagawa {
         Self::GRAY_950,
     ]);
 
-    pub const EGGPLANT: ThemeArray<11> = ThemeArray([
-        Self::EGGPLANT_50,
-        Self::EGGPLANT_100,
-        Self::EGGPLANT_200,
-        Self::EGGPLANT_300,
-        Self::EGGPLANT_400,
-        Self::EGGPLANT_500,
-        Self::EGGPLANT_600,
-        Self::EGGPLANT_700,
-        Self::EGGPLANT_800,
-        Self::EGGPLANT_900,
-        Self::EGGPLANT_950,
+    pub const GREEN: ThemeArray<11> = ThemeArray([
+        Self::GREEN_50,
+        Self::GREEN_100,
+        Self::GREEN_200,
+        Self::GREEN_300,
+        Self::GREEN_400,
+        Self::GREEN_500,
+        Self::GREEN_600,
+        Self::GREEN_700,
+        Self::GREEN_800,
+        Self::GREEN_900,
+        Self::GREEN_950,
+    ]);
+
+    pub const HONEYDEW: ThemeArray<11> = ThemeArray([
+        Self::HONEYDEW_50,
+        Self::HONEYDEW_100,
+        Self::HONEYDEW_200,
+        Self::HONEYDEW_300,
+        Self::HONEYDEW_400,
+        Self::HONEYDEW_500,
+        Self::HONEYDEW_600,
+        Self::HONEYDEW_700,
+        Self::HONEYDEW_800,
+        Self::HONEYDEW_900,
+        Self::HONEYDEW_950,
     ]);
 
     pub const INDIGO: ThemeArray<11> = ThemeArray([
@@ -1187,4 +1117,90 @@ impl Kanagawa {
         Self::INDIGO_900,
         Self::INDIGO_950,
     ]);
+
+    pub const PEACH: ThemeArray<11> = ThemeArray([
+        Self::PEACH_50,
+        Self::PEACH_100,
+        Self::PEACH_200,
+        Self::PEACH_300,
+        Self::PEACH_400,
+        Self::PEACH_500,
+        Self::PEACH_600,
+        Self::PEACH_700,
+        Self::PEACH_800,
+        Self::PEACH_900,
+        Self::PEACH_950,
+    ]);
+
+    pub const PINK: ThemeArray<11> = ThemeArray([
+        Self::PINK_50,
+        Self::PINK_100,
+        Self::PINK_200,
+        Self::PINK_300,
+        Self::PINK_400,
+        Self::PINK_500,
+        Self::PINK_600,
+        Self::PINK_700,
+        Self::PINK_800,
+        Self::PINK_900,
+        Self::PINK_950,
+    ]);
+
+    pub const RED: ThemeArray<11> = ThemeArray([
+        Self::RED_50,
+        Self::RED_100,
+        Self::RED_200,
+        Self::RED_300,
+        Self::RED_400,
+        Self::RED_500,
+        Self::RED_600,
+        Self::RED_700,
+        Self::RED_800,
+        Self::RED_900,
+        Self::RED_950,
+    ]);
+
+    pub const ROSY_BROWN: ThemeArray<11> = ThemeArray([
+        Self::ROSY_BROWN_50,
+        Self::ROSY_BROWN_100,
+        Self::ROSY_BROWN_200,
+        Self::ROSY_BROWN_300,
+        Self::ROSY_BROWN_400,
+        Self::ROSY_BROWN_500,
+        Self::ROSY_BROWN_600,
+        Self::ROSY_BROWN_700,
+        Self::ROSY_BROWN_800,
+        Self::ROSY_BROWN_900,
+        Self::ROSY_BROWN_950,
+    ]);
+
+    pub const VIOLET: ThemeArray<11> = ThemeArray([
+        Self::VIOLET_50,
+        Self::VIOLET_100,
+        Self::VIOLET_200,
+        Self::VIOLET_300,
+        Self::VIOLET_400,
+        Self::VIOLET_500,
+        Self::VIOLET_600,
+        Self::VIOLET_700,
+        Self::VIOLET_800,
+        Self::VIOLET_900,
+        Self::VIOLET_950,
+    ]);
+
+    pub const ALL_COLORS: [ThemeArray<11>; 13] = [
+        Self::AQUA,
+        Self::BLUE,
+        Self::EARTH_YELLOW,
+        Self::EGGPLANT,
+        Self::GRAY,
+        Self::GREEN,
+        Self::HONEYDEW,
+        Self::INDIGO,
+        Self::PEACH,
+        Self::PINK,
+        Self::RED,
+        Self::ROSY_BROWN,
+        Self::VIOLET,
+    ];
 }

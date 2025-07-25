@@ -852,32 +852,18 @@ impl Solarized {
         ::palette::OklabHue::new(118.6900),
     ));
 
-    pub const CYAN: ThemeArray<11> = ThemeArray([
-        Self::CYAN_50,
-        Self::CYAN_100,
-        Self::CYAN_200,
-        Self::CYAN_300,
-        Self::CYAN_400,
-        Self::CYAN_500,
-        Self::CYAN_600,
-        Self::CYAN_700,
-        Self::CYAN_800,
-        Self::CYAN_900,
-        Self::CYAN_950,
-    ]);
-
-    pub const BROWN: ThemeArray<11> = ThemeArray([
-        Self::BROWN_50,
-        Self::BROWN_100,
-        Self::BROWN_200,
-        Self::BROWN_300,
-        Self::BROWN_400,
-        Self::BROWN_500,
-        Self::BROWN_600,
-        Self::BROWN_700,
-        Self::BROWN_800,
-        Self::BROWN_900,
-        Self::BROWN_950,
+    pub const BASE_BLUE: ThemeArray<11> = ThemeArray([
+        Self::BASE_BLUE_50,
+        Self::BASE_BLUE_100,
+        Self::BASE_BLUE_200,
+        Self::BASE_BLUE_300,
+        Self::BASE_BLUE_400,
+        Self::BASE_BLUE_500,
+        Self::BASE_BLUE_600,
+        Self::BASE_BLUE_700,
+        Self::BASE_BLUE_800,
+        Self::BASE_BLUE_900,
+        Self::BASE_BLUE_950,
     ]);
 
     pub const BLUE: ThemeArray<11> = ThemeArray([
@@ -894,18 +880,32 @@ impl Solarized {
         Self::BLUE_950,
     ]);
 
-    pub const VIOLET: ThemeArray<11> = ThemeArray([
-        Self::VIOLET_50,
-        Self::VIOLET_100,
-        Self::VIOLET_200,
-        Self::VIOLET_300,
-        Self::VIOLET_400,
-        Self::VIOLET_500,
-        Self::VIOLET_600,
-        Self::VIOLET_700,
-        Self::VIOLET_800,
-        Self::VIOLET_900,
-        Self::VIOLET_950,
+    pub const BROWN: ThemeArray<11> = ThemeArray([
+        Self::BROWN_50,
+        Self::BROWN_100,
+        Self::BROWN_200,
+        Self::BROWN_300,
+        Self::BROWN_400,
+        Self::BROWN_500,
+        Self::BROWN_600,
+        Self::BROWN_700,
+        Self::BROWN_800,
+        Self::BROWN_900,
+        Self::BROWN_950,
+    ]);
+
+    pub const CYAN: ThemeArray<11> = ThemeArray([
+        Self::CYAN_50,
+        Self::CYAN_100,
+        Self::CYAN_200,
+        Self::CYAN_300,
+        Self::CYAN_400,
+        Self::CYAN_500,
+        Self::CYAN_600,
+        Self::CYAN_700,
+        Self::CYAN_800,
+        Self::CYAN_900,
+        Self::CYAN_950,
     ]);
 
     pub const GRAY: ThemeArray<11> = ThemeArray([
@@ -922,20 +922,6 @@ impl Solarized {
         Self::GRAY_950,
     ]);
 
-    pub const MAGENTA: ThemeArray<11> = ThemeArray([
-        Self::MAGENTA_50,
-        Self::MAGENTA_100,
-        Self::MAGENTA_200,
-        Self::MAGENTA_300,
-        Self::MAGENTA_400,
-        Self::MAGENTA_500,
-        Self::MAGENTA_600,
-        Self::MAGENTA_700,
-        Self::MAGENTA_800,
-        Self::MAGENTA_900,
-        Self::MAGENTA_950,
-    ]);
-
     pub const GREEN: ThemeArray<11> = ThemeArray([
         Self::GREEN_50,
         Self::GREEN_100,
@@ -948,6 +934,20 @@ impl Solarized {
         Self::GREEN_800,
         Self::GREEN_900,
         Self::GREEN_950,
+    ]);
+
+    pub const MAGENTA: ThemeArray<11> = ThemeArray([
+        Self::MAGENTA_50,
+        Self::MAGENTA_100,
+        Self::MAGENTA_200,
+        Self::MAGENTA_300,
+        Self::MAGENTA_400,
+        Self::MAGENTA_500,
+        Self::MAGENTA_600,
+        Self::MAGENTA_700,
+        Self::MAGENTA_800,
+        Self::MAGENTA_900,
+        Self::MAGENTA_950,
     ]);
 
     pub const ORANGE: ThemeArray<11> = ThemeArray([
@@ -978,18 +978,18 @@ impl Solarized {
         Self::RED_950,
     ]);
 
-    pub const BASE_BLUE: ThemeArray<11> = ThemeArray([
-        Self::BASE_BLUE_50,
-        Self::BASE_BLUE_100,
-        Self::BASE_BLUE_200,
-        Self::BASE_BLUE_300,
-        Self::BASE_BLUE_400,
-        Self::BASE_BLUE_500,
-        Self::BASE_BLUE_600,
-        Self::BASE_BLUE_700,
-        Self::BASE_BLUE_800,
-        Self::BASE_BLUE_900,
-        Self::BASE_BLUE_950,
+    pub const VIOLET: ThemeArray<11> = ThemeArray([
+        Self::VIOLET_50,
+        Self::VIOLET_100,
+        Self::VIOLET_200,
+        Self::VIOLET_300,
+        Self::VIOLET_400,
+        Self::VIOLET_500,
+        Self::VIOLET_600,
+        Self::VIOLET_700,
+        Self::VIOLET_800,
+        Self::VIOLET_900,
+        Self::VIOLET_950,
     ]);
 
     pub const YELLOW: ThemeArray<11> = ThemeArray([
@@ -1005,4 +1005,18 @@ impl Solarized {
         Self::YELLOW_900,
         Self::YELLOW_950,
     ]);
+
+    pub const ALL_COLORS: [ThemeArray<11>; 11] = [
+        Self::BASE_BLUE,
+        Self::BLUE,
+        Self::BROWN,
+        Self::CYAN,
+        Self::GRAY,
+        Self::GREEN,
+        Self::MAGENTA,
+        Self::ORANGE,
+        Self::RED,
+        Self::VIOLET,
+        Self::YELLOW,
+    ];
 }

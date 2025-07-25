@@ -712,18 +712,32 @@ impl Nord {
         Self::BLUE_950,
     ]);
 
-    pub const RED: ThemeArray<11> = ThemeArray([
-        Self::RED_50,
-        Self::RED_100,
-        Self::RED_200,
-        Self::RED_300,
-        Self::RED_400,
-        Self::RED_500,
-        Self::RED_600,
-        Self::RED_700,
-        Self::RED_800,
-        Self::RED_900,
-        Self::RED_950,
+    pub const GRAY: ThemeArray<11> = ThemeArray([
+        Self::GRAY_50,
+        Self::GRAY_100,
+        Self::GRAY_200,
+        Self::GRAY_300,
+        Self::GRAY_400,
+        Self::GRAY_500,
+        Self::GRAY_600,
+        Self::GRAY_700,
+        Self::GRAY_800,
+        Self::GRAY_900,
+        Self::GRAY_950,
+    ]);
+
+    pub const GREEN: ThemeArray<11> = ThemeArray([
+        Self::GREEN_50,
+        Self::GREEN_100,
+        Self::GREEN_200,
+        Self::GREEN_300,
+        Self::GREEN_400,
+        Self::GREEN_500,
+        Self::GREEN_600,
+        Self::GREEN_700,
+        Self::GREEN_800,
+        Self::GREEN_900,
+        Self::GREEN_950,
     ]);
 
     pub const ORANGE: ThemeArray<11> = ThemeArray([
@@ -740,32 +754,32 @@ impl Nord {
         Self::ORANGE_950,
     ]);
 
-    pub const YELLOW: ThemeArray<11> = ThemeArray([
-        Self::YELLOW_50,
-        Self::YELLOW_100,
-        Self::YELLOW_200,
-        Self::YELLOW_300,
-        Self::YELLOW_400,
-        Self::YELLOW_500,
-        Self::YELLOW_600,
-        Self::YELLOW_700,
-        Self::YELLOW_800,
-        Self::YELLOW_900,
-        Self::YELLOW_950,
+    pub const PURPLE: ThemeArray<11> = ThemeArray([
+        Self::PURPLE_50,
+        Self::PURPLE_100,
+        Self::PURPLE_200,
+        Self::PURPLE_300,
+        Self::PURPLE_400,
+        Self::PURPLE_500,
+        Self::PURPLE_600,
+        Self::PURPLE_700,
+        Self::PURPLE_800,
+        Self::PURPLE_900,
+        Self::PURPLE_950,
     ]);
 
-    pub const GRAY: ThemeArray<11> = ThemeArray([
-        Self::GRAY_50,
-        Self::GRAY_100,
-        Self::GRAY_200,
-        Self::GRAY_300,
-        Self::GRAY_400,
-        Self::GRAY_500,
-        Self::GRAY_600,
-        Self::GRAY_700,
-        Self::GRAY_800,
-        Self::GRAY_900,
-        Self::GRAY_950,
+    pub const RED: ThemeArray<11> = ThemeArray([
+        Self::RED_50,
+        Self::RED_100,
+        Self::RED_200,
+        Self::RED_300,
+        Self::RED_400,
+        Self::RED_500,
+        Self::RED_600,
+        Self::RED_700,
+        Self::RED_800,
+        Self::RED_900,
+        Self::RED_950,
     ]);
 
     pub const SEAFOAM: ThemeArray<11> = ThemeArray([
@@ -796,31 +810,29 @@ impl Nord {
         Self::TEAL_950,
     ]);
 
-    pub const GREEN: ThemeArray<11> = ThemeArray([
-        Self::GREEN_50,
-        Self::GREEN_100,
-        Self::GREEN_200,
-        Self::GREEN_300,
-        Self::GREEN_400,
-        Self::GREEN_500,
-        Self::GREEN_600,
-        Self::GREEN_700,
-        Self::GREEN_800,
-        Self::GREEN_900,
-        Self::GREEN_950,
+    pub const YELLOW: ThemeArray<11> = ThemeArray([
+        Self::YELLOW_50,
+        Self::YELLOW_100,
+        Self::YELLOW_200,
+        Self::YELLOW_300,
+        Self::YELLOW_400,
+        Self::YELLOW_500,
+        Self::YELLOW_600,
+        Self::YELLOW_700,
+        Self::YELLOW_800,
+        Self::YELLOW_900,
+        Self::YELLOW_950,
     ]);
 
-    pub const PURPLE: ThemeArray<11> = ThemeArray([
-        Self::PURPLE_50,
-        Self::PURPLE_100,
-        Self::PURPLE_200,
-        Self::PURPLE_300,
-        Self::PURPLE_400,
-        Self::PURPLE_500,
-        Self::PURPLE_600,
-        Self::PURPLE_700,
-        Self::PURPLE_800,
-        Self::PURPLE_900,
-        Self::PURPLE_950,
-    ]);
+    pub const ALL_COLORS: [ThemeArray<11>; 9] = [
+        Self::BLUE,
+        Self::GRAY,
+        Self::GREEN,
+        Self::ORANGE,
+        Self::PURPLE,
+        Self::RED,
+        Self::SEAFOAM,
+        Self::TEAL,
+        Self::YELLOW,
+    ];
 }

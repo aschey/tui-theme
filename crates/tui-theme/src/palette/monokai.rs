@@ -558,20 +558,6 @@ impl Monokai {
         Self::BLUE_950,
     ]);
 
-    pub const ORANGE: ThemeArray<11> = ThemeArray([
-        Self::ORANGE_50,
-        Self::ORANGE_100,
-        Self::ORANGE_200,
-        Self::ORANGE_300,
-        Self::ORANGE_400,
-        Self::ORANGE_500,
-        Self::ORANGE_600,
-        Self::ORANGE_700,
-        Self::ORANGE_800,
-        Self::ORANGE_900,
-        Self::ORANGE_950,
-    ]);
-
     pub const GRAY: ThemeArray<11> = ThemeArray([
         Self::GRAY_50,
         Self::GRAY_100,
@@ -584,20 +570,6 @@ impl Monokai {
         Self::GRAY_800,
         Self::GRAY_900,
         Self::GRAY_950,
-    ]);
-
-    pub const RED: ThemeArray<11> = ThemeArray([
-        Self::RED_50,
-        Self::RED_100,
-        Self::RED_200,
-        Self::RED_300,
-        Self::RED_400,
-        Self::RED_500,
-        Self::RED_600,
-        Self::RED_700,
-        Self::RED_800,
-        Self::RED_900,
-        Self::RED_950,
     ]);
 
     pub const GREEN: ThemeArray<11> = ThemeArray([
@@ -614,6 +586,20 @@ impl Monokai {
         Self::GREEN_950,
     ]);
 
+    pub const ORANGE: ThemeArray<11> = ThemeArray([
+        Self::ORANGE_50,
+        Self::ORANGE_100,
+        Self::ORANGE_200,
+        Self::ORANGE_300,
+        Self::ORANGE_400,
+        Self::ORANGE_500,
+        Self::ORANGE_600,
+        Self::ORANGE_700,
+        Self::ORANGE_800,
+        Self::ORANGE_900,
+        Self::ORANGE_950,
+    ]);
+
     pub const PURPLE: ThemeArray<11> = ThemeArray([
         Self::PURPLE_50,
         Self::PURPLE_100,
@@ -626,6 +612,20 @@ impl Monokai {
         Self::PURPLE_800,
         Self::PURPLE_900,
         Self::PURPLE_950,
+    ]);
+
+    pub const RED: ThemeArray<11> = ThemeArray([
+        Self::RED_50,
+        Self::RED_100,
+        Self::RED_200,
+        Self::RED_300,
+        Self::RED_400,
+        Self::RED_500,
+        Self::RED_600,
+        Self::RED_700,
+        Self::RED_800,
+        Self::RED_900,
+        Self::RED_950,
     ]);
 
     pub const YELLOW: ThemeArray<11> = ThemeArray([
@@ -641,4 +641,14 @@ impl Monokai {
         Self::YELLOW_900,
         Self::YELLOW_950,
     ]);
+
+    pub const ALL_COLORS: [ThemeArray<11>; 7] = [
+        Self::BLUE,
+        Self::GRAY,
+        Self::GREEN,
+        Self::ORANGE,
+        Self::PURPLE,
+        Self::RED,
+        Self::YELLOW,
+    ];
 }

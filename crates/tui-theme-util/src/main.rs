@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use std::fs;
 use std::fs::File;
 use std::io::{self, Read, Write};
@@ -61,7 +61,7 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
     writeln!(out, "// Auto-generated file. Do not edit.\n")?;
     writeln!(out, "pub struct {name_caps} {{}}\n")?;
     writeln!(out, "impl {name_caps} {{")?;
-    let mut color_groups: HashMap<String, Vec<String>> = HashMap::new();
+    let mut color_groups: BTreeMap<String, Vec<String>> = BTreeMap::new();
     for line in lines {
         let parts: Vec<_> = line.split(": ").collect();
         let [name, val] = parts.as_slice() else {
@@ -91,15 +91,24 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
         writeln!(out, "{}", generate_const(&name, color))?;
     }
 
-    for (color_group, colors) in color_groups {
+    let mut colors_len = 0;
+    for (color_group, colors) in &color_groups {
         let color_array_vals: Vec<_> = colors.iter().map(|c| format!("Self::{c}")).collect();
+        colors_len = colors.len();
         writeln!(
             out,
             "    pub const {color_group}: ThemeArray<{}> = ThemeArray([{}]);\n",
-            colors.len(),
+            colors_len,
             color_array_vals.join(",")
         )?;
     }
+    let group_keys: Vec<_> = color_groups.keys().map(|k| format!("Self::{k}")).collect();
+    writeln!(
+        out,
+        "  pub const ALL_COLORS: [ThemeArray<{colors_len}>;{}] = [{}];",
+        group_keys.len(),
+        group_keys.join(",")
+    )?;
     writeln!(out, "}}")?;
 
     Ok(())

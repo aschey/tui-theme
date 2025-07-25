@@ -3,9 +3,7 @@ use std::sync::LazyLock;
 use palette::color_difference::Wcag21RelativeContrast;
 use tui_theme::palette::{Catppuccin, Everforest, RosePine};
 use tui_theme::profile::TermProfile;
-use tui_theme::{
-    Color, Dark, Light, ProfileVariant, SetTheme, Style, Theme, is_supported,
-};
+use tui_theme::{Color, Dark, Light, ProfileVariant, SetTheme, Style, Theme, is_supported};
 
 #[derive(Theme, Default, Clone, Debug)]
 pub struct AppTheme {
