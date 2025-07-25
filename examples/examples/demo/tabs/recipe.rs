@@ -146,7 +146,7 @@ impl Widget for RecipeTab {
 fn render_recipe(area: Rect, buf: &mut Buffer) {
     let lines = RECIPE
         .iter()
-        .map(|(step, text)| Line::from(vec![step.white().bold(), text.gray()]))
+        .map(|(step, text)| Line::from(vec![step.style_step_title(), text.style_step_content()]))
         .collect_vec();
     Paragraph::new(lines)
         .wrap(Wrap { trim: true })

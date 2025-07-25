@@ -1,4 +1,4 @@
-use crate::Color;
+use crate::{Color, ThemeArray};
 
 // Auto-generated file. Do not edit.
 
@@ -1699,49 +1699,7 @@ impl Tailwind {
         ::palette::OklabHue::new(49.2500),
     ));
 
-    pub const YELLOW: [Color; 11] = [
-        Self::YELLOW_50,
-        Self::YELLOW_100,
-        Self::YELLOW_200,
-        Self::YELLOW_300,
-        Self::YELLOW_400,
-        Self::YELLOW_500,
-        Self::YELLOW_600,
-        Self::YELLOW_700,
-        Self::YELLOW_800,
-        Self::YELLOW_900,
-        Self::YELLOW_950,
-    ];
-
-    pub const ROSE: [Color; 11] = [
-        Self::ROSE_50,
-        Self::ROSE_100,
-        Self::ROSE_200,
-        Self::ROSE_300,
-        Self::ROSE_400,
-        Self::ROSE_500,
-        Self::ROSE_600,
-        Self::ROSE_700,
-        Self::ROSE_800,
-        Self::ROSE_900,
-        Self::ROSE_950,
-    ];
-
-    pub const SLATE: [Color; 11] = [
-        Self::SLATE_50,
-        Self::SLATE_100,
-        Self::SLATE_200,
-        Self::SLATE_300,
-        Self::SLATE_400,
-        Self::SLATE_500,
-        Self::SLATE_600,
-        Self::SLATE_700,
-        Self::SLATE_800,
-        Self::SLATE_900,
-        Self::SLATE_950,
-    ];
-
-    pub const GRAY: [Color; 11] = [
+    pub const GRAY: ThemeArray<11> = ThemeArray([
         Self::GRAY_50,
         Self::GRAY_100,
         Self::GRAY_200,
@@ -1753,163 +1711,9 @@ impl Tailwind {
         Self::GRAY_800,
         Self::GRAY_900,
         Self::GRAY_950,
-    ];
+    ]);
 
-    pub const CYAN: [Color; 11] = [
-        Self::CYAN_50,
-        Self::CYAN_100,
-        Self::CYAN_200,
-        Self::CYAN_300,
-        Self::CYAN_400,
-        Self::CYAN_500,
-        Self::CYAN_600,
-        Self::CYAN_700,
-        Self::CYAN_800,
-        Self::CYAN_900,
-        Self::CYAN_950,
-    ];
-
-    pub const STONE: [Color; 11] = [
-        Self::STONE_50,
-        Self::STONE_100,
-        Self::STONE_200,
-        Self::STONE_300,
-        Self::STONE_400,
-        Self::STONE_500,
-        Self::STONE_600,
-        Self::STONE_700,
-        Self::STONE_800,
-        Self::STONE_900,
-        Self::STONE_950,
-    ];
-
-    pub const ORANGE: [Color; 11] = [
-        Self::ORANGE_50,
-        Self::ORANGE_100,
-        Self::ORANGE_200,
-        Self::ORANGE_300,
-        Self::ORANGE_400,
-        Self::ORANGE_500,
-        Self::ORANGE_600,
-        Self::ORANGE_700,
-        Self::ORANGE_800,
-        Self::ORANGE_900,
-        Self::ORANGE_950,
-    ];
-
-    pub const NEUTRAL: [Color; 11] = [
-        Self::NEUTRAL_50,
-        Self::NEUTRAL_100,
-        Self::NEUTRAL_200,
-        Self::NEUTRAL_300,
-        Self::NEUTRAL_400,
-        Self::NEUTRAL_500,
-        Self::NEUTRAL_600,
-        Self::NEUTRAL_700,
-        Self::NEUTRAL_800,
-        Self::NEUTRAL_900,
-        Self::NEUTRAL_950,
-    ];
-
-    pub const ZINC: [Color; 11] = [
-        Self::ZINC_50,
-        Self::ZINC_100,
-        Self::ZINC_200,
-        Self::ZINC_300,
-        Self::ZINC_400,
-        Self::ZINC_500,
-        Self::ZINC_600,
-        Self::ZINC_700,
-        Self::ZINC_800,
-        Self::ZINC_900,
-        Self::ZINC_950,
-    ];
-
-    pub const INDIGO: [Color; 11] = [
-        Self::INDIGO_50,
-        Self::INDIGO_100,
-        Self::INDIGO_200,
-        Self::INDIGO_300,
-        Self::INDIGO_400,
-        Self::INDIGO_500,
-        Self::INDIGO_600,
-        Self::INDIGO_700,
-        Self::INDIGO_800,
-        Self::INDIGO_900,
-        Self::INDIGO_950,
-    ];
-
-    pub const GREEN: [Color; 11] = [
-        Self::GREEN_50,
-        Self::GREEN_100,
-        Self::GREEN_200,
-        Self::GREEN_300,
-        Self::GREEN_400,
-        Self::GREEN_500,
-        Self::GREEN_600,
-        Self::GREEN_700,
-        Self::GREEN_800,
-        Self::GREEN_900,
-        Self::GREEN_950,
-    ];
-
-    pub const TEAL: [Color; 11] = [
-        Self::TEAL_50,
-        Self::TEAL_100,
-        Self::TEAL_200,
-        Self::TEAL_300,
-        Self::TEAL_400,
-        Self::TEAL_500,
-        Self::TEAL_600,
-        Self::TEAL_700,
-        Self::TEAL_800,
-        Self::TEAL_900,
-        Self::TEAL_950,
-    ];
-
-    pub const RED: [Color; 11] = [
-        Self::RED_50,
-        Self::RED_100,
-        Self::RED_200,
-        Self::RED_300,
-        Self::RED_400,
-        Self::RED_500,
-        Self::RED_600,
-        Self::RED_700,
-        Self::RED_800,
-        Self::RED_900,
-        Self::RED_950,
-    ];
-
-    pub const VIOLET: [Color; 11] = [
-        Self::VIOLET_50,
-        Self::VIOLET_100,
-        Self::VIOLET_200,
-        Self::VIOLET_300,
-        Self::VIOLET_400,
-        Self::VIOLET_500,
-        Self::VIOLET_600,
-        Self::VIOLET_700,
-        Self::VIOLET_800,
-        Self::VIOLET_900,
-        Self::VIOLET_950,
-    ];
-
-    pub const EMERALD: [Color; 11] = [
-        Self::EMERALD_50,
-        Self::EMERALD_100,
-        Self::EMERALD_200,
-        Self::EMERALD_300,
-        Self::EMERALD_400,
-        Self::EMERALD_500,
-        Self::EMERALD_600,
-        Self::EMERALD_700,
-        Self::EMERALD_800,
-        Self::EMERALD_900,
-        Self::EMERALD_950,
-    ];
-
-    pub const SKY: [Color; 11] = [
+    pub const SKY: ThemeArray<11> = ThemeArray([
         Self::SKY_50,
         Self::SKY_100,
         Self::SKY_200,
@@ -1921,65 +1725,23 @@ impl Tailwind {
         Self::SKY_800,
         Self::SKY_900,
         Self::SKY_950,
-    ];
+    ]);
 
-    pub const BLUE: [Color; 11] = [
-        Self::BLUE_50,
-        Self::BLUE_100,
-        Self::BLUE_200,
-        Self::BLUE_300,
-        Self::BLUE_400,
-        Self::BLUE_500,
-        Self::BLUE_600,
-        Self::BLUE_700,
-        Self::BLUE_800,
-        Self::BLUE_900,
-        Self::BLUE_950,
-    ];
+    pub const NEUTRAL: ThemeArray<11> = ThemeArray([
+        Self::NEUTRAL_50,
+        Self::NEUTRAL_100,
+        Self::NEUTRAL_200,
+        Self::NEUTRAL_300,
+        Self::NEUTRAL_400,
+        Self::NEUTRAL_500,
+        Self::NEUTRAL_600,
+        Self::NEUTRAL_700,
+        Self::NEUTRAL_800,
+        Self::NEUTRAL_900,
+        Self::NEUTRAL_950,
+    ]);
 
-    pub const PINK: [Color; 11] = [
-        Self::PINK_50,
-        Self::PINK_100,
-        Self::PINK_200,
-        Self::PINK_300,
-        Self::PINK_400,
-        Self::PINK_500,
-        Self::PINK_600,
-        Self::PINK_700,
-        Self::PINK_800,
-        Self::PINK_900,
-        Self::PINK_950,
-    ];
-
-    pub const AMBER: [Color; 11] = [
-        Self::AMBER_50,
-        Self::AMBER_100,
-        Self::AMBER_200,
-        Self::AMBER_300,
-        Self::AMBER_400,
-        Self::AMBER_500,
-        Self::AMBER_600,
-        Self::AMBER_700,
-        Self::AMBER_800,
-        Self::AMBER_900,
-        Self::AMBER_950,
-    ];
-
-    pub const FUCHSIA: [Color; 11] = [
-        Self::FUCHSIA_50,
-        Self::FUCHSIA_100,
-        Self::FUCHSIA_200,
-        Self::FUCHSIA_300,
-        Self::FUCHSIA_400,
-        Self::FUCHSIA_500,
-        Self::FUCHSIA_600,
-        Self::FUCHSIA_700,
-        Self::FUCHSIA_800,
-        Self::FUCHSIA_900,
-        Self::FUCHSIA_950,
-    ];
-
-    pub const LIME: [Color; 11] = [
+    pub const LIME: ThemeArray<11> = ThemeArray([
         Self::LIME_50,
         Self::LIME_100,
         Self::LIME_200,
@@ -1991,9 +1753,79 @@ impl Tailwind {
         Self::LIME_800,
         Self::LIME_900,
         Self::LIME_950,
-    ];
+    ]);
 
-    pub const PURPLE: [Color; 11] = [
+    pub const FUCHSIA: ThemeArray<11> = ThemeArray([
+        Self::FUCHSIA_50,
+        Self::FUCHSIA_100,
+        Self::FUCHSIA_200,
+        Self::FUCHSIA_300,
+        Self::FUCHSIA_400,
+        Self::FUCHSIA_500,
+        Self::FUCHSIA_600,
+        Self::FUCHSIA_700,
+        Self::FUCHSIA_800,
+        Self::FUCHSIA_900,
+        Self::FUCHSIA_950,
+    ]);
+
+    pub const PINK: ThemeArray<11> = ThemeArray([
+        Self::PINK_50,
+        Self::PINK_100,
+        Self::PINK_200,
+        Self::PINK_300,
+        Self::PINK_400,
+        Self::PINK_500,
+        Self::PINK_600,
+        Self::PINK_700,
+        Self::PINK_800,
+        Self::PINK_900,
+        Self::PINK_950,
+    ]);
+
+    pub const AMBER: ThemeArray<11> = ThemeArray([
+        Self::AMBER_50,
+        Self::AMBER_100,
+        Self::AMBER_200,
+        Self::AMBER_300,
+        Self::AMBER_400,
+        Self::AMBER_500,
+        Self::AMBER_600,
+        Self::AMBER_700,
+        Self::AMBER_800,
+        Self::AMBER_900,
+        Self::AMBER_950,
+    ]);
+
+    pub const ROSE: ThemeArray<11> = ThemeArray([
+        Self::ROSE_50,
+        Self::ROSE_100,
+        Self::ROSE_200,
+        Self::ROSE_300,
+        Self::ROSE_400,
+        Self::ROSE_500,
+        Self::ROSE_600,
+        Self::ROSE_700,
+        Self::ROSE_800,
+        Self::ROSE_900,
+        Self::ROSE_950,
+    ]);
+
+    pub const YELLOW: ThemeArray<11> = ThemeArray([
+        Self::YELLOW_50,
+        Self::YELLOW_100,
+        Self::YELLOW_200,
+        Self::YELLOW_300,
+        Self::YELLOW_400,
+        Self::YELLOW_500,
+        Self::YELLOW_600,
+        Self::YELLOW_700,
+        Self::YELLOW_800,
+        Self::YELLOW_900,
+        Self::YELLOW_950,
+    ]);
+
+    pub const PURPLE: ThemeArray<11> = ThemeArray([
         Self::PURPLE_50,
         Self::PURPLE_100,
         Self::PURPLE_200,
@@ -2005,5 +1837,173 @@ impl Tailwind {
         Self::PURPLE_800,
         Self::PURPLE_900,
         Self::PURPLE_950,
-    ];
+    ]);
+
+    pub const STONE: ThemeArray<11> = ThemeArray([
+        Self::STONE_50,
+        Self::STONE_100,
+        Self::STONE_200,
+        Self::STONE_300,
+        Self::STONE_400,
+        Self::STONE_500,
+        Self::STONE_600,
+        Self::STONE_700,
+        Self::STONE_800,
+        Self::STONE_900,
+        Self::STONE_950,
+    ]);
+
+    pub const ORANGE: ThemeArray<11> = ThemeArray([
+        Self::ORANGE_50,
+        Self::ORANGE_100,
+        Self::ORANGE_200,
+        Self::ORANGE_300,
+        Self::ORANGE_400,
+        Self::ORANGE_500,
+        Self::ORANGE_600,
+        Self::ORANGE_700,
+        Self::ORANGE_800,
+        Self::ORANGE_900,
+        Self::ORANGE_950,
+    ]);
+
+    pub const BLUE: ThemeArray<11> = ThemeArray([
+        Self::BLUE_50,
+        Self::BLUE_100,
+        Self::BLUE_200,
+        Self::BLUE_300,
+        Self::BLUE_400,
+        Self::BLUE_500,
+        Self::BLUE_600,
+        Self::BLUE_700,
+        Self::BLUE_800,
+        Self::BLUE_900,
+        Self::BLUE_950,
+    ]);
+
+    pub const VIOLET: ThemeArray<11> = ThemeArray([
+        Self::VIOLET_50,
+        Self::VIOLET_100,
+        Self::VIOLET_200,
+        Self::VIOLET_300,
+        Self::VIOLET_400,
+        Self::VIOLET_500,
+        Self::VIOLET_600,
+        Self::VIOLET_700,
+        Self::VIOLET_800,
+        Self::VIOLET_900,
+        Self::VIOLET_950,
+    ]);
+
+    pub const SLATE: ThemeArray<11> = ThemeArray([
+        Self::SLATE_50,
+        Self::SLATE_100,
+        Self::SLATE_200,
+        Self::SLATE_300,
+        Self::SLATE_400,
+        Self::SLATE_500,
+        Self::SLATE_600,
+        Self::SLATE_700,
+        Self::SLATE_800,
+        Self::SLATE_900,
+        Self::SLATE_950,
+    ]);
+
+    pub const RED: ThemeArray<11> = ThemeArray([
+        Self::RED_50,
+        Self::RED_100,
+        Self::RED_200,
+        Self::RED_300,
+        Self::RED_400,
+        Self::RED_500,
+        Self::RED_600,
+        Self::RED_700,
+        Self::RED_800,
+        Self::RED_900,
+        Self::RED_950,
+    ]);
+
+    pub const INDIGO: ThemeArray<11> = ThemeArray([
+        Self::INDIGO_50,
+        Self::INDIGO_100,
+        Self::INDIGO_200,
+        Self::INDIGO_300,
+        Self::INDIGO_400,
+        Self::INDIGO_500,
+        Self::INDIGO_600,
+        Self::INDIGO_700,
+        Self::INDIGO_800,
+        Self::INDIGO_900,
+        Self::INDIGO_950,
+    ]);
+
+    pub const ZINC: ThemeArray<11> = ThemeArray([
+        Self::ZINC_50,
+        Self::ZINC_100,
+        Self::ZINC_200,
+        Self::ZINC_300,
+        Self::ZINC_400,
+        Self::ZINC_500,
+        Self::ZINC_600,
+        Self::ZINC_700,
+        Self::ZINC_800,
+        Self::ZINC_900,
+        Self::ZINC_950,
+    ]);
+
+    pub const EMERALD: ThemeArray<11> = ThemeArray([
+        Self::EMERALD_50,
+        Self::EMERALD_100,
+        Self::EMERALD_200,
+        Self::EMERALD_300,
+        Self::EMERALD_400,
+        Self::EMERALD_500,
+        Self::EMERALD_600,
+        Self::EMERALD_700,
+        Self::EMERALD_800,
+        Self::EMERALD_900,
+        Self::EMERALD_950,
+    ]);
+
+    pub const CYAN: ThemeArray<11> = ThemeArray([
+        Self::CYAN_50,
+        Self::CYAN_100,
+        Self::CYAN_200,
+        Self::CYAN_300,
+        Self::CYAN_400,
+        Self::CYAN_500,
+        Self::CYAN_600,
+        Self::CYAN_700,
+        Self::CYAN_800,
+        Self::CYAN_900,
+        Self::CYAN_950,
+    ]);
+
+    pub const GREEN: ThemeArray<11> = ThemeArray([
+        Self::GREEN_50,
+        Self::GREEN_100,
+        Self::GREEN_200,
+        Self::GREEN_300,
+        Self::GREEN_400,
+        Self::GREEN_500,
+        Self::GREEN_600,
+        Self::GREEN_700,
+        Self::GREEN_800,
+        Self::GREEN_900,
+        Self::GREEN_950,
+    ]);
+
+    pub const TEAL: ThemeArray<11> = ThemeArray([
+        Self::TEAL_50,
+        Self::TEAL_100,
+        Self::TEAL_200,
+        Self::TEAL_300,
+        Self::TEAL_400,
+        Self::TEAL_500,
+        Self::TEAL_600,
+        Self::TEAL_700,
+        Self::TEAL_800,
+        Self::TEAL_900,
+        Self::TEAL_950,
+    ]);
 }

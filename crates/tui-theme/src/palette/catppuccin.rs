@@ -1,4 +1,4 @@
-use crate::Color;
+use crate::{Color, ThemeArray};
 
 // Auto-generated file. Do not edit.
 
@@ -929,91 +929,7 @@ impl Catppuccin {
         ::palette::OklabHue::new(253.4800),
     ));
 
-    pub const TEAL: [Color; 11] = [
-        Self::TEAL_50,
-        Self::TEAL_100,
-        Self::TEAL_200,
-        Self::TEAL_300,
-        Self::TEAL_400,
-        Self::TEAL_500,
-        Self::TEAL_600,
-        Self::TEAL_700,
-        Self::TEAL_800,
-        Self::TEAL_900,
-        Self::TEAL_950,
-    ];
-
-    pub const SAPPHIRE: [Color; 11] = [
-        Self::SAPPHIRE_50,
-        Self::SAPPHIRE_100,
-        Self::SAPPHIRE_200,
-        Self::SAPPHIRE_300,
-        Self::SAPPHIRE_400,
-        Self::SAPPHIRE_500,
-        Self::SAPPHIRE_600,
-        Self::SAPPHIRE_700,
-        Self::SAPPHIRE_800,
-        Self::SAPPHIRE_900,
-        Self::SAPPHIRE_950,
-    ];
-
-    pub const BLUE: [Color; 11] = [
-        Self::BLUE_50,
-        Self::BLUE_100,
-        Self::BLUE_200,
-        Self::BLUE_300,
-        Self::BLUE_400,
-        Self::BLUE_500,
-        Self::BLUE_600,
-        Self::BLUE_700,
-        Self::BLUE_800,
-        Self::BLUE_900,
-        Self::BLUE_950,
-    ];
-
-    pub const ROSEWATER: [Color; 11] = [
-        Self::ROSEWATER_50,
-        Self::ROSEWATER_100,
-        Self::ROSEWATER_200,
-        Self::ROSEWATER_300,
-        Self::ROSEWATER_400,
-        Self::ROSEWATER_500,
-        Self::ROSEWATER_600,
-        Self::ROSEWATER_700,
-        Self::ROSEWATER_800,
-        Self::ROSEWATER_900,
-        Self::ROSEWATER_950,
-    ];
-
-    pub const MAUVE: [Color; 11] = [
-        Self::MAUVE_50,
-        Self::MAUVE_100,
-        Self::MAUVE_200,
-        Self::MAUVE_300,
-        Self::MAUVE_400,
-        Self::MAUVE_500,
-        Self::MAUVE_600,
-        Self::MAUVE_700,
-        Self::MAUVE_800,
-        Self::MAUVE_900,
-        Self::MAUVE_950,
-    ];
-
-    pub const MAROON: [Color; 11] = [
-        Self::MAROON_50,
-        Self::MAROON_100,
-        Self::MAROON_200,
-        Self::MAROON_300,
-        Self::MAROON_400,
-        Self::MAROON_500,
-        Self::MAROON_600,
-        Self::MAROON_700,
-        Self::MAROON_800,
-        Self::MAROON_900,
-        Self::MAROON_950,
-    ];
-
-    pub const GRAY: [Color; 11] = [
+    pub const GRAY: ThemeArray<11> = ThemeArray([
         Self::GRAY_50,
         Self::GRAY_100,
         Self::GRAY_200,
@@ -1025,65 +941,9 @@ impl Catppuccin {
         Self::GRAY_800,
         Self::GRAY_900,
         Self::GRAY_950,
-    ];
+    ]);
 
-    pub const GREEN: [Color; 11] = [
-        Self::GREEN_50,
-        Self::GREEN_100,
-        Self::GREEN_200,
-        Self::GREEN_300,
-        Self::GREEN_400,
-        Self::GREEN_500,
-        Self::GREEN_600,
-        Self::GREEN_700,
-        Self::GREEN_800,
-        Self::GREEN_900,
-        Self::GREEN_950,
-    ];
-
-    pub const YELLOW: [Color; 11] = [
-        Self::YELLOW_50,
-        Self::YELLOW_100,
-        Self::YELLOW_200,
-        Self::YELLOW_300,
-        Self::YELLOW_400,
-        Self::YELLOW_500,
-        Self::YELLOW_600,
-        Self::YELLOW_700,
-        Self::YELLOW_800,
-        Self::YELLOW_900,
-        Self::YELLOW_950,
-    ];
-
-    pub const FLAMINGO: [Color; 11] = [
-        Self::FLAMINGO_50,
-        Self::FLAMINGO_100,
-        Self::FLAMINGO_200,
-        Self::FLAMINGO_300,
-        Self::FLAMINGO_400,
-        Self::FLAMINGO_500,
-        Self::FLAMINGO_600,
-        Self::FLAMINGO_700,
-        Self::FLAMINGO_800,
-        Self::FLAMINGO_900,
-        Self::FLAMINGO_950,
-    ];
-
-    pub const PEACH: [Color; 11] = [
-        Self::PEACH_50,
-        Self::PEACH_100,
-        Self::PEACH_200,
-        Self::PEACH_300,
-        Self::PEACH_400,
-        Self::PEACH_500,
-        Self::PEACH_600,
-        Self::PEACH_700,
-        Self::PEACH_800,
-        Self::PEACH_900,
-        Self::PEACH_950,
-    ];
-
-    pub const PINK: [Color; 11] = [
+    pub const PINK: ThemeArray<11> = ThemeArray([
         Self::PINK_50,
         Self::PINK_100,
         Self::PINK_200,
@@ -1095,5 +955,145 @@ impl Catppuccin {
         Self::PINK_800,
         Self::PINK_900,
         Self::PINK_950,
-    ];
+    ]);
+
+    pub const PEACH: ThemeArray<11> = ThemeArray([
+        Self::PEACH_50,
+        Self::PEACH_100,
+        Self::PEACH_200,
+        Self::PEACH_300,
+        Self::PEACH_400,
+        Self::PEACH_500,
+        Self::PEACH_600,
+        Self::PEACH_700,
+        Self::PEACH_800,
+        Self::PEACH_900,
+        Self::PEACH_950,
+    ]);
+
+    pub const YELLOW: ThemeArray<11> = ThemeArray([
+        Self::YELLOW_50,
+        Self::YELLOW_100,
+        Self::YELLOW_200,
+        Self::YELLOW_300,
+        Self::YELLOW_400,
+        Self::YELLOW_500,
+        Self::YELLOW_600,
+        Self::YELLOW_700,
+        Self::YELLOW_800,
+        Self::YELLOW_900,
+        Self::YELLOW_950,
+    ]);
+
+    pub const ROSEWATER: ThemeArray<11> = ThemeArray([
+        Self::ROSEWATER_50,
+        Self::ROSEWATER_100,
+        Self::ROSEWATER_200,
+        Self::ROSEWATER_300,
+        Self::ROSEWATER_400,
+        Self::ROSEWATER_500,
+        Self::ROSEWATER_600,
+        Self::ROSEWATER_700,
+        Self::ROSEWATER_800,
+        Self::ROSEWATER_900,
+        Self::ROSEWATER_950,
+    ]);
+
+    pub const FLAMINGO: ThemeArray<11> = ThemeArray([
+        Self::FLAMINGO_50,
+        Self::FLAMINGO_100,
+        Self::FLAMINGO_200,
+        Self::FLAMINGO_300,
+        Self::FLAMINGO_400,
+        Self::FLAMINGO_500,
+        Self::FLAMINGO_600,
+        Self::FLAMINGO_700,
+        Self::FLAMINGO_800,
+        Self::FLAMINGO_900,
+        Self::FLAMINGO_950,
+    ]);
+
+    pub const MAROON: ThemeArray<11> = ThemeArray([
+        Self::MAROON_50,
+        Self::MAROON_100,
+        Self::MAROON_200,
+        Self::MAROON_300,
+        Self::MAROON_400,
+        Self::MAROON_500,
+        Self::MAROON_600,
+        Self::MAROON_700,
+        Self::MAROON_800,
+        Self::MAROON_900,
+        Self::MAROON_950,
+    ]);
+
+    pub const BLUE: ThemeArray<11> = ThemeArray([
+        Self::BLUE_50,
+        Self::BLUE_100,
+        Self::BLUE_200,
+        Self::BLUE_300,
+        Self::BLUE_400,
+        Self::BLUE_500,
+        Self::BLUE_600,
+        Self::BLUE_700,
+        Self::BLUE_800,
+        Self::BLUE_900,
+        Self::BLUE_950,
+    ]);
+
+    pub const MAUVE: ThemeArray<11> = ThemeArray([
+        Self::MAUVE_50,
+        Self::MAUVE_100,
+        Self::MAUVE_200,
+        Self::MAUVE_300,
+        Self::MAUVE_400,
+        Self::MAUVE_500,
+        Self::MAUVE_600,
+        Self::MAUVE_700,
+        Self::MAUVE_800,
+        Self::MAUVE_900,
+        Self::MAUVE_950,
+    ]);
+
+    pub const GREEN: ThemeArray<11> = ThemeArray([
+        Self::GREEN_50,
+        Self::GREEN_100,
+        Self::GREEN_200,
+        Self::GREEN_300,
+        Self::GREEN_400,
+        Self::GREEN_500,
+        Self::GREEN_600,
+        Self::GREEN_700,
+        Self::GREEN_800,
+        Self::GREEN_900,
+        Self::GREEN_950,
+    ]);
+
+    pub const TEAL: ThemeArray<11> = ThemeArray([
+        Self::TEAL_50,
+        Self::TEAL_100,
+        Self::TEAL_200,
+        Self::TEAL_300,
+        Self::TEAL_400,
+        Self::TEAL_500,
+        Self::TEAL_600,
+        Self::TEAL_700,
+        Self::TEAL_800,
+        Self::TEAL_900,
+        Self::TEAL_950,
+    ]);
+
+    pub const SAPPHIRE: ThemeArray<11> = ThemeArray([
+        Self::SAPPHIRE_50,
+        Self::SAPPHIRE_100,
+        Self::SAPPHIRE_200,
+        Self::SAPPHIRE_300,
+        Self::SAPPHIRE_400,
+        Self::SAPPHIRE_500,
+        Self::SAPPHIRE_600,
+        Self::SAPPHIRE_700,
+        Self::SAPPHIRE_800,
+        Self::SAPPHIRE_900,
+        Self::SAPPHIRE_950,
+    ]);
 }

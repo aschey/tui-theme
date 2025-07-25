@@ -56,7 +56,8 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
         name.to_case(Case::Snake)
     ))?;
     let name_caps = name.to_case(Case::UpperCamel);
-    writeln!(out, "use crate::Color;\n")?;
+    writeln!(out, "use crate::Color;")?;
+    writeln!(out, "use crate::ThemeArray;\n")?;
     writeln!(out, "// Auto-generated file. Do not edit.\n")?;
     writeln!(out, "pub struct {name_caps} {{}}\n")?;
     writeln!(out, "impl {name_caps} {{")?;
@@ -72,7 +73,7 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
             .replacen("color_", "", 1)
             .to_ascii_uppercase();
 
-        let name_base = name.split("_").next().unwrap();
+        let name_base = name.rsplitn(2, "_").last().unwrap();
         if let Some(colors) = color_groups.get_mut(name_base) {
             colors.push(name.clone());
         } else {
@@ -94,7 +95,7 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
         let color_array_vals: Vec<_> = colors.iter().map(|c| format!("Self::{c}")).collect();
         writeln!(
             out,
-            "    pub const {color_group}: [Color; {}] = [{}];\n",
+            "    pub const {color_group}: ThemeArray<{}> = ThemeArray([{}]);\n",
             colors.len(),
             color_array_vals.join(",")
         )?;

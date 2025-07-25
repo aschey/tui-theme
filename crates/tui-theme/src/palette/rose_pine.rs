@@ -1,4 +1,4 @@
-use crate::Color;
+use crate::{Color, ThemeArray};
 
 // Auto-generated file. Do not edit.
 
@@ -544,21 +544,7 @@ impl RosePine {
         ::palette::OklabHue::new(306.5900),
     ));
 
-    pub const LOVE: [Color; 11] = [
-        Self::LOVE_50,
-        Self::LOVE_100,
-        Self::LOVE_200,
-        Self::LOVE_300,
-        Self::LOVE_400,
-        Self::LOVE_500,
-        Self::LOVE_600,
-        Self::LOVE_700,
-        Self::LOVE_800,
-        Self::LOVE_900,
-        Self::LOVE_950,
-    ];
-
-    pub const GRAY: [Color; 11] = [
+    pub const GRAY: ThemeArray<11> = ThemeArray([
         Self::GRAY_50,
         Self::GRAY_100,
         Self::GRAY_200,
@@ -570,37 +556,9 @@ impl RosePine {
         Self::GRAY_800,
         Self::GRAY_900,
         Self::GRAY_950,
-    ];
+    ]);
 
-    pub const FOAM: [Color; 11] = [
-        Self::FOAM_50,
-        Self::FOAM_100,
-        Self::FOAM_200,
-        Self::FOAM_300,
-        Self::FOAM_400,
-        Self::FOAM_500,
-        Self::FOAM_600,
-        Self::FOAM_700,
-        Self::FOAM_800,
-        Self::FOAM_900,
-        Self::FOAM_950,
-    ];
-
-    pub const PINE: [Color; 11] = [
-        Self::PINE_50,
-        Self::PINE_100,
-        Self::PINE_200,
-        Self::PINE_300,
-        Self::PINE_400,
-        Self::PINE_500,
-        Self::PINE_600,
-        Self::PINE_700,
-        Self::PINE_800,
-        Self::PINE_900,
-        Self::PINE_950,
-    ];
-
-    pub const GOLD: [Color; 11] = [
+    pub const GOLD: ThemeArray<11> = ThemeArray([
         Self::GOLD_50,
         Self::GOLD_100,
         Self::GOLD_200,
@@ -612,23 +570,23 @@ impl RosePine {
         Self::GOLD_800,
         Self::GOLD_900,
         Self::GOLD_950,
-    ];
+    ]);
 
-    pub const ROSE: [Color; 11] = [
-        Self::ROSE_50,
-        Self::ROSE_100,
-        Self::ROSE_200,
-        Self::ROSE_300,
-        Self::ROSE_400,
-        Self::ROSE_500,
-        Self::ROSE_600,
-        Self::ROSE_700,
-        Self::ROSE_800,
-        Self::ROSE_900,
-        Self::ROSE_950,
-    ];
+    pub const PINE: ThemeArray<11> = ThemeArray([
+        Self::PINE_50,
+        Self::PINE_100,
+        Self::PINE_200,
+        Self::PINE_300,
+        Self::PINE_400,
+        Self::PINE_500,
+        Self::PINE_600,
+        Self::PINE_700,
+        Self::PINE_800,
+        Self::PINE_900,
+        Self::PINE_950,
+    ]);
 
-    pub const IRIS: [Color; 11] = [
+    pub const IRIS: ThemeArray<11> = ThemeArray([
         Self::IRIS_50,
         Self::IRIS_100,
         Self::IRIS_200,
@@ -640,5 +598,47 @@ impl RosePine {
         Self::IRIS_800,
         Self::IRIS_900,
         Self::IRIS_950,
-    ];
+    ]);
+
+    pub const ROSE: ThemeArray<11> = ThemeArray([
+        Self::ROSE_50,
+        Self::ROSE_100,
+        Self::ROSE_200,
+        Self::ROSE_300,
+        Self::ROSE_400,
+        Self::ROSE_500,
+        Self::ROSE_600,
+        Self::ROSE_700,
+        Self::ROSE_800,
+        Self::ROSE_900,
+        Self::ROSE_950,
+    ]);
+
+    pub const LOVE: ThemeArray<11> = ThemeArray([
+        Self::LOVE_50,
+        Self::LOVE_100,
+        Self::LOVE_200,
+        Self::LOVE_300,
+        Self::LOVE_400,
+        Self::LOVE_500,
+        Self::LOVE_600,
+        Self::LOVE_700,
+        Self::LOVE_800,
+        Self::LOVE_900,
+        Self::LOVE_950,
+    ]);
+
+    pub const FOAM: ThemeArray<11> = ThemeArray([
+        Self::FOAM_50,
+        Self::FOAM_100,
+        Self::FOAM_200,
+        Self::FOAM_300,
+        Self::FOAM_400,
+        Self::FOAM_500,
+        Self::FOAM_600,
+        Self::FOAM_700,
+        Self::FOAM_800,
+        Self::FOAM_900,
+        Self::FOAM_950,
+    ]);
 }

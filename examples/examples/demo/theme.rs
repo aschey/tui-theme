@@ -1,8 +1,11 @@
 use std::sync::LazyLock;
 
+use palette::color_difference::Wcag21RelativeContrast;
 use tui_theme::palette::{Catppuccin, Everforest, RosePine};
 use tui_theme::profile::TermProfile;
-use tui_theme::{Color, ProfileVariant, SetTheme, Style, Theme, is_supported};
+use tui_theme::{
+    Color, Dark, Light, ProfileVariant, SetTheme, Style, Theme, is_supported,
+};
 
 #[derive(Theme, Default, Clone, Debug)]
 pub struct AppTheme {
@@ -74,6 +77,8 @@ pub struct Recipe {
     pub ingredients: Style,
     pub ingredients_header: Style,
     pub selected: Style,
+    pub step_title: Style,
+    pub step_content: Style,
 }
 
 #[derive(Theme, Default, Clone, Debug)]
@@ -120,10 +125,18 @@ const BASIC_ANSI_THEME: Colors = Colors {
 static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
     let bg = Color::terminal_background();
     let fg = Color::terminal_foreground();
+    let rel_luma = bg.to_rgb_bg().relative_luminance();
+    let factor = 0.15;
+    let base2 = if rel_luma.luma <= 0.01 {
+        bg.lighten(factor)
+    } else {
+        bg.darken(factor)
+    };
+
     [
         Colors {
             base1: bg,
-            base2: bg.darken(0.15),
+            base2,
             primary: Color::Blue,
             accent: Color::Cyan,
             success: Color::Green,
@@ -135,43 +148,43 @@ static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
             selected: Color::Yellow,
         },
         Colors {
-            base1: Catppuccin::GRAY_900,
-            base2: Catppuccin::GRAY_950,
-            primary: Catppuccin::BLUE_300,
-            accent: Catppuccin::BLUE_300,
-            success: Catppuccin::GREEN_300,
-            warning: Catppuccin::YELLOW_300,
-            danger: Catppuccin::ROSEWATER_300,
-            text: Catppuccin::GRAY_300,
-            text_muted: Catppuccin::GRAY_500,
-            text_bright: Catppuccin::GRAY_100,
-            selected: Catppuccin::YELLOW_300,
+            base1: Catppuccin::GRAY[(Light(1), Dark(9))],
+            base2: Catppuccin::GRAY[(Light(0), Dark(10))],
+            primary: Catppuccin::BLUE[(Light(7), Dark(3))],
+            accent: Catppuccin::BLUE[(Light(7), Dark(3))],
+            success: Catppuccin::GREEN[(Light(7), Dark(3))],
+            warning: Catppuccin::YELLOW[(Light(7), Dark(3))],
+            danger: Catppuccin::ROSEWATER[(Light(7), Dark(3))],
+            text: Catppuccin::GRAY[(Light(7), Dark(3))],
+            text_muted: Catppuccin::GRAY[(Light(6), Dark(5))],
+            text_bright: Catppuccin::GRAY[(Light(9), Dark(1))],
+            selected: Catppuccin::YELLOW[(Light(7), Dark(3))],
         },
         Colors {
-            base1: Everforest::BLUE_GRAY_900,
-            base2: Everforest::BLUE_GRAY_950,
-            primary: Everforest::BLUE_GRAY_300,
-            accent: Everforest::BLUE_300,
-            success: Everforest::GREEN_300,
-            warning: Everforest::YELLOW_300,
-            danger: Everforest::RED_300,
-            text: Everforest::BLUE_300,
-            text_muted: Everforest::BLUE_GRAY_500,
-            text_bright: Everforest::BLUE_GRAY_100,
-            selected: Everforest::YELLOW_300,
+            base1: Everforest::BLUE_GRAY[(Light(1), Dark(9))],
+            base2: Everforest::BLUE_GRAY[(Light(0), Dark(10))],
+            primary: Everforest::BLUE_GRAY[(Light(7), Dark(3))],
+            accent: Everforest::BLUE[(Light(7), Dark(3))],
+            success: Everforest::GREEN[(Light(7), Dark(3))],
+            warning: Everforest::YELLOW[(Light(7), Dark(3))],
+            danger: Everforest::RED[(Light(7), Dark(3))],
+            text: Everforest::BLUE[(Light(7), Dark(3))],
+            text_muted: Everforest::BLUE_GRAY[(Light(6), Dark(5))],
+            text_bright: Everforest::BLUE_GRAY[(Light(9), Dark(1))],
+            selected: Everforest::YELLOW[(Light(7), Dark(3))],
         },
         Colors {
-            base1: RosePine::GRAY_900,
-            base2: RosePine::GRAY_950,
-            primary: RosePine::PINE_300,
-            accent: RosePine::ROSE_300,
-            success: RosePine::FOAM_300,
-            warning: RosePine::GOLD_300,
-            danger: RosePine::ROSE_300,
-            text: RosePine::GRAY_300,
-            text_muted: RosePine::GRAY_500,
-            text_bright: RosePine::GRAY_100,
-            selected: RosePine::GOLD_300,
+            base1: RosePine::GRAY[(Light(1), Dark(9))],
+            base2: RosePine::GRAY[(Light(0), Dark(10))],
+            primary: RosePine::PINE[(Light(7), Dark(3))],
+            accent: RosePine::ROSE[(Light(7), Dark(3))],
+            success: RosePine::FOAM[(Light(7), Dark(3))],
+            warning: RosePine::GOLD[(Light(7), Dark(3))],
+            danger: RosePine::ROSE[(Light(7), Dark(3))],
+            text: RosePine::GRAY[(Light(7), Dark(3))],
+            text_muted: RosePine::GRAY[(Light(6), Dark(5))],
+            text_bright: RosePine::GRAY[(Light(9), Dark(1))],
+            selected: RosePine::GOLD[(Light(7), Dark(3))],
         },
     ]
 });
@@ -241,6 +254,8 @@ pub fn init_theme(index: usize) {
             ingredients: base1,
             ingredients_header: Style::new().bold().underlined(),
             selected: Style::new().fg_selected(),
+            step_title: Style::new().fg_text_bright().bold(),
+            step_content: Style::new().fg_text_muted(),
         },
         weather: Weather {
             bar1: Style::new().fg_danger(),

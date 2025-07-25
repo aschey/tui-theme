@@ -1,4 +1,4 @@
-use crate::Color;
+use crate::{Color, ThemeArray};
 
 // Auto-generated file. Do not edit.
 
@@ -929,77 +929,7 @@ impl Everforest {
         ::palette::OklabHue::new(348.8700),
     ));
 
-    pub const AQUA: [Color; 11] = [
-        Self::AQUA_50,
-        Self::AQUA_100,
-        Self::AQUA_200,
-        Self::AQUA_300,
-        Self::AQUA_400,
-        Self::AQUA_500,
-        Self::AQUA_600,
-        Self::AQUA_700,
-        Self::AQUA_800,
-        Self::AQUA_900,
-        Self::AQUA_950,
-    ];
-
-    pub const OLIVE: [Color; 11] = [
-        Self::OLIVE_50,
-        Self::OLIVE_100,
-        Self::OLIVE_200,
-        Self::OLIVE_300,
-        Self::OLIVE_400,
-        Self::OLIVE_500,
-        Self::OLIVE_600,
-        Self::OLIVE_700,
-        Self::OLIVE_800,
-        Self::OLIVE_900,
-        Self::OLIVE_950,
-    ];
-
-    pub const ORANGE: [Color; 11] = [
-        Self::ORANGE_50,
-        Self::ORANGE_100,
-        Self::ORANGE_200,
-        Self::ORANGE_300,
-        Self::ORANGE_400,
-        Self::ORANGE_500,
-        Self::ORANGE_600,
-        Self::ORANGE_700,
-        Self::ORANGE_800,
-        Self::ORANGE_900,
-        Self::ORANGE_950,
-    ];
-
-    pub const EGGPLANT: [Color; 11] = [
-        Self::EGGPLANT_50,
-        Self::EGGPLANT_100,
-        Self::EGGPLANT_200,
-        Self::EGGPLANT_300,
-        Self::EGGPLANT_400,
-        Self::EGGPLANT_500,
-        Self::EGGPLANT_600,
-        Self::EGGPLANT_700,
-        Self::EGGPLANT_800,
-        Self::EGGPLANT_900,
-        Self::EGGPLANT_950,
-    ];
-
-    pub const PURPLE: [Color; 11] = [
-        Self::PURPLE_50,
-        Self::PURPLE_100,
-        Self::PURPLE_200,
-        Self::PURPLE_300,
-        Self::PURPLE_400,
-        Self::PURPLE_500,
-        Self::PURPLE_600,
-        Self::PURPLE_700,
-        Self::PURPLE_800,
-        Self::PURPLE_900,
-        Self::PURPLE_950,
-    ];
-
-    pub const BLUE: [Color; 22] = [
+    pub const BLUE_GRAY: ThemeArray<11> = ThemeArray([
         Self::BLUE_GRAY_50,
         Self::BLUE_GRAY_100,
         Self::BLUE_GRAY_200,
@@ -1011,20 +941,9 @@ impl Everforest {
         Self::BLUE_GRAY_800,
         Self::BLUE_GRAY_900,
         Self::BLUE_GRAY_950,
-        Self::BLUE_50,
-        Self::BLUE_100,
-        Self::BLUE_200,
-        Self::BLUE_300,
-        Self::BLUE_400,
-        Self::BLUE_500,
-        Self::BLUE_600,
-        Self::BLUE_700,
-        Self::BLUE_800,
-        Self::BLUE_900,
-        Self::BLUE_950,
-    ];
+    ]);
 
-    pub const RED: [Color; 11] = [
+    pub const RED: ThemeArray<11> = ThemeArray([
         Self::RED_50,
         Self::RED_100,
         Self::RED_200,
@@ -1036,51 +955,9 @@ impl Everforest {
         Self::RED_800,
         Self::RED_900,
         Self::RED_950,
-    ];
+    ]);
 
-    pub const YELLOW: [Color; 11] = [
-        Self::YELLOW_50,
-        Self::YELLOW_100,
-        Self::YELLOW_200,
-        Self::YELLOW_300,
-        Self::YELLOW_400,
-        Self::YELLOW_500,
-        Self::YELLOW_600,
-        Self::YELLOW_700,
-        Self::YELLOW_800,
-        Self::YELLOW_900,
-        Self::YELLOW_950,
-    ];
-
-    pub const GREEN: [Color; 11] = [
-        Self::GREEN_50,
-        Self::GREEN_100,
-        Self::GREEN_200,
-        Self::GREEN_300,
-        Self::GREEN_400,
-        Self::GREEN_500,
-        Self::GREEN_600,
-        Self::GREEN_700,
-        Self::GREEN_800,
-        Self::GREEN_900,
-        Self::GREEN_950,
-    ];
-
-    pub const CYAN: [Color; 11] = [
-        Self::CYAN_50,
-        Self::CYAN_100,
-        Self::CYAN_200,
-        Self::CYAN_300,
-        Self::CYAN_400,
-        Self::CYAN_500,
-        Self::CYAN_600,
-        Self::CYAN_700,
-        Self::CYAN_800,
-        Self::CYAN_900,
-        Self::CYAN_950,
-    ];
-
-    pub const SEAFOAM: [Color; 11] = [
+    pub const SEAFOAM: ThemeArray<11> = ThemeArray([
         Self::SEAFOAM_50,
         Self::SEAFOAM_100,
         Self::SEAFOAM_200,
@@ -1092,5 +969,131 @@ impl Everforest {
         Self::SEAFOAM_800,
         Self::SEAFOAM_900,
         Self::SEAFOAM_950,
-    ];
+    ]);
+
+    pub const YELLOW: ThemeArray<11> = ThemeArray([
+        Self::YELLOW_50,
+        Self::YELLOW_100,
+        Self::YELLOW_200,
+        Self::YELLOW_300,
+        Self::YELLOW_400,
+        Self::YELLOW_500,
+        Self::YELLOW_600,
+        Self::YELLOW_700,
+        Self::YELLOW_800,
+        Self::YELLOW_900,
+        Self::YELLOW_950,
+    ]);
+
+    pub const GREEN: ThemeArray<11> = ThemeArray([
+        Self::GREEN_50,
+        Self::GREEN_100,
+        Self::GREEN_200,
+        Self::GREEN_300,
+        Self::GREEN_400,
+        Self::GREEN_500,
+        Self::GREEN_600,
+        Self::GREEN_700,
+        Self::GREEN_800,
+        Self::GREEN_900,
+        Self::GREEN_950,
+    ]);
+
+    pub const EGGPLANT: ThemeArray<11> = ThemeArray([
+        Self::EGGPLANT_50,
+        Self::EGGPLANT_100,
+        Self::EGGPLANT_200,
+        Self::EGGPLANT_300,
+        Self::EGGPLANT_400,
+        Self::EGGPLANT_500,
+        Self::EGGPLANT_600,
+        Self::EGGPLANT_700,
+        Self::EGGPLANT_800,
+        Self::EGGPLANT_900,
+        Self::EGGPLANT_950,
+    ]);
+
+    pub const AQUA: ThemeArray<11> = ThemeArray([
+        Self::AQUA_50,
+        Self::AQUA_100,
+        Self::AQUA_200,
+        Self::AQUA_300,
+        Self::AQUA_400,
+        Self::AQUA_500,
+        Self::AQUA_600,
+        Self::AQUA_700,
+        Self::AQUA_800,
+        Self::AQUA_900,
+        Self::AQUA_950,
+    ]);
+
+    pub const ORANGE: ThemeArray<11> = ThemeArray([
+        Self::ORANGE_50,
+        Self::ORANGE_100,
+        Self::ORANGE_200,
+        Self::ORANGE_300,
+        Self::ORANGE_400,
+        Self::ORANGE_500,
+        Self::ORANGE_600,
+        Self::ORANGE_700,
+        Self::ORANGE_800,
+        Self::ORANGE_900,
+        Self::ORANGE_950,
+    ]);
+
+    pub const PURPLE: ThemeArray<11> = ThemeArray([
+        Self::PURPLE_50,
+        Self::PURPLE_100,
+        Self::PURPLE_200,
+        Self::PURPLE_300,
+        Self::PURPLE_400,
+        Self::PURPLE_500,
+        Self::PURPLE_600,
+        Self::PURPLE_700,
+        Self::PURPLE_800,
+        Self::PURPLE_900,
+        Self::PURPLE_950,
+    ]);
+
+    pub const OLIVE: ThemeArray<11> = ThemeArray([
+        Self::OLIVE_50,
+        Self::OLIVE_100,
+        Self::OLIVE_200,
+        Self::OLIVE_300,
+        Self::OLIVE_400,
+        Self::OLIVE_500,
+        Self::OLIVE_600,
+        Self::OLIVE_700,
+        Self::OLIVE_800,
+        Self::OLIVE_900,
+        Self::OLIVE_950,
+    ]);
+
+    pub const BLUE: ThemeArray<11> = ThemeArray([
+        Self::BLUE_50,
+        Self::BLUE_100,
+        Self::BLUE_200,
+        Self::BLUE_300,
+        Self::BLUE_400,
+        Self::BLUE_500,
+        Self::BLUE_600,
+        Self::BLUE_700,
+        Self::BLUE_800,
+        Self::BLUE_900,
+        Self::BLUE_950,
+    ]);
+
+    pub const CYAN: ThemeArray<11> = ThemeArray([
+        Self::CYAN_50,
+        Self::CYAN_100,
+        Self::CYAN_200,
+        Self::CYAN_300,
+        Self::CYAN_400,
+        Self::CYAN_500,
+        Self::CYAN_600,
+        Self::CYAN_700,
+        Self::CYAN_800,
+        Self::CYAN_900,
+        Self::CYAN_950,
+    ]);
 }

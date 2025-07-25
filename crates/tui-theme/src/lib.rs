@@ -6,6 +6,8 @@ mod theme;
 // hack for referencing the current crate in proc macros https://github.com/bkchr/proc-macro-crate/issues/14#issuecomment-1742071768
 extern crate self as tui_theme;
 
+use std::ops::{Deref, DerefMut, Index};
+
 pub use color::*;
 pub use style::*;
 use termprofile::TermProfile;
@@ -15,6 +17,7 @@ pub mod profile {
     pub use termprofile::*;
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ThemeMode {
     Dark,
     Light,
@@ -105,6 +108,52 @@ impl<T> ProfileVariant<T> {
         }
 
         self.default_value
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+pub struct ThemeArray<const N: usize>(pub [Color; N]);
+
+#[derive(Debug, Clone, Copy)]
+pub struct Dark(pub usize);
+
+#[derive(Debug, Clone, Copy)]
+pub struct Light(pub usize);
+
+impl<const N: usize> Deref for ThemeArray<N> {
+    type Target = [Color; N];
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<const N: usize> DerefMut for ThemeArray<N> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl<const N: usize> Index<(Light, Dark)> for ThemeArray<N> {
+    type Output = Color;
+
+    fn index(&self, (light, dark): (Light, Dark)) -> &Self::Output {
+        if color_scheme() == ThemeMode::Light {
+            &self.0[light.0]
+        } else {
+            &self.0[dark.0]
+        }
+    }
+}
+
+impl<const N: usize> Index<(Dark, Light)> for ThemeArray<N> {
+    type Output = Color;
+
+    fn index(&self, (dark, light): (Dark, Light)) -> &Self::Output {
+        if color_scheme() == ThemeMode::Light {
+            &self.0[light.0]
+        } else {
+            &self.0[dark.0]
+        }
     }
 }
 

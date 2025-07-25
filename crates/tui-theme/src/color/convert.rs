@@ -5,7 +5,7 @@ use palette::{
 };
 use termprofile::TermProfile;
 
-use super::{Color, indexed_to_rgb, profile, terminal_background_rgb, terminal_foreground_rgb};
+use super::{Color, indexed_to_rgb, profile};
 
 impl Color {
     pub fn to_rgb_fg(self) -> Rgb {
@@ -37,46 +37,46 @@ impl Color {
 
     fn to_rgb(self, is_fg: bool) -> Rgb {
         match self {
-            Color::Rgb(val) => val,
-            Color::Hsl(val) => Rgb::from_color(val),
-            Color::Hsluv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Hsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Hwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Lab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Lch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Lchuv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Luv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Okhsl(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Okhsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Okhwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Oklab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Oklch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Xyz(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Yxy(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Color::Reset => {
+            Self::Rgb(val) => val,
+            Self::Hsl(val) => Rgb::from_color(val),
+            Self::Hsluv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Hsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Hwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Lab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Lch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Lchuv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Luv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Okhsl(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Okhsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Okhwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Oklab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Oklch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Xyz(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Yxy(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
+            Self::Reset => {
                 if is_fg {
-                    terminal_foreground_rgb()
+                    Self::terminal_foreground().to_rgb_fg()
                 } else {
-                    terminal_background_rgb()
+                    Self::terminal_background().to_rgb_bg()
                 }
             }
-            Color::Black => indexed_to_rgb(0),
-            Color::Red => indexed_to_rgb(1),
-            Color::Green => indexed_to_rgb(2),
-            Color::Yellow => indexed_to_rgb(3),
-            Color::Blue => indexed_to_rgb(4),
-            Color::Magenta => indexed_to_rgb(5),
-            Color::Cyan => indexed_to_rgb(6),
-            Color::Gray => indexed_to_rgb(7),
-            Color::DarkGray => indexed_to_rgb(8),
-            Color::LightRed => indexed_to_rgb(9),
-            Color::LightGreen => indexed_to_rgb(10),
-            Color::LightYellow => indexed_to_rgb(11),
-            Color::LightBlue => indexed_to_rgb(12),
-            Color::LightMagenta => indexed_to_rgb(13),
-            Color::LightCyan => indexed_to_rgb(14),
-            Color::White => indexed_to_rgb(15),
-            Color::Indexed(idx) => indexed_to_rgb(idx),
+            Self::Black => indexed_to_rgb(0),
+            Self::Red => indexed_to_rgb(1),
+            Self::Green => indexed_to_rgb(2),
+            Self::Yellow => indexed_to_rgb(3),
+            Self::Blue => indexed_to_rgb(4),
+            Self::Magenta => indexed_to_rgb(5),
+            Self::Cyan => indexed_to_rgb(6),
+            Self::Gray => indexed_to_rgb(7),
+            Self::DarkGray => indexed_to_rgb(8),
+            Self::LightRed => indexed_to_rgb(9),
+            Self::LightGreen => indexed_to_rgb(10),
+            Self::LightYellow => indexed_to_rgb(11),
+            Self::LightBlue => indexed_to_rgb(12),
+            Self::LightMagenta => indexed_to_rgb(13),
+            Self::LightCyan => indexed_to_rgb(14),
+            Self::White => indexed_to_rgb(15),
+            Self::Indexed(idx) => indexed_to_rgb(idx),
         }
     }
 

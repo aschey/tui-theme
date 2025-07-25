@@ -1,4 +1,4 @@
-use crate::Color;
+use crate::{Color, ThemeArray};
 
 // Auto-generated file. Do not edit.
 
@@ -1006,77 +1006,7 @@ impl TokyoNight {
         ::palette::OklabHue::new(79.6800),
     ));
 
-    pub const MINT: [Color; 11] = [
-        Self::MINT_50,
-        Self::MINT_100,
-        Self::MINT_200,
-        Self::MINT_300,
-        Self::MINT_400,
-        Self::MINT_500,
-        Self::MINT_600,
-        Self::MINT_700,
-        Self::MINT_800,
-        Self::MINT_900,
-        Self::MINT_950,
-    ];
-
-    pub const ORANGE: [Color; 11] = [
-        Self::ORANGE_50,
-        Self::ORANGE_100,
-        Self::ORANGE_200,
-        Self::ORANGE_300,
-        Self::ORANGE_400,
-        Self::ORANGE_500,
-        Self::ORANGE_600,
-        Self::ORANGE_700,
-        Self::ORANGE_800,
-        Self::ORANGE_900,
-        Self::ORANGE_950,
-    ];
-
-    pub const ROSE: [Color; 11] = [
-        Self::ROSE_50,
-        Self::ROSE_100,
-        Self::ROSE_200,
-        Self::ROSE_300,
-        Self::ROSE_400,
-        Self::ROSE_500,
-        Self::ROSE_600,
-        Self::ROSE_700,
-        Self::ROSE_800,
-        Self::ROSE_900,
-        Self::ROSE_950,
-    ];
-
-    pub const GREEN: [Color; 11] = [
-        Self::GREEN_50,
-        Self::GREEN_100,
-        Self::GREEN_200,
-        Self::GREEN_300,
-        Self::GREEN_400,
-        Self::GREEN_500,
-        Self::GREEN_600,
-        Self::GREEN_700,
-        Self::GREEN_800,
-        Self::GREEN_900,
-        Self::GREEN_950,
-    ];
-
-    pub const LAVENDER: [Color; 11] = [
-        Self::LAVENDER_50,
-        Self::LAVENDER_100,
-        Self::LAVENDER_200,
-        Self::LAVENDER_300,
-        Self::LAVENDER_400,
-        Self::LAVENDER_500,
-        Self::LAVENDER_600,
-        Self::LAVENDER_700,
-        Self::LAVENDER_800,
-        Self::LAVENDER_900,
-        Self::LAVENDER_950,
-    ];
-
-    pub const CYAN: [Color; 11] = [
+    pub const CYAN: ThemeArray<11> = ThemeArray([
         Self::CYAN_50,
         Self::CYAN_100,
         Self::CYAN_200,
@@ -1088,9 +1018,9 @@ impl TokyoNight {
         Self::CYAN_800,
         Self::CYAN_900,
         Self::CYAN_950,
-    ];
+    ]);
 
-    pub const GRAY: [Color; 11] = [
+    pub const GRAY: ThemeArray<11> = ThemeArray([
         Self::GRAY_50,
         Self::GRAY_100,
         Self::GRAY_200,
@@ -1102,37 +1032,37 @@ impl TokyoNight {
         Self::GRAY_800,
         Self::GRAY_900,
         Self::GRAY_950,
-    ];
+    ]);
 
-    pub const BLUE: [Color; 11] = [
-        Self::BLUE_50,
-        Self::BLUE_100,
-        Self::BLUE_200,
-        Self::BLUE_300,
-        Self::BLUE_400,
-        Self::BLUE_500,
-        Self::BLUE_600,
-        Self::BLUE_700,
-        Self::BLUE_800,
-        Self::BLUE_900,
-        Self::BLUE_950,
-    ];
+    pub const ROSE: ThemeArray<11> = ThemeArray([
+        Self::ROSE_50,
+        Self::ROSE_100,
+        Self::ROSE_200,
+        Self::ROSE_300,
+        Self::ROSE_400,
+        Self::ROSE_500,
+        Self::ROSE_600,
+        Self::ROSE_700,
+        Self::ROSE_800,
+        Self::ROSE_900,
+        Self::ROSE_950,
+    ]);
 
-    pub const PURPLE: [Color; 11] = [
-        Self::PURPLE_50,
-        Self::PURPLE_100,
-        Self::PURPLE_200,
-        Self::PURPLE_300,
-        Self::PURPLE_400,
-        Self::PURPLE_500,
-        Self::PURPLE_600,
-        Self::PURPLE_700,
-        Self::PURPLE_800,
-        Self::PURPLE_900,
-        Self::PURPLE_950,
-    ];
+    pub const ORANGE: ThemeArray<11> = ThemeArray([
+        Self::ORANGE_50,
+        Self::ORANGE_100,
+        Self::ORANGE_200,
+        Self::ORANGE_300,
+        Self::ORANGE_400,
+        Self::ORANGE_500,
+        Self::ORANGE_600,
+        Self::ORANGE_700,
+        Self::ORANGE_800,
+        Self::ORANGE_900,
+        Self::ORANGE_950,
+    ]);
 
-    pub const PINK: [Color; 11] = [
+    pub const PINK: ThemeArray<11> = ThemeArray([
         Self::PINK_50,
         Self::PINK_100,
         Self::PINK_200,
@@ -1144,9 +1074,9 @@ impl TokyoNight {
         Self::PINK_800,
         Self::PINK_900,
         Self::PINK_950,
-    ];
+    ]);
 
-    pub const TEAL: [Color; 11] = [
+    pub const TEAL: ThemeArray<11> = ThemeArray([
         Self::TEAL_50,
         Self::TEAL_100,
         Self::TEAL_200,
@@ -1158,9 +1088,23 @@ impl TokyoNight {
         Self::TEAL_800,
         Self::TEAL_900,
         Self::TEAL_950,
-    ];
+    ]);
 
-    pub const RED: [Color; 11] = [
+    pub const LAVENDER: ThemeArray<11> = ThemeArray([
+        Self::LAVENDER_50,
+        Self::LAVENDER_100,
+        Self::LAVENDER_200,
+        Self::LAVENDER_300,
+        Self::LAVENDER_400,
+        Self::LAVENDER_500,
+        Self::LAVENDER_600,
+        Self::LAVENDER_700,
+        Self::LAVENDER_800,
+        Self::LAVENDER_900,
+        Self::LAVENDER_950,
+    ]);
+
+    pub const RED: ThemeArray<11> = ThemeArray([
         Self::RED_50,
         Self::RED_100,
         Self::RED_200,
@@ -1172,9 +1116,37 @@ impl TokyoNight {
         Self::RED_800,
         Self::RED_900,
         Self::RED_950,
-    ];
+    ]);
 
-    pub const YELLOW: [Color; 11] = [
+    pub const BLUE: ThemeArray<11> = ThemeArray([
+        Self::BLUE_50,
+        Self::BLUE_100,
+        Self::BLUE_200,
+        Self::BLUE_300,
+        Self::BLUE_400,
+        Self::BLUE_500,
+        Self::BLUE_600,
+        Self::BLUE_700,
+        Self::BLUE_800,
+        Self::BLUE_900,
+        Self::BLUE_950,
+    ]);
+
+    pub const GREEN: ThemeArray<11> = ThemeArray([
+        Self::GREEN_50,
+        Self::GREEN_100,
+        Self::GREEN_200,
+        Self::GREEN_300,
+        Self::GREEN_400,
+        Self::GREEN_500,
+        Self::GREEN_600,
+        Self::GREEN_700,
+        Self::GREEN_800,
+        Self::GREEN_900,
+        Self::GREEN_950,
+    ]);
+
+    pub const YELLOW: ThemeArray<11> = ThemeArray([
         Self::YELLOW_50,
         Self::YELLOW_100,
         Self::YELLOW_200,
@@ -1186,5 +1158,33 @@ impl TokyoNight {
         Self::YELLOW_800,
         Self::YELLOW_900,
         Self::YELLOW_950,
-    ];
+    ]);
+
+    pub const MINT: ThemeArray<11> = ThemeArray([
+        Self::MINT_50,
+        Self::MINT_100,
+        Self::MINT_200,
+        Self::MINT_300,
+        Self::MINT_400,
+        Self::MINT_500,
+        Self::MINT_600,
+        Self::MINT_700,
+        Self::MINT_800,
+        Self::MINT_900,
+        Self::MINT_950,
+    ]);
+
+    pub const PURPLE: ThemeArray<11> = ThemeArray([
+        Self::PURPLE_50,
+        Self::PURPLE_100,
+        Self::PURPLE_200,
+        Self::PURPLE_300,
+        Self::PURPLE_400,
+        Self::PURPLE_500,
+        Self::PURPLE_600,
+        Self::PURPLE_700,
+        Self::PURPLE_800,
+        Self::PURPLE_900,
+        Self::PURPLE_950,
+    ]);
 }

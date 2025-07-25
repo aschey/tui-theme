@@ -1,3 +1,4 @@
+use std::env;
 use std::io::{self, IsTerminal};
 use std::sync::{Arc, OnceLock};
 use std::time::Duration;
@@ -7,7 +8,6 @@ use ::palette::{
     Darken, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch,
     Xyz, Yxy,
 };
-use terminal_colorsaurus::{ColorPalette, QueryOptions};
 use termprofile::TermProfile;
 
 mod convert;
@@ -19,6 +19,23 @@ use crate::ThemeMode;
 static TERM_PROFILE: OnceLock<TermProfile> = OnceLock::new();
 
 static COLOR_PALETTE: OnceLock<Result<ColorPalette, PaletteError>> = OnceLock::new();
+
+#[derive(Clone, Copy, Debug)]
+struct ColorPalette {
+    fg: Color,
+    bg: Color,
+    theme_mode: ThemeMode,
+}
+
+impl From<terminal_colorsaurus::ColorPalette> for ColorPalette {
+    fn from(value: terminal_colorsaurus::ColorPalette) -> Self {
+        ColorPalette {
+            fg: Color::Rgb(scale_color(&value.foreground)),
+            bg: Color::Rgb(scale_color(&value.background)),
+            theme_mode: override_color_scheme().unwrap_or_else(|| value.theme_mode().into()),
+        }
+    }
+}
 
 #[derive(Debug, Clone, thiserror::Error)]
 pub enum PaletteError {
@@ -68,8 +85,30 @@ where
 }
 
 pub fn load_color_palette() {
-    let _ = COLOR_PALETTE
-        .set(terminal_colorsaurus::color_palette(QueryOptions::default()).map_err(Into::into));
+    let palette =
+        terminal_colorsaurus::color_palette(terminal_colorsaurus::QueryOptions::default());
+    // Somewhat non-standard variable but can be useful for some terminals
+    // see https://github.com/bash/terminal-colorsaurus/issues/26
+    if matches!(
+        palette,
+        Err(terminal_colorsaurus::Error::UnsupportedTerminal(_))
+    ) && let Some((fg, bg)) = Color::parse_colorfgbg("COLORFGBG")
+    {
+        set_palette_from_override(fg, bg);
+        return;
+    }
+    let _ = COLOR_PALETTE.set(palette.map(Into::into).map_err(Into::into));
+}
+
+fn set_palette_from_override(fg: Color, bg: Color) {
+    let theme_mode = override_color_scheme().unwrap_or_else(|| {
+        if bg == Color::White || bg == Color::Gray {
+            ThemeMode::Light
+        } else {
+            ThemeMode::Dark
+        }
+    });
+    let _ = COLOR_PALETTE.set(Ok(ColorPalette { fg, bg, theme_mode }));
 }
 
 pub fn profile() -> Result<TermProfile, ProfileError> {
@@ -80,16 +119,28 @@ pub fn is_supported(term_profile: TermProfile) -> Result<bool, ProfileError> {
     profile().map(|p| p >= term_profile)
 }
 
-pub fn color_palette() -> Result<ColorPalette, PaletteError> {
+fn color_palette() -> Result<ColorPalette, PaletteError> {
     match COLOR_PALETTE.get() {
         Some(res) => res.clone(),
         None => Err(PaletteError::NotLoaded),
     }
 }
 
+fn override_color_scheme() -> Option<ThemeMode> {
+    // https://wiki.tau.garden/cli-theme/
+    match env::var("CLITHEME")
+        .map(|s| s.to_ascii_lowercase())
+        .as_deref()
+    {
+        Ok("light") => Some(ThemeMode::Light),
+        Ok("dark") => Some(ThemeMode::Dark),
+        _ => None,
+    }
+}
+
 pub fn color_scheme() -> ThemeMode {
     color_palette()
-        .map(|p| p.theme_mode().into())
+        .map(|p| p.theme_mode)
         .unwrap_or(ThemeMode::Dark)
 }
 
@@ -198,18 +249,6 @@ macro_rules! color_op {
     };
 }
 
-pub fn terminal_foreground_rgb() -> Rgb {
-    color_palette()
-        .map(|p| scale_color(&p.foreground))
-        .unwrap_or_default()
-}
-
-pub fn terminal_background_rgb() -> Rgb {
-    color_palette()
-        .map(|p| scale_color(&p.background))
-        .unwrap_or_default()
-}
-
 fn scale_color(color: &terminal_colorsaurus::Color) -> Rgb {
     let color = color.scale_to_8bit();
     Rgb::new(
@@ -221,11 +260,11 @@ fn scale_color(color: &terminal_colorsaurus::Color) -> Rgb {
 
 impl Color {
     pub fn terminal_background() -> Self {
-        terminal_background_rgb().into()
+        color_palette().map(|p| p.bg).unwrap_or(Color::Black)
     }
 
     pub fn terminal_foreground() -> Self {
-        terminal_foreground_rgb().into()
+        color_palette().map(|p| p.fg).unwrap_or(Color::White)
     }
 
     pub fn is_compatible(&self) -> bool {
@@ -266,6 +305,44 @@ impl Color {
             | Self::Oklch(_)
             | Self::Xyz(_)
             | Self::Yxy(_) => color_support >= TermProfile::TrueColor,
+        }
+    }
+
+    fn parse_colorfgbg(env_var: &str) -> Option<(Color, Color)> {
+        if let Ok(fgbg) = env::var(env_var) {
+            let fgbg: Vec<_> = fgbg.split(";").collect();
+            match &fgbg[..] {
+                // urxvt may set a third variable, but we can ignore it
+                [fg, bg] | [fg, _, bg] => {
+                    let fg: u8 = fg.parse().ok()?;
+                    let bg: u8 = bg.parse().ok()?;
+                    return Some((Color::ansi_from_index(fg), Color::ansi_from_index(bg)));
+                }
+                _ => {}
+            }
+        }
+        None
+    }
+
+    fn ansi_from_index(index: u8) -> Self {
+        match index {
+            0 => Color::Black,
+            1 => Color::Red,
+            2 => Color::Green,
+            3 => Color::Yellow,
+            4 => Color::Blue,
+            5 => Color::Magenta,
+            6 => Color::Cyan,
+            7 => Color::Gray,
+            8 => Color::DarkGray,
+            9 => Color::LightRed,
+            10 => Color::LightGreen,
+            11 => Color::LightYellow,
+            12 => Color::LightBlue,
+            13 => Color::LightMagenta,
+            14 => Color::LightCyan,
+            15 => Color::White,
+            _ => panic!("invalid index"),
         }
     }
 
