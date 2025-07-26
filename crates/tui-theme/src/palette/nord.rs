@@ -1,4 +1,6 @@
-use crate::{Color, ThemeArray};
+use std::borrow::Cow;
+
+use crate::{Color, NamedColor, ThemeArray};
 
 // Auto-generated file. Do not edit.
 
@@ -698,20 +700,6 @@ impl Nord {
         ::palette::OklabHue::new(334.5300),
     ));
 
-    pub const BLUE: ThemeArray<11> = ThemeArray([
-        Self::BLUE_50,
-        Self::BLUE_100,
-        Self::BLUE_200,
-        Self::BLUE_300,
-        Self::BLUE_400,
-        Self::BLUE_500,
-        Self::BLUE_600,
-        Self::BLUE_700,
-        Self::BLUE_800,
-        Self::BLUE_900,
-        Self::BLUE_950,
-    ]);
-
     pub const GRAY: ThemeArray<11> = ThemeArray([
         Self::GRAY_50,
         Self::GRAY_100,
@@ -724,62 +712,6 @@ impl Nord {
         Self::GRAY_800,
         Self::GRAY_900,
         Self::GRAY_950,
-    ]);
-
-    pub const GREEN: ThemeArray<11> = ThemeArray([
-        Self::GREEN_50,
-        Self::GREEN_100,
-        Self::GREEN_200,
-        Self::GREEN_300,
-        Self::GREEN_400,
-        Self::GREEN_500,
-        Self::GREEN_600,
-        Self::GREEN_700,
-        Self::GREEN_800,
-        Self::GREEN_900,
-        Self::GREEN_950,
-    ]);
-
-    pub const ORANGE: ThemeArray<11> = ThemeArray([
-        Self::ORANGE_50,
-        Self::ORANGE_100,
-        Self::ORANGE_200,
-        Self::ORANGE_300,
-        Self::ORANGE_400,
-        Self::ORANGE_500,
-        Self::ORANGE_600,
-        Self::ORANGE_700,
-        Self::ORANGE_800,
-        Self::ORANGE_900,
-        Self::ORANGE_950,
-    ]);
-
-    pub const PURPLE: ThemeArray<11> = ThemeArray([
-        Self::PURPLE_50,
-        Self::PURPLE_100,
-        Self::PURPLE_200,
-        Self::PURPLE_300,
-        Self::PURPLE_400,
-        Self::PURPLE_500,
-        Self::PURPLE_600,
-        Self::PURPLE_700,
-        Self::PURPLE_800,
-        Self::PURPLE_900,
-        Self::PURPLE_950,
-    ]);
-
-    pub const RED: ThemeArray<11> = ThemeArray([
-        Self::RED_50,
-        Self::RED_100,
-        Self::RED_200,
-        Self::RED_300,
-        Self::RED_400,
-        Self::RED_500,
-        Self::RED_600,
-        Self::RED_700,
-        Self::RED_800,
-        Self::RED_900,
-        Self::RED_950,
     ]);
 
     pub const SEAFOAM: ThemeArray<11> = ThemeArray([
@@ -810,6 +742,48 @@ impl Nord {
         Self::TEAL_950,
     ]);
 
+    pub const BLUE: ThemeArray<11> = ThemeArray([
+        Self::BLUE_50,
+        Self::BLUE_100,
+        Self::BLUE_200,
+        Self::BLUE_300,
+        Self::BLUE_400,
+        Self::BLUE_500,
+        Self::BLUE_600,
+        Self::BLUE_700,
+        Self::BLUE_800,
+        Self::BLUE_900,
+        Self::BLUE_950,
+    ]);
+
+    pub const RED: ThemeArray<11> = ThemeArray([
+        Self::RED_50,
+        Self::RED_100,
+        Self::RED_200,
+        Self::RED_300,
+        Self::RED_400,
+        Self::RED_500,
+        Self::RED_600,
+        Self::RED_700,
+        Self::RED_800,
+        Self::RED_900,
+        Self::RED_950,
+    ]);
+
+    pub const ORANGE: ThemeArray<11> = ThemeArray([
+        Self::ORANGE_50,
+        Self::ORANGE_100,
+        Self::ORANGE_200,
+        Self::ORANGE_300,
+        Self::ORANGE_400,
+        Self::ORANGE_500,
+        Self::ORANGE_600,
+        Self::ORANGE_700,
+        Self::ORANGE_800,
+        Self::ORANGE_900,
+        Self::ORANGE_950,
+    ]);
+
     pub const YELLOW: ThemeArray<11> = ThemeArray([
         Self::YELLOW_50,
         Self::YELLOW_100,
@@ -824,15 +798,529 @@ impl Nord {
         Self::YELLOW_950,
     ]);
 
-    pub const ALL_COLORS: [ThemeArray<11>; 9] = [
-        Self::BLUE,
-        Self::GRAY,
-        Self::GREEN,
-        Self::ORANGE,
-        Self::PURPLE,
-        Self::RED,
-        Self::SEAFOAM,
-        Self::TEAL,
-        Self::YELLOW,
+    pub const GREEN: ThemeArray<11> = ThemeArray([
+        Self::GREEN_50,
+        Self::GREEN_100,
+        Self::GREEN_200,
+        Self::GREEN_300,
+        Self::GREEN_400,
+        Self::GREEN_500,
+        Self::GREEN_600,
+        Self::GREEN_700,
+        Self::GREEN_800,
+        Self::GREEN_900,
+        Self::GREEN_950,
+    ]);
+
+    pub const PURPLE: ThemeArray<11> = ThemeArray([
+        Self::PURPLE_50,
+        Self::PURPLE_100,
+        Self::PURPLE_200,
+        Self::PURPLE_300,
+        Self::PURPLE_400,
+        Self::PURPLE_500,
+        Self::PURPLE_600,
+        Self::PURPLE_700,
+        Self::PURPLE_800,
+        Self::PURPLE_900,
+        Self::PURPLE_950,
+    ]);
+
+    pub const ALL_COLORS: [NamedColor<'_>; 99] = [
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("gray"),
+            color: Self::GRAY_950,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("seafoam"),
+            color: Self::SEAFOAM_950,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("teal"),
+            color: Self::TEAL_950,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("blue"),
+            color: Self::BLUE_950,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("red"),
+            color: Self::RED_950,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("orange"),
+            color: Self::ORANGE_950,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("yellow"),
+            color: Self::YELLOW_950,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("green"),
+            color: Self::GREEN_950,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("50"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_50,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("100"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_100,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("200"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_200,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("300"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_300,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("400"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_400,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("500"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_500,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("600"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_600,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("700"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_700,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("800"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_800,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("900"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_900,
+        },
+        NamedColor {
+            variant: Cow::Borrowed("950"),
+            group: Cow::Borrowed("purple"),
+            color: Self::PURPLE_950,
+        },
     ];
 }

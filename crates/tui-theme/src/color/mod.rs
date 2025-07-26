@@ -1,4 +1,6 @@
+use std::borrow::Cow;
 use std::env;
+use std::fmt::Display;
 use std::io::{self, IsTerminal};
 use std::sync::{Arc, OnceLock};
 use std::time::Duration;
@@ -8,6 +10,7 @@ use ::palette::{
     Darken, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Lighten, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch,
     Xyz, Yxy,
 };
+use palette::white_point::D65;
 use termprofile::TermProfile;
 
 mod convert;
@@ -144,6 +147,18 @@ pub fn color_scheme() -> ThemeMode {
         .unwrap_or(ThemeMode::Dark)
 }
 
+pub struct NamedColor<'a> {
+    pub color: Color,
+    pub group: Cow<'a, str>,
+    pub variant: Cow<'a, str>,
+}
+
+impl NamedColor<'_> {
+    pub fn full_name(&self) -> String {
+        format!("{}-{}", self.group, self.variant)
+    }
+}
+
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Clone, Copy, Debug, PartialEq)]
 pub enum Color {
@@ -225,8 +240,8 @@ macro_rules! color_op {
             Self::Okhwb(val) => Self::Okhwb(val.$op($factor)),
             Self::Oklab(val) => Self::Oklab(val.$op($factor)),
             Self::Oklch(val) => Self::Oklch(val.$op($factor)),
-            Self::Xyz(val) => Self::Xyz(val.lighten_fixed($factor)),
-            Self::Yxy(val) => Self::Yxy(val.lighten_fixed($factor)),
+            Self::Xyz(val) => Self::Xyz(val.$op($factor)),
+            Self::Yxy(val) => Self::Yxy(val.$op($factor)),
             Self::Indexed(i) => indexed_to_color(*i).$op($factor),
             Self::Reset => Self::Reset,
             Self::Black => indexed_to_color(0).$op($factor),
@@ -372,6 +387,133 @@ pub fn indexed_to_rgb(index: u8) -> Rgb {
         unreachable!()
     };
     rgb
+}
+
+fn dec_to_pct(dec: f32) -> String {
+    format!("{}%", (dec * 100.0) as u8)
+}
+
+impl Display for Color {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Rgb(val) => write!(
+                f,
+                "rgb({} {} {})",
+                (val.red * 255.0) as u8,
+                (val.green * 255.0) as u8,
+                (val.blue * 255.0) as u8,
+            ),
+            Self::Hsl(val) => write!(
+                f,
+                "hsl({:.0} {} {})",
+                val.hue.into_positive_degrees(),
+                dec_to_pct(val.saturation),
+                dec_to_pct(val.lightness)
+            ),
+            Self::Hsluv(val) => write!(
+                f,
+                "hsluv({:.0} {:.2} {:.2})",
+                val.hue.into_positive_degrees(),
+                val.saturation,
+                val.l
+            ),
+            Self::Hsv(val) => write!(
+                f,
+                "hsv({:.0} {:.2} {:.2})",
+                val.hue.into_positive_degrees(),
+                val.saturation,
+                val.value
+            ),
+            Self::Hwb(val) => write!(
+                f,
+                "hwb({:.0} {} {})",
+                val.hue.into_positive_degrees(),
+                dec_to_pct(val.whiteness),
+                dec_to_pct(val.blackness)
+            ),
+            Self::Lab(val) => write!(
+                f,
+                "lab({} {:.4} {:.4})",
+                dec_to_pct(val.l / Lab::<D65, f32>::max_l()),
+                val.a,
+                val.b
+            ),
+            Self::Lch(val) => write!(
+                f,
+                "lch({} {:.2} {:.2})",
+                dec_to_pct(val.l / Lch::<D65, f32>::max_l()),
+                val.chroma,
+                val.hue.into_positive_degrees()
+            ),
+            Self::Lchuv(val) => write!(
+                f,
+                "lchuv({} {:.2} {:.2})",
+                dec_to_pct(val.l / Lchuv::<D65, f32>::max_l()),
+                val.chroma,
+                val.hue.into_positive_degrees()
+            ),
+            Self::Luv(val) => write!(
+                f,
+                "luv({} {:.2} {:.2})",
+                dec_to_pct(val.l / Luv::<D65, f32>::max_l()),
+                val.u,
+                val.v
+            ),
+            Self::Okhsl(val) => {
+                write!(
+                    f,
+                    "okhsl({:0} {} {})",
+                    val.hue.into_positive_degrees(),
+                    dec_to_pct(val.saturation),
+                    dec_to_pct(val.lightness)
+                )
+            }
+            Self::Okhsv(val) => write!(
+                f,
+                "okhsv({:.0} {} {})",
+                val.hue.into_positive_degrees(),
+                dec_to_pct(val.saturation),
+                dec_to_pct(val.value)
+            ),
+            Self::Okhwb(val) => write!(
+                f,
+                "okhwb({:.0} {} {})",
+                val.hue.into_positive_degrees(),
+                dec_to_pct(val.whiteness),
+                dec_to_pct(val.blackness)
+            ),
+            Self::Oklab(val) => write!(f, "oklab({} {:.4} {:.4})", dec_to_pct(val.l), val.a, val.b),
+            Self::Oklch(val) => {
+                write!(
+                    f,
+                    "oklch({} {:.4} {:.4})",
+                    dec_to_pct(val.l),
+                    val.chroma,
+                    val.hue.into_positive_degrees()
+                )
+            }
+            Self::Xyz(val) => write!(f, "xyz({:.4} {:.4} {:.4})", val.x, val.y, val.z),
+            Self::Yxy(val) => write!(f, "yxy({:.4} {:.4} {:.4})", val.y, val.x, val.luma),
+            Self::Indexed(i) => write!(f, "{i}"),
+            Self::Reset => write!(f, "reset"),
+            Self::Black => write!(f, "black"),
+            Self::Red => write!(f, "red"),
+            Self::Green => write!(f, "green"),
+            Self::Yellow => write!(f, "yellow"),
+            Self::Blue => write!(f, "blue"),
+            Self::Magenta => write!(f, "magenta"),
+            Self::Cyan => write!(f, "cyan"),
+            Self::Gray => write!(f, "gray"),
+            Self::DarkGray => write!(f, "darkgray"),
+            Self::LightRed => write!(f, "lightred"),
+            Self::LightGreen => write!(f, "lightgreen"),
+            Self::LightYellow => write!(f, "lightyellow"),
+            Self::LightBlue => write!(f, "lightblue"),
+            Self::LightMagenta => write!(f, "lightmagenta"),
+            Self::LightCyan => write!(f, "lightcyan"),
+            Self::White => write!(f, "white"),
+        }
+    }
 }
 
 const ANSI_HEX: [&str; 256] = [

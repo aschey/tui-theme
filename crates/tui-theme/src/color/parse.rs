@@ -8,6 +8,7 @@ use ::palette::white_point::D50;
 use ::palette::{
     Hsl, Hsluv, Hwb, Lab, Lch, Lchuv, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch, Srgb, Xyz, Yxy,
 };
+use palette::Hsv;
 use regex::{Captures, Regex};
 
 use super::Color;
@@ -57,6 +58,10 @@ static RGB_RE: LazyLock<Regex> = LazyLock::new(|| {
 
 static HSL_RE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(&format!("^hsl\\(({DIGITS}){SEP}({PCT}){SEP}({PCT})\\);?$")).unwrap()
+});
+
+static HSV_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(&format!("^hsv\\(({DIGITS}){SEP}({PCT}){SEP}({PCT})\\);?$")).unwrap()
 });
 
 static HSLUV_RE: LazyLock<Regex> = LazyLock::new(|| {
@@ -162,6 +167,24 @@ impl Color {
                 parse_capture(
                     3,
                     Bounds::new(Hsl::<Srgb>::min_lightness(), Hsl::<Srgb>::max_lightness()),
+                    &captures,
+                )?,
+            )))
+        })
+    }
+
+    fn parse_hsv(s: &str) -> Option<Self> {
+        HSV_RE.captures(s).and_then(|captures| {
+            Some(Self::Hsv(Hsv::new(
+                parse_capture(1, None, &captures)?,
+                parse_capture(
+                    2,
+                    Bounds::new(Hsv::<Srgb>::min_saturation(), Hsv::<Srgb>::max_saturation()),
+                    &captures,
+                )?,
+                parse_capture(
+                    3,
+                    Bounds::new(Hsv::<Srgb>::min_value(), Hsv::<Srgb>::max_value()),
                     &captures,
                 )?,
             )))
@@ -463,6 +486,9 @@ impl FromStr for Color {
             return Ok(val);
         }
         if let Some(val) = Self::parse_hsl(s) {
+            return Ok(val);
+        }
+        if let Some(val) = Self::parse_hsv(s) {
             return Ok(val);
         }
         if let Some(val) = Self::parse_hsluv(s) {

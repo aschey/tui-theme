@@ -24,6 +24,7 @@ proc-macro-crate = "3"
 open = "5"
 base64 = "0.22"
 dialoguer = "0.11"
+indexmap = "2"
 
 crossterm = "0.28"
 anstyle-crossterm = "3"

@@ -14,3 +14,7 @@ convert_case = { workspace = true }
 open = { workspace = true }
 base64 = { workspace = true }
 dialoguer = { workspace = true }
+crossterm = { workspace = true }
+anstyle = { workspace = true }
+anstyle-crossterm = { workspace = true }
+indexmap = { workspace = true }

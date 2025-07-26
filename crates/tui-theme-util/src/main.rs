@@ -1,4 +1,3 @@
-use std::collections::BTreeMap;
 use std::fs;
 use std::fs::File;
 use std::io::{self, Read, Write};
@@ -6,6 +5,7 @@ use std::path::Path;
 use std::process::Command;
 
 use convert_case::{Case, Casing};
+use indexmap::IndexMap;
 use tui_theme::Color;
 
 fn main() -> io::Result<()> {
@@ -57,11 +57,14 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
     ))?;
     let name_caps = name.to_case(Case::UpperCamel);
     writeln!(out, "use crate::Color;")?;
+    writeln!(out, "use crate::NamedColor;")?;
+    writeln!(out, "use std::borrow::Cow;")?;
     writeln!(out, "use crate::ThemeArray;\n")?;
     writeln!(out, "// Auto-generated file. Do not edit.\n")?;
     writeln!(out, "pub struct {name_caps} {{}}\n")?;
     writeln!(out, "impl {name_caps} {{")?;
-    let mut color_groups: BTreeMap<String, Vec<String>> = BTreeMap::new();
+    let mut color_groups: IndexMap<String, Vec<String>> = IndexMap::new();
+    let mut all_colors: Vec<String> = Vec::new();
     for line in lines {
         let parts: Vec<_> = line.split(": ").collect();
         let [name, val] = parts.as_slice() else {
@@ -79,6 +82,12 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
         } else {
             color_groups.insert(name_base.to_string(), vec![name.clone()]);
         }
+        let variant = name.rsplit("_").next().unwrap().to_ascii_lowercase();
+        let name_base_lower = name_base.to_ascii_lowercase();
+        all_colors.push(format!(
+            "NamedColor {{ variant: Cow::Borrowed(\"{variant}\"), group: \
+             Cow::Borrowed(\"{name_base_lower}\"), color: Self::{name} }}",
+        ));
 
         let color: Color = val.parse().unwrap();
         let Color::Oklch(color) = color else {
@@ -91,23 +100,20 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
         writeln!(out, "{}", generate_const(&name, color))?;
     }
 
-    let mut colors_len = 0;
     for (color_group, colors) in &color_groups {
         let color_array_vals: Vec<_> = colors.iter().map(|c| format!("Self::{c}")).collect();
-        colors_len = colors.len();
         writeln!(
             out,
             "    pub const {color_group}: ThemeArray<{}> = ThemeArray([{}]);\n",
-            colors_len,
+            colors.len(),
             color_array_vals.join(",")
         )?;
     }
-    let group_keys: Vec<_> = color_groups.keys().map(|k| format!("Self::{k}")).collect();
     writeln!(
         out,
-        "  pub const ALL_COLORS: [ThemeArray<{colors_len}>;{}] = [{}];",
-        group_keys.len(),
-        group_keys.join(",")
+        "  pub const ALL_COLORS: [NamedColor<'_>;{}] = [{}];",
+        all_colors.len(),
+        all_colors.join(",")
     )?;
     writeln!(out, "}}")?;
 
