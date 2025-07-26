@@ -157,274 +157,319 @@ impl Color {
 
     fn parse_hsl(s: &str) -> Option<Self> {
         HSL_RE.captures(s).and_then(|captures| {
-            Some(Self::Hsl(Hsl::new(
-                parse_capture(1, None, &captures)?,
-                parse_capture(
-                    2,
-                    Bounds::new(Hsl::<Srgb>::min_saturation(), Hsl::<Srgb>::max_saturation()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Hsl::<Srgb>::min_lightness(), Hsl::<Srgb>::max_lightness()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Hsl::new(
+                    parse_capture(1, None, &captures)?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Hsl::<Srgb>::min_saturation(), Hsl::<Srgb>::max_saturation()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Hsl::<Srgb>::min_lightness(), Hsl::<Srgb>::max_lightness()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_hsv(s: &str) -> Option<Self> {
         HSV_RE.captures(s).and_then(|captures| {
-            Some(Self::Hsv(Hsv::new(
-                parse_capture(1, None, &captures)?,
-                parse_capture(
-                    2,
-                    Bounds::new(Hsv::<Srgb>::min_saturation(), Hsv::<Srgb>::max_saturation()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Hsv::<Srgb>::min_value(), Hsv::<Srgb>::max_value()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Hsv::new(
+                    parse_capture(1, None, &captures)?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Hsv::<Srgb>::min_saturation(), Hsv::<Srgb>::max_saturation()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Hsv::<Srgb>::min_value(), Hsv::<Srgb>::max_value()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_hsluv(s: &str) -> Option<Self> {
         HSLUV_RE.captures(s).and_then(|captures| {
-            Some(Self::Hsluv(Hsluv::new(
-                parse_capture(1, None, &captures)?,
-                parse_capture(
-                    2,
-                    Bounds::new(
-                        Hsluv::<Srgb>::min_saturation(),
-                        Hsluv::<Srgb>::max_saturation(),
-                    ),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Hsluv::<Srgb>::min_l(), Hsluv::<Srgb>::max_l()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Hsluv::new(
+                    parse_capture(1, None, &captures)?,
+                    parse_capture(
+                        2,
+                        Bounds::new(
+                            Hsluv::<Srgb>::min_saturation(),
+                            Hsluv::<Srgb>::max_saturation(),
+                        ),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Hsluv::<Srgb>::min_l(), Hsluv::<Srgb>::max_l()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_hwb(s: &str) -> Option<Self> {
         HWB_RE.captures(s).and_then(|captures| {
-            Some(Self::Hwb(Hwb::new(
-                parse_capture(1, None, &captures)?,
-                parse_capture(
-                    2,
-                    Bounds::new(Hwb::<Srgb>::min_whiteness(), Hwb::<Srgb>::max_whiteness()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Hwb::<Srgb>::min_blackness(), Hwb::<Srgb>::max_blackness()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Hwb::new(
+                    parse_capture(1, None, &captures)?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Hwb::<Srgb>::min_whiteness(), Hwb::<Srgb>::max_whiteness()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Hwb::<Srgb>::min_blackness(), Hwb::<Srgb>::max_blackness()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_lab(s: &str) -> Option<Self> {
         LAB_RE.captures(s).and_then(|captures| {
-            Some(Self::Lab(Lab::new(
-                parse_capture(
-                    1,
-                    Bounds::new(Lab::<Srgb>::min_l(), Lab::<Srgb>::max_l()),
-                    &captures,
-                )?,
-                parse_capture(
-                    2,
-                    Bounds::new(Lab::<Srgb>::min_a(), Lab::<Srgb>::max_a()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Lab::<Srgb>::min_b(), Lab::<Srgb>::max_b()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Lab::new(
+                    parse_capture(
+                        1,
+                        Bounds::new(Lab::<Srgb>::min_l(), Lab::<Srgb>::max_l()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Lab::<Srgb>::min_a(), Lab::<Srgb>::max_a()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Lab::<Srgb>::min_b(), Lab::<Srgb>::max_b()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_lch(s: &str) -> Option<Self> {
         LCH_RE.captures(s).and_then(|captures| {
-            Some(Self::Lch(Lch::new(
-                parse_capture(
-                    1,
-                    Bounds::new(Lch::<Srgb>::min_l(), Lch::<Srgb>::max_l()),
-                    &captures,
-                )?,
-                parse_capture(
-                    2,
-                    Bounds::new(Lch::<Srgb>::min_chroma(), Lch::<Srgb>::max_chroma()),
-                    &captures,
-                )?,
-                parse_capture(3, None, &captures)?,
-            )))
+            Some(
+                Lch::new(
+                    parse_capture(
+                        1,
+                        Bounds::new(Lch::<Srgb>::min_l(), Lch::<Srgb>::max_l()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Lch::<Srgb>::min_chroma(), Lch::<Srgb>::max_chroma()),
+                        &captures,
+                    )?,
+                    parse_capture(3, None, &captures)?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_lchuv(s: &str) -> Option<Self> {
         LCHUV_RE.captures(s).and_then(|captures| {
-            Some(Self::Lchuv(Lchuv::new(
-                parse_capture(
-                    1,
-                    Bounds::new(Lchuv::<Srgb>::min_l(), Lch::<Srgb>::max_l()),
-                    &captures,
-                )?,
-                parse_capture(
-                    2,
-                    Bounds::new(Lchuv::<Srgb>::min_chroma(), Lch::<Srgb>::max_chroma()),
-                    &captures,
-                )?,
-                parse_capture(3, None, &captures)?,
-            )))
+            Some(
+                Lchuv::new(
+                    parse_capture(
+                        1,
+                        Bounds::new(Lchuv::<Srgb>::min_l(), Lch::<Srgb>::max_l()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Lchuv::<Srgb>::min_chroma(), Lch::<Srgb>::max_chroma()),
+                        &captures,
+                    )?,
+                    parse_capture(3, None, &captures)?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_luv(s: &str) -> Option<Self> {
         LUV_RE.captures(s).and_then(|captures| {
-            Some(Self::Luv(Luv::new(
-                parse_capture(
-                    1,
-                    Bounds::new(Luv::<Srgb>::min_l(), Lch::<Srgb>::max_l()),
-                    &captures,
-                )?,
-                parse_capture(
-                    2,
-                    Bounds::new(Luv::<Srgb>::min_u(), Luv::<Srgb>::max_u()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Luv::<Srgb>::min_v(), Luv::<Srgb>::max_v()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Luv::new(
+                    parse_capture(
+                        1,
+                        Bounds::new(Luv::<Srgb>::min_l(), Lch::<Srgb>::max_l()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Luv::<Srgb>::min_u(), Luv::<Srgb>::max_u()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Luv::<Srgb>::min_v(), Luv::<Srgb>::max_v()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_okhsl(s: &str) -> Option<Self> {
         OKHSL_RE.captures(s).and_then(|captures| {
-            Some(Self::Okhsl(Okhsl::new(
-                parse_capture(1, None, &captures)?,
-                parse_capture(
-                    2,
-                    Bounds::new(Okhsl::min_saturation(), Okhsl::max_saturation()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Okhsl::min_lightness(), Okhsl::max_lightness()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Okhsl::new(
+                    parse_capture(1, None, &captures)?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Okhsl::min_saturation(), Okhsl::max_saturation()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Okhsl::min_lightness(), Okhsl::max_lightness()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_okhsv(s: &str) -> Option<Self> {
         OKHSV_RE.captures(s).and_then(|captures| {
-            Some(Self::Okhsv(Okhsv::new(
-                parse_capture(1, None, &captures)?,
-                parse_capture(
-                    2,
-                    Bounds::new(Okhsv::min_saturation(), Okhsl::max_saturation()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Okhsv::min_value(), Okhsv::max_value()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Okhsv::new(
+                    parse_capture(1, None, &captures)?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Okhsv::min_saturation(), Okhsl::max_saturation()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Okhsv::min_value(), Okhsv::max_value()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_okhwb(s: &str) -> Option<Self> {
         OKHWB_RE.captures(s).and_then(|captures| {
-            Some(Self::Okhwb(Okhwb::new(
-                parse_capture(1, None, &captures)?,
-                parse_capture(
-                    2,
-                    Bounds::new(Okhwb::min_whiteness(), Okhwb::max_whiteness()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Okhwb::min_blackness(), Okhwb::max_blackness()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Okhwb::new(
+                    parse_capture(1, None, &captures)?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Okhwb::min_whiteness(), Okhwb::max_whiteness()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Okhwb::min_blackness(), Okhwb::max_blackness()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_oklab(s: &str) -> Option<Self> {
         OKLAB_RE.captures(s).and_then(|captures| {
-            Some(Self::Oklab(Oklab::new(
-                parse_capture(1, Bounds::new(Oklab::min_l(), Oklab::max_l()), &captures)?,
-                parse_capture(2, None, &captures)?,
-                parse_capture(3, None, &captures)?,
-            )))
+            Some(
+                Oklab::new(
+                    parse_capture(1, Bounds::new(Oklab::min_l(), Oklab::max_l()), &captures)?,
+                    parse_capture(2, None, &captures)?,
+                    parse_capture(3, None, &captures)?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_oklch(s: &str) -> Option<Self> {
         OKLCH_RE.captures(s).and_then(|captures| {
-            Some(Self::Oklch(Oklch::new(
-                parse_capture(1, Bounds::new(Oklch::min_l(), Oklch::max_l()), &captures)?,
-                parse_capture(2, None, &captures)?,
-                parse_capture(3, None, &captures)?,
-            )))
+            Some(
+                Oklch::new(
+                    parse_capture(1, Bounds::new(Oklch::min_l(), Oklch::max_l()), &captures)?,
+                    parse_capture(2, None, &captures)?,
+                    parse_capture(3, None, &captures)?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_xyz(s: &str) -> Option<Self> {
         XYZ_RE.captures(s).and_then(|captures| {
-            Some(Self::Xyz(Xyz::new(
-                parse_capture(
-                    1,
-                    Bounds::new(Xyz::<D50>::min_x(), Xyz::<D50>::max_x()),
-                    &captures,
-                )?,
-                parse_capture(
-                    2,
-                    Bounds::new(Xyz::<D50>::min_y(), Xyz::<D50>::max_y()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Xyz::<D50>::min_z(), Xyz::<D50>::max_z()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Xyz::new(
+                    parse_capture(
+                        1,
+                        Bounds::new(Xyz::<D50>::min_x(), Xyz::<D50>::max_x()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Xyz::<D50>::min_y(), Xyz::<D50>::max_y()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Xyz::<D50>::min_z(), Xyz::<D50>::max_z()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 
     fn parse_yxy(s: &str) -> Option<Self> {
         YXY_RE.captures(s).and_then(|captures| {
-            Some(Self::Yxy(Yxy::new(
-                parse_capture(
-                    1,
-                    Bounds::new(Yxy::<D50>::min_x(), Yxy::<D50>::max_x()),
-                    &captures,
-                )?,
-                parse_capture(
-                    2,
-                    Bounds::new(Yxy::<D50>::min_y(), Yxy::<D50>::max_y()),
-                    &captures,
-                )?,
-                parse_capture(
-                    3,
-                    Bounds::new(Yxy::<D50>::min_luma(), Yxy::<D50>::max_luma()),
-                    &captures,
-                )?,
-            )))
+            Some(
+                Yxy::new(
+                    parse_capture(
+                        1,
+                        Bounds::new(Yxy::<D50>::min_x(), Yxy::<D50>::max_x()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        2,
+                        Bounds::new(Yxy::<D50>::min_y(), Yxy::<D50>::max_y()),
+                        &captures,
+                    )?,
+                    parse_capture(
+                        3,
+                        Bounds::new(Yxy::<D50>::min_luma(), Yxy::<D50>::max_luma()),
+                        &captures,
+                    )?,
+                )
+                .into(),
+            )
         })
     }
 

@@ -90,7 +90,7 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
         ));
 
         let color: Color = val.parse().unwrap();
-        let Color::Oklch(color) = color else {
+        let Color::Rgb(color) = color else {
             panic!("invalid color");
         };
         writeln!(
@@ -120,12 +120,9 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
     Ok(())
 }
 
-fn generate_const(name: &str, color: ::palette::Oklch) -> String {
+fn generate_const(name: &str, color: ::palette::Srgb) -> String {
     format!(
-        "    pub const {name}: Color = Color::Oklch(::palette::Oklch::new_const({:.4}, {:.4}, \
-         ::palette::OklabHue::new({:.4})));\n",
-        color.l,
-        color.chroma,
-        color.hue.into_raw_degrees()
+        "    pub const {name}: Color = Color::Rgb(::palette::Srgb::new({:.4}, {:.4}, {:.4}));\n",
+        color.red, color.green, color.blue
     )
 }

@@ -38,21 +38,6 @@ impl Color {
     fn to_rgb(self, is_fg: bool) -> Rgb {
         match self {
             Self::Rgb(val) => val,
-            Self::Hsl(val) => Rgb::from_color(val),
-            Self::Hsluv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Hsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Hwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Lab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Lch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Lchuv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Luv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Okhsl(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Okhsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Okhwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Oklab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Oklch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Xyz(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
-            Self::Yxy(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val),
             Self::Reset => {
                 if is_fg {
                     Self::terminal_foreground().to_rgb_fg()
@@ -108,21 +93,6 @@ impl Color {
             Color::White => anstyle::Color::Ansi(anstyle::AnsiColor::BrightWhite),
             Color::Indexed(index) => anstyle::Color::Ansi256(anstyle::Ansi256Color(index)),
             Color::Rgb(rgb_color) => palette_to_anstyle(rgb_color),
-            Color::Hsl(val) => palette_to_anstyle(Rgb::from_color(val)),
-            Color::Hsluv(val) => palette_to_anstyle(val),
-            Color::Hsv(val) => palette_to_anstyle(val),
-            Color::Hwb(val) => palette_to_anstyle(val),
-            Color::Lab(val) => palette_to_anstyle(val),
-            Color::Lch(val) => palette_to_anstyle(val),
-            Color::Lchuv(val) => palette_to_anstyle(val),
-            Color::Luv(val) => palette_to_anstyle(val),
-            Color::Okhsl(val) => palette_to_anstyle(val),
-            Color::Okhsv(val) => palette_to_anstyle(val),
-            Color::Okhwb(val) => palette_to_anstyle(val),
-            Color::Oklab(val) => palette_to_anstyle(val),
-            Color::Oklch(val) => palette_to_anstyle(val),
-            Color::Xyz(val) => palette_to_anstyle(val),
-            Color::Yxy(val) => palette_to_anstyle(val),
         };
         let profile = profile().unwrap_or(TermProfile::TrueColor);
         profile.adapt_color(value)
@@ -148,21 +118,6 @@ impl From<Color> for ratatui::style::Color {
     fn from(value: Color) -> Self {
         match value.into_adaptive() {
             Color::Rgb(val) => val.into(),
-            Color::Hsl(val) => Rgb::from_color(val).into(),
-            Color::Hsluv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Hsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Hwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Lab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Lch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Lchuv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Luv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Okhsl(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Okhsv(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Okhwb(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Oklab(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Oklch(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Xyz(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
-            Color::Yxy(val) => Rgb::<::palette::encoding::Srgb, _>::from_color(val).into(),
             Color::Reset => ratatui::style::Color::Reset,
             Color::Black => ratatui::style::Color::Black,
             Color::Red => ratatui::style::Color::Red,
@@ -254,98 +209,33 @@ impl From<Rgb> for Color {
     }
 }
 
-impl From<Hsl> for Color {
-    fn from(value: Hsl) -> Self {
-        Self::Hsl(value)
-    }
+macro_rules! from_color {
+    ($type:ident) => {
+        impl From<$type> for Color {
+            fn from(value: $type) -> Self {
+                Self::Rgb(Rgb::from_color(value))
+            }
+        }
+    };
 }
-
-impl From<Hsluv> for Color {
-    fn from(value: Hsluv) -> Self {
-        Self::Hsluv(value)
-    }
-}
-
-impl From<Hsv> for Color {
-    fn from(value: Hsv) -> Self {
-        Self::Hsv(value)
-    }
-}
-
-impl From<Hwb> for Color {
-    fn from(value: Hwb) -> Self {
-        Self::Hwb(value)
-    }
-}
-
-impl From<Lab> for Color {
-    fn from(value: Lab) -> Self {
-        Self::Lab(value)
-    }
-}
-
-impl From<Lch> for Color {
-    fn from(value: Lch) -> Self {
-        Self::Lch(value)
-    }
-}
-
-impl From<Lchuv> for Color {
-    fn from(value: Lchuv) -> Self {
-        Self::Lchuv(value)
-    }
-}
-
-impl From<Luv> for Color {
-    fn from(value: Luv) -> Self {
-        Self::Luv(value)
-    }
-}
-
-impl From<Okhsl> for Color {
-    fn from(value: Okhsl) -> Self {
-        Self::Okhsl(value)
-    }
-}
-
-impl From<Okhsv> for Color {
-    fn from(value: Okhsv) -> Self {
-        Self::Okhsv(value)
-    }
-}
-
-impl From<Okhwb> for Color {
-    fn from(value: Okhwb) -> Self {
-        Self::Okhwb(value)
-    }
-}
-
-impl From<Oklab> for Color {
-    fn from(value: Oklab) -> Self {
-        Self::Oklab(value)
-    }
-}
-
-impl From<Oklch> for Color {
-    fn from(value: Oklch) -> Self {
-        Self::Oklch(value)
-    }
-}
-
-impl From<Xyz> for Color {
-    fn from(value: Xyz) -> Self {
-        Self::Xyz(value)
-    }
-}
-
-impl From<Yxy> for Color {
-    fn from(value: Yxy) -> Self {
-        Self::Yxy(value)
-    }
-}
-
 impl From<u8> for Color {
     fn from(value: u8) -> Self {
         Self::Indexed(value)
     }
 }
+
+from_color!(Hsl);
+from_color!(Hsluv);
+from_color!(Hsv);
+from_color!(Hwb);
+from_color!(Lab);
+from_color!(Lch);
+from_color!(Lchuv);
+from_color!(Luv);
+from_color!(Okhsl);
+from_color!(Okhsv);
+from_color!(Okhwb);
+from_color!(Oklab);
+from_color!(Oklch);
+from_color!(Xyz);
+from_color!(Yxy);

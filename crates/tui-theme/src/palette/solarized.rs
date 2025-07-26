@@ -8,851 +8,367 @@ pub struct Solarized {}
 
 impl Solarized {
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9632,
-        0.0220,
-        ::palette::OklabHue::new(230.4900),
-    ));
+    pub const BASE_BLUE_50: Color = Color::Rgb(::palette::Srgb::new(0.8971, 0.9649, 1.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9188,
-        0.0510,
-        ::palette::OklabHue::new(226.5100),
-    ));
+    pub const BASE_BLUE_100: Color = Color::Rgb(::palette::Srgb::new(0.7581, 0.9252, 0.9990));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8356,
-        0.1160,
-        ::palette::OklabHue::new(221.9700),
-    ));
+    pub const BASE_BLUE_200: Color = Color::Rgb(::palette::Srgb::new(0.4027, 0.8550, 1.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7560,
-        0.1380,
-        ::palette::OklabHue::new(220.1700),
-    ));
+    pub const BASE_BLUE_300: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.7648, 0.9257));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6794,
-        0.1230,
-        ::palette::OklabHue::new(219.6200),
-    ));
+    pub const BASE_BLUE_400: Color = Color::Rgb(::palette::Srgb::new(0.0112, 0.6626, 0.7994));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6129,
-        0.1110,
-        ::palette::OklabHue::new(219.0500),
-    ));
+    pub const BASE_BLUE_500: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.5766, 0.6943));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5358,
-        0.0970,
-        ::palette::OklabHue::new(219.6100),
-    ));
+    pub const BASE_BLUE_600: Color = Color::Rgb(::palette::Srgb::new(0.0054, 0.4783, 0.5799));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4590,
-        0.0840,
-        ::palette::OklabHue::new(220.2000),
-    ));
+    pub const BASE_BLUE_700: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.3844, 0.4710));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3817,
-        0.0690,
-        ::palette::OklabHue::new(219.5800),
-    ));
+    pub const BASE_BLUE_800: Color = Color::Rgb(::palette::Srgb::new(0.0028, 0.2940, 0.3603));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3043,
-        0.0550,
-        ::palette::OklabHue::new(219.9200),
-    ));
+    pub const BASE_BLUE_900: Color = Color::Rgb(::palette::Srgb::new(0.0022, 0.2078, 0.2583));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BASE_BLUE_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2673,
-        0.0490,
-        ::palette::OklabHue::new(219.8000),
-    ));
+    pub const BASE_BLUE_950: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.1687, 0.2122));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9555,
-        0.0110,
-        ::palette::OklabHue::new(225.8900),
-    ));
+    pub const GRAY_50: Color = Color::Rgb(::palette::Srgb::new(0.9137, 0.9490, 0.9646));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9201,
-        0.0200,
-        ::palette::OklabHue::new(220.8200),
-    ));
+    pub const GRAY_100: Color = Color::Rgb(::palette::Srgb::new(0.8428, 0.9099, 0.9335));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8402,
-        0.0430,
-        ::palette::OklabHue::new(218.9200),
-    ));
+    pub const GRAY_200: Color = Color::Rgb(::palette::Srgb::new(0.6758, 0.8232, 0.8696));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7541,
-        0.0410,
-        ::palette::OklabHue::new(218.8600),
-    ));
+    pub const GRAY_300: Color = Color::Rgb(::palette::Srgb::new(0.5764, 0.7137, 0.7568));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6767,
-        0.0360,
-        ::palette::OklabHue::new(220.0600),
-    ));
+    pub const GRAY_400: Color = Color::Rgb(::palette::Srgb::new(0.4994, 0.6155, 0.6541));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5996,
-        0.0330,
-        ::palette::OklabHue::new(220.8800),
-    ));
+    pub const GRAY_500: Color = Color::Rgb(::palette::Srgb::new(0.4190, 0.5217, 0.5572));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5230,
-        0.0280,
-        ::palette::OklabHue::new(219.1100),
-    ));
+    pub const GRAY_600: Color = Color::Rgb(::palette::Srgb::new(0.3459, 0.4312, 0.4583));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4297,
-        0.0230,
-        ::palette::OklabHue::new(217.5400),
-    ));
+    pub const GRAY_700: Color = Color::Rgb(::palette::Srgb::new(0.2581, 0.3256, 0.3454));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3267,
-        0.0190,
-        ::palette::OklabHue::new(218.4800),
-    ));
+    pub const GRAY_800: Color = Color::Rgb(::palette::Srgb::new(0.1639, 0.2159, 0.2318));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2323,
-        0.0120,
-        ::palette::OklabHue::new(214.6000),
-    ));
+    pub const GRAY_900: Color = Color::Rgb(::palette::Srgb::new(0.0907, 0.1215, 0.1292));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1859,
-        0.0100,
-        ::palette::OklabHue::new(220.0700),
-    ));
+    pub const GRAY_950: Color = Color::Rgb(::palette::Srgb::new(0.0550, 0.0784, 0.0862));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9643,
-        0.0110,
-        ::palette::OklabHue::new(89.6600),
-    ));
+    pub const BROWN_50: Color = Color::Rgb(::palette::Srgb::new(0.9647, 0.9530, 0.9218));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9306,
-        0.0260,
-        ::palette::OklabHue::new(92.3700),
-    ));
+    pub const BROWN_100: Color = Color::Rgb(::palette::Srgb::new(0.9333, 0.9098, 0.8354));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8448,
-        0.0360,
-        ::palette::OklabHue::new(92.8400),
-    ));
+    pub const BROWN_200: Color = Color::Rgb(::palette::Srgb::new(0.8313, 0.8000, 0.6986));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7570,
-        0.0320,
-        ::palette::OklabHue::new(92.3700),
-    ));
+    pub const BROWN_300: Color = Color::Rgb(::palette::Srgb::new(0.7181, 0.6902, 0.6026));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6630,
-        0.0280,
-        ::palette::OklabHue::new(92.4800),
-    ));
+    pub const BROWN_400: Color = Color::Rgb(::palette::Srgb::new(0.5999, 0.5764, 0.5023));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5761,
-        0.0230,
-        ::palette::OklabHue::new(91.6800),
-    ));
+    pub const BROWN_500: Color = Color::Rgb(::palette::Srgb::new(0.4940, 0.4745, 0.4160));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4923,
-        0.0210,
-        ::palette::OklabHue::new(92.8400),
-    ));
+    pub const BROWN_600: Color = Color::Rgb(::palette::Srgb::new(0.3963, 0.3803, 0.3286));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4051,
-        0.0170,
-        ::palette::OklabHue::new(93.1800),
-    ));
+    pub const BROWN_700: Color = Color::Rgb(::palette::Srgb::new(0.2983, 0.2863, 0.2463));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3099,
-        0.0130,
-        ::palette::OklabHue::new(87.5500),
-    ));
+    pub const BROWN_800: Color = Color::Rgb(::palette::Srgb::new(0.2001, 0.1882, 0.1605));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2229,
-        0.0080,
-        ::palette::OklabHue::new(84.5700),
-    ));
+    pub const BROWN_900: Color = Color::Rgb(::palette::Srgb::new(0.1136, 0.1059, 0.0906));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BROWN_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1773,
-        0.0080,
-        ::palette::OklabHue::new(95.4900),
-    ));
+    pub const BROWN_950: Color = Color::Rgb(::palette::Srgb::new(0.0706, 0.0667, 0.0512));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9571,
-        0.0330,
-        ::palette::OklabHue::new(73.2000),
-    ));
+    pub const YELLOW_50: Color = Color::Rgb(::palette::Srgb::new(0.9995, 0.9334, 0.8518));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9160,
-        0.0750,
-        ::palette::OklabHue::new(78.4000),
-    ));
+    pub const YELLOW_100: Color = Color::Rgb(::palette::Srgb::new(0.9999, 0.8706, 0.6709));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8302,
-        0.1700,
-        ::palette::OklabHue::new(85.3800),
-    ));
+    pub const YELLOW_200: Color = Color::Rgb(::palette::Srgb::new(0.9765, 0.7412, 0.0020));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7436,
-        0.1520,
-        ::palette::OklabHue::new(85.5200),
-    ));
+    pub const YELLOW_300: Color = Color::Rgb(::palette::Srgb::new(0.8428, 0.6393, 0.0073));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6545,
-        0.1340,
-        ::palette::OklabHue::new(85.7100),
-    ));
+    pub const YELLOW_400: Color = Color::Rgb(::palette::Srgb::new(0.7099, 0.5373, 0.0004));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5699,
-        0.1170,
-        ::palette::OklabHue::new(85.7200),
-    ));
+    pub const YELLOW_500: Color = Color::Rgb(::palette::Srgb::new(0.5886, 0.4431, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4853,
-        0.0990,
-        ::palette::OklabHue::new(85.9500),
-    ));
+    pub const YELLOW_600: Color = Color::Rgb(::palette::Srgb::new(0.4702, 0.3530, 0.0036));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3982,
-        0.0820,
-        ::palette::OklabHue::new(85.3200),
-    ));
+    pub const YELLOW_700: Color = Color::Rgb(::palette::Srgb::new(0.3573, 0.2626, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3122,
-        0.0640,
-        ::palette::OklabHue::new(86.3600),
-    ));
+    pub const YELLOW_800: Color = Color::Rgb(::palette::Srgb::new(0.2472, 0.1804, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2253,
-        0.0460,
-        ::palette::OklabHue::new(87.0300),
-    ));
+    pub const YELLOW_900: Color = Color::Rgb(::palette::Srgb::new(0.1451, 0.1020, 0.0002));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1786,
-        0.0370,
-        ::palette::OklabHue::new(87.7100),
-    ));
+    pub const YELLOW_950: Color = Color::Rgb(::palette::Srgb::new(0.0945, 0.0626, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9590,
-        0.0190,
-        ::palette::OklabHue::new(25.6800),
-    ));
+    pub const ORANGE_50: Color = Color::Rgb(::palette::Srgb::new(0.9968, 0.9291, 0.9211));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9192,
-        0.0400,
-        ::palette::OklabHue::new(27.5300),
-    ));
+    pub const ORANGE_100: Color = Color::Rgb(::palette::Srgb::new(0.9967, 0.8585, 0.8387));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8377,
-        0.0860,
-        ::palette::OklabHue::new(28.7500),
-    ));
+    pub const ORANGE_200: Color = Color::Rgb(::palette::Srgb::new(0.9922, 0.7098, 0.6666));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7566,
-        0.1410,
-        ::palette::OklabHue::new(32.6900),
-    ));
+    pub const ORANGE_300: Color = Color::Rgb(::palette::Srgb::new(0.9889, 0.5487, 0.4582));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6673,
-        0.1990,
-        ::palette::OklabHue::new(39.5300),
-    ));
+    pub const ORANGE_400: Color = Color::Rgb(::palette::Srgb::new(0.9573, 0.3604, 0.1124));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5808,
-        0.1730,
-        ::palette::OklabHue::new(39.5000),
-    ));
+    pub const ORANGE_500: Color = Color::Rgb(::palette::Srgb::new(0.7957, 0.2945, 0.0875));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4893,
-        0.1460,
-        ::palette::OklabHue::new(39.6100),
-    ));
+    pub const ORANGE_600: Color = Color::Rgb(::palette::Srgb::new(0.6319, 0.2268, 0.0569));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4085,
-        0.1220,
-        ::palette::OklabHue::new(39.3300),
-    ));
+    pub const ORANGE_700: Color = Color::Rgb(::palette::Srgb::new(0.4935, 0.1693, 0.0373));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3197,
-        0.0960,
-        ::palette::OklabHue::new(39.5400),
-    ));
+    pub const ORANGE_800: Color = Color::Rgb(::palette::Srgb::new(0.3494, 0.1096, 0.0151));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2319,
-        0.0690,
-        ::palette::OklabHue::new(38.7600),
-    ));
+    pub const ORANGE_900: Color = Color::Rgb(::palette::Srgb::new(0.2152, 0.0555, 0.0085));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1821,
-        0.0550,
-        ::palette::OklabHue::new(38.6600),
-    ));
+    pub const ORANGE_950: Color = Color::Rgb(::palette::Srgb::new(0.1457, 0.0269, 0.0034));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9588,
-        0.0170,
-        ::palette::OklabHue::new(17.5600),
-    ));
+    pub const RED_50: Color = Color::Rgb(::palette::Srgb::new(0.9913, 0.9298, 0.9298));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9171,
-        0.0340,
-        ::palette::OklabHue::new(17.8400),
-    ));
+    pub const RED_100: Color = Color::Rgb(::palette::Srgb::new(0.9793, 0.8594, 0.8593));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8352,
-        0.0750,
-        ::palette::OklabHue::new(18.7900),
-    ));
+    pub const RED_200: Color = Color::Rgb(::palette::Srgb::new(0.9655, 0.7134, 0.7133));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7479,
-        0.1270,
-        ::palette::OklabHue::new(21.1300),
-    ));
+    pub const RED_300: Color = Color::Rgb(::palette::Srgb::new(0.9531, 0.5450, 0.5410));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6691,
-        0.1840,
-        ::palette::OklabHue::new(24.2300),
-    ));
+    pub const RED_400: Color = Color::Rgb(::palette::Srgb::new(0.9447, 0.3613, 0.3533));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5863,
-        0.2060,
-        ::palette::OklabHue::new(27.1200),
-    ));
+    pub const RED_500: Color = Color::Rgb(::palette::Srgb::new(0.8621, 0.1975, 0.1853));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4944,
-        0.1740,
-        ::palette::OklabHue::new(27.2700),
-    ));
+    pub const RED_600: Color = Color::Rgb(::palette::Srgb::new(0.6865, 0.1485, 0.1368));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4040,
-        0.1430,
-        ::palette::OklabHue::new(27.1900),
-    ));
+    pub const RED_700: Color = Color::Rgb(::palette::Srgb::new(0.5222, 0.1006, 0.0931));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3226,
-        0.1140,
-        ::palette::OklabHue::new(26.9500),
-    ));
+    pub const RED_800: Color = Color::Rgb(::palette::Srgb::new(0.3805, 0.0627, 0.0588));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2339,
-        0.0820,
-        ::palette::OklabHue::new(27.2800),
-    ));
+    pub const RED_900: Color = Color::Rgb(::palette::Srgb::new(0.2356, 0.0270, 0.0232));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1837,
-        0.0650,
-        ::palette::OklabHue::new(26.5400),
-    ));
+    pub const RED_950: Color = Color::Rgb(::palette::Srgb::new(0.1605, 0.0121, 0.0120));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9593,
-        0.0170,
-        ::palette::OklabHue::new(355.2300),
-    ));
+    pub const MAGENTA_50: Color = Color::Rgb(::palette::Srgb::new(0.9872, 0.9298, 0.9488));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9180,
-        0.0380,
-        ::palette::OklabHue::new(355.1700),
-    ));
+    pub const MAGENTA_100: Color = Color::Rgb(::palette::Srgb::new(0.9802, 0.8551, 0.8980));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8382,
-        0.0790,
-        ::palette::OklabHue::new(356.5600),
-    ));
+    pub const MAGENTA_200: Color = Color::Rgb(::palette::Srgb::new(0.9608, 0.7098, 0.7960));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7580,
-        0.1300,
-        ::palette::OklabHue::new(356.0500),
-    ));
+    pub const MAGENTA_300: Color = Color::Rgb(::palette::Srgb::new(0.9452, 0.5489, 0.7019));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6797,
-        0.1910,
-        ::palette::OklabHue::new(355.9800),
-    ));
+    pub const MAGENTA_400: Color = Color::Rgb(::palette::Srgb::new(0.9337, 0.3565, 0.6117));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5924,
-        0.2020,
-        ::palette::OklabHue::new(355.9000),
-    ));
+    pub const MAGENTA_500: Color = Color::Rgb(::palette::Srgb::new(0.8269, 0.2131, 0.5098));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5065,
-        0.1730,
-        ::palette::OklabHue::new(356.1100),
-    ));
+    pub const MAGENTA_600: Color = Color::Rgb(::palette::Srgb::new(0.6708, 0.1644, 0.4079));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4149,
-        0.1410,
-        ::palette::OklabHue::new(356.0800),
-    ));
+    pub const MAGENTA_700: Color = Color::Rgb(::palette::Srgb::new(0.5097, 0.1178, 0.3058));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3245,
-        0.1110,
-        ::palette::OklabHue::new(355.7500),
-    ));
+    pub const MAGENTA_800: Color = Color::Rgb(::palette::Srgb::new(0.3608, 0.0706, 0.2118));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2357,
-        0.0800,
-        ::palette::OklabHue::new(356.6100),
-    ));
+    pub const MAGENTA_900: Color = Color::Rgb(::palette::Srgb::new(0.2238, 0.0308, 0.1215));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const MAGENTA_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1868,
-        0.0630,
-        ::palette::OklabHue::new(355.9200),
-    ));
+    pub const MAGENTA_950: Color = Color::Rgb(::palette::Srgb::new(0.1527, 0.0159, 0.0784));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9577,
-        0.0120,
-        ::palette::OklabHue::new(286.2700),
-    ));
+    pub const VIOLET_50: Color = Color::Rgb(::palette::Srgb::new(0.9412, 0.9411, 0.9764));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9143,
-        0.0240,
-        ::palette::OklabHue::new(283.4100),
-    ));
+    pub const VIOLET_100: Color = Color::Rgb(::palette::Srgb::new(0.8786, 0.8824, 0.9518));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8301,
-        0.0490,
-        ::palette::OklabHue::new(282.7100),
-    ));
+    pub const VIOLET_200: Color = Color::Rgb(::palette::Srgb::new(0.7608, 0.7686, 0.9063));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7449,
-        0.0760,
-        ::palette::OklabHue::new(281.8600),
-    ));
+    pub const VIOLET_300: Color = Color::Rgb(::palette::Srgb::new(0.6432, 0.6549, 0.8621));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6704,
-        0.1000,
-        ::palette::OklabHue::new(280.7400),
-    ));
+    pub const VIOLET_400: Color = Color::Rgb(::palette::Srgb::new(0.5413, 0.5570, 0.8226));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5823,
-        0.1260,
-        ::palette::OklabHue::new(279.1100),
-    ));
+    pub const VIOLET_500: Color = Color::Rgb(::palette::Srgb::new(0.4236, 0.4432, 0.7683));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5010,
-        0.1450,
-        ::palette::OklabHue::new(277.0300),
-    ));
+    pub const VIOLET_600: Color = Color::Rgb(::palette::Srgb::new(0.3176, 0.3411, 0.7061));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4048,
-        0.1290,
-        ::palette::OklabHue::new(275.7300),
-    ));
+    pub const VIOLET_700: Color = Color::Rgb(::palette::Srgb::new(0.2196, 0.2432, 0.5526));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3173,
-        0.1010,
-        ::palette::OklabHue::new(276.0600),
-    ));
+    pub const VIOLET_800: Color = Color::Rgb(::palette::Srgb::new(0.1490, 0.1646, 0.3927));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2281,
-        0.0740,
-        ::palette::OklabHue::new(275.6000),
-    ));
+    pub const VIOLET_900: Color = Color::Rgb(::palette::Srgb::new(0.0783, 0.0899, 0.2439));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1813,
-        0.0560,
-        ::palette::OklabHue::new(276.2000),
-    ));
+    pub const VIOLET_950: Color = Color::Rgb(::palette::Srgb::new(0.0471, 0.0549, 0.1646));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9648,
-        0.0150,
-        ::palette::OklabHue::new(257.2000),
-    ));
+    pub const BLUE_50: Color = Color::Rgb(::palette::Srgb::new(0.9300, 0.9568, 0.9951));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9228,
-        0.0350,
-        ::palette::OklabHue::new(256.3400),
-    ));
+    pub const BLUE_100: Color = Color::Rgb(::palette::Srgb::new(0.8425, 0.9060, 0.9933));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8440,
-        0.0740,
-        ::palette::OklabHue::new(254.2200),
-    ));
+    pub const BLUE_200: Color = Color::Rgb(::palette::Srgb::new(0.6708, 0.8118, 0.9880));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7652,
-        0.1160,
-        ::palette::OklabHue::new(249.9200),
-    ));
+    pub const BLUE_300: Color = Color::Rgb(::palette::Srgb::new(0.4676, 0.7215, 0.9794));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6874,
-        0.1550,
-        ::palette::OklabHue::new(244.7300),
-    ));
+    pub const BLUE_400: Color = Color::Rgb(::palette::Srgb::new(0.1808, 0.6353, 0.9526));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6149,
-        0.1390,
-        ::palette::OklabHue::new(244.9200),
-    ));
+    pub const BLUE_500: Color = Color::Rgb(::palette::Srgb::new(0.1512, 0.5451, 0.8227));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5164,
-        0.1170,
-        ::palette::OklabHue::new(244.9200),
-    ));
+    pub const BLUE_600: Color = Color::Rgb(::palette::Srgb::new(0.1093, 0.4275, 0.6512));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4199,
-        0.0950,
-        ::palette::OklabHue::new(244.8100),
-    ));
+    pub const BLUE_700: Color = Color::Rgb(::palette::Srgb::new(0.0715, 0.3177, 0.4899));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3253,
-        0.0740,
-        ::palette::OklabHue::new(245.0600),
-    ));
+    pub const BLUE_800: Color = Color::Rgb(::palette::Srgb::new(0.0368, 0.2156, 0.3420));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2309,
-        0.0530,
-        ::palette::OklabHue::new(244.7300),
-    ));
+    pub const BLUE_900: Color = Color::Rgb(::palette::Srgb::new(0.0112, 0.1215, 0.2042));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1889,
-        0.0420,
-        ::palette::OklabHue::new(244.7500),
-    ));
+    pub const BLUE_950: Color = Color::Rgb(::palette::Srgb::new(0.0083, 0.0823, 0.1446));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9486,
-        0.0700,
-        ::palette::OklabHue::new(187.2000),
-    ));
+    pub const CYAN_50: Color = Color::Rgb(::palette::Srgb::new(0.7219, 0.9960, 0.9645));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8969,
-        0.1420,
-        ::palette::OklabHue::new(187.1700),
-    ));
+    pub const CYAN_100: Color = Color::Rgb(::palette::Srgb::new(0.2789, 0.9842, 0.9293));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8121,
-        0.1290,
-        ::palette::OklabHue::new(187.3900),
-    ));
+    pub const CYAN_200: Color = Color::Rgb(::palette::Srgb::new(0.2347, 0.8631, 0.8158));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7274,
-        0.1150,
-        ::palette::OklabHue::new(187.0200),
-    ));
+    pub const CYAN_300: Color = Color::Rgb(::palette::Srgb::new(0.2041, 0.7447, 0.7017));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6437,
-        0.1020,
-        ::palette::OklabHue::new(187.3700),
-    ));
+    pub const CYAN_400: Color = Color::Rgb(::palette::Srgb::new(0.1640, 0.6315, 0.5961));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5571,
-        0.0880,
-        ::palette::OklabHue::new(187.8700),
-    ));
+    pub const CYAN_500: Color = Color::Rgb(::palette::Srgb::new(0.1287, 0.5178, 0.4902));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4728,
-        0.0750,
-        ::palette::OklabHue::new(187.5200),
-    ));
+    pub const CYAN_600: Color = Color::Rgb(::palette::Srgb::new(0.0929, 0.4118, 0.3882));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3882,
-        0.0610,
-        ::palette::OklabHue::new(187.0300),
-    ));
+    pub const CYAN_700: Color = Color::Rgb(::palette::Srgb::new(0.0660, 0.3096, 0.2900));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3055,
-        0.0490,
-        ::palette::OklabHue::new(186.4500),
-    ));
+    pub const CYAN_800: Color = Color::Rgb(::palette::Srgb::new(0.0291, 0.2158, 0.2001));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2208,
-        0.0350,
-        ::palette::OklabHue::new(185.4200),
-    ));
+    pub const CYAN_900: Color = Color::Rgb(::palette::Srgb::new(0.0130, 0.1253, 0.1136));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1731,
-        0.0280,
-        ::palette::OklabHue::new(186.4900),
-    ));
+    pub const CYAN_950: Color = Color::Rgb(::palette::Srgb::new(0.0048, 0.0783, 0.0705));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_50: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9456,
-        0.2090,
-        ::palette::OklabHue::new(118.5800),
-    ));
+    pub const GREEN_50: Color = Color::Rgb(::palette::Srgb::new(0.8786, 1.0000, 0.2050));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_100: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.9015,
-        0.2110,
-        ::palette::OklabHue::new(118.4800),
-    ));
+    pub const GREEN_100: Color = Color::Rgb(::palette::Srgb::new(0.8235, 0.9412, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_200: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.8179,
-        0.1910,
-        ::palette::OklabHue::new(118.6100),
-    ));
+    pub const GREEN_200: Color = Color::Rgb(::palette::Srgb::new(0.7217, 0.8274, 0.0132));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_300: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.7320,
-        0.1720,
-        ::palette::OklabHue::new(118.7700),
-    ));
+    pub const GREEN_300: Color = Color::Rgb(::palette::Srgb::new(0.6196, 0.7137, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_400: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.6444,
-        0.1510,
-        ::palette::OklabHue::new(118.5900),
-    ));
+    pub const GREEN_400: Color = Color::Rgb(::palette::Srgb::new(0.5216, 0.6000, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_500: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.5627,
-        0.1320,
-        ::palette::OklabHue::new(118.6500),
-    ));
+    pub const GREEN_500: Color = Color::Rgb(::palette::Srgb::new(0.4313, 0.4981, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_600: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.4780,
-        0.1120,
-        ::palette::OklabHue::new(118.7300),
-    ));
+    pub const GREEN_600: Color = Color::Rgb(::palette::Srgb::new(0.3412, 0.3961, 0.0004));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_700: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3928,
-        0.0920,
-        ::palette::OklabHue::new(118.7600),
-    ));
+    pub const GREEN_700: Color = Color::Rgb(::palette::Srgb::new(0.2549, 0.2980, 0.0006));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_800: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.3066,
-        0.0720,
-        ::palette::OklabHue::new(118.6900),
-    ));
+    pub const GREEN_800: Color = Color::Rgb(::palette::Srgb::new(0.1725, 0.2040, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_900: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.2220,
-        0.0520,
-        ::palette::OklabHue::new(118.1700),
-    ));
+    pub const GREEN_900: Color = Color::Rgb(::palette::Srgb::new(0.0980, 0.1176, 0.0000));
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_950: Color = Color::Oklch(::palette::Oklch::new_const(
-        0.1761,
-        0.0410,
-        ::palette::OklabHue::new(118.6900),
-    ));
+    pub const GREEN_950: Color = Color::Rgb(::palette::Srgb::new(0.0588, 0.0744, 0.0003));
 
     pub const BASE_BLUE: ThemeArray<11> = ThemeArray([
         Self::BASE_BLUE_50,

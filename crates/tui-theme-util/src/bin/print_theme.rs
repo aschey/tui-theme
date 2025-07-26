@@ -5,9 +5,7 @@ use anstyle_crossterm::to_crossterm;
 use crossterm::style::Stylize;
 use indexmap::{IndexMap, IndexSet};
 use palette::color_difference::Wcag21RelativeContrast;
-use tui_theme::palette::{
-    Catppuccin, Everforest, Gruvbox, Kanagawa, Nord, RosePine, Solarized, Tailwind,
-};
+use tui_theme::palette::Gruvbox;
 use tui_theme::{Color, NamedColor};
 
 fn main() -> io::Result<()> {
