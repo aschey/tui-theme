@@ -28,9 +28,9 @@ impl Color {
         let rgb = self.to_rgb(is_fg);
         format!(
             "#{:02x}{:02x}{:02x}",
-            (rgb.red * 255.0) as u8,
-            (rgb.green * 255.0) as u8,
-            (rgb.blue * 255.0) as u8
+            (rgb.red * 255.0).round() as u8,
+            (rgb.green * 255.0).round() as u8,
+            (rgb.blue * 255.0).round() as u8
         )
         .to_uppercase()
     }

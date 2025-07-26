@@ -226,7 +226,7 @@ pub enum Color {
 macro_rules! color_op {
     ($self:ident, $op:ident, $factor:expr) => {
         match $self {
-            Self::Rgb(val) => Self::Rgb(val.$op($factor)),
+            Self::Rgb(val) => Self::Rgb(val.into_linear().$op($factor).into()),
             Self::Hsl(val) => Self::Hsl(val.$op($factor)),
             Self::Hsluv(val) => Self::Hsluv(val.$op($factor)),
             Self::Hsv(val) => Self::Hsv(val.$op($factor)),
@@ -271,6 +271,18 @@ fn scale_color(color: &terminal_colorsaurus::Color) -> Rgb {
         color.1 as f32 / 255.,
         color.2 as f32 / 255.,
     )
+}
+
+macro_rules! as_variant {
+    ($fn:ident, $type:ident) => {
+        pub fn $fn(&self) -> Option<$type> {
+            if let Self::$type(val) = self {
+                Some(*val)
+            } else {
+                None
+            }
+        }
+    };
 }
 
 impl Color {
@@ -376,6 +388,23 @@ impl Color {
     pub fn darken_fixed(&self, factor: f32) -> Self {
         color_op!(self, darken_fixed, factor)
     }
+
+    as_variant!(as_rgb, Rgb);
+    as_variant!(as_hsl, Hsl);
+    as_variant!(as_hsluv, Hsluv);
+    as_variant!(as_hsv, Hsv);
+    as_variant!(as_hwb, Hwb);
+    as_variant!(as_lab, Lab);
+    as_variant!(as_lch, Lch);
+    as_variant!(as_lchuv, Lchuv);
+    as_variant!(as_luv, Luv);
+    as_variant!(as_okhsl, Okhsl);
+    as_variant!(as_okhsv, Okhsv);
+    as_variant!(as_okhwb, Okhwb);
+    as_variant!(as_oklab, Oklab);
+    as_variant!(as_oklch, Oklch);
+    as_variant!(as_xyz, Xyz);
+    as_variant!(as_yxy, Yxy);
 }
 
 fn indexed_to_color(index: u8) -> Color {
@@ -389,8 +418,26 @@ pub fn indexed_to_rgb(index: u8) -> Rgb {
     rgb
 }
 
+macro_rules! fmt_float {
+    ($($arg:tt)*) => {
+        format!($($arg)*).trim_end_matches('0').trim_end_matches('.').to_string()
+    };
+}
+
+macro_rules! fmt_float2 {
+    ($($arg:tt)*) => {
+        fmt_float!("{:.2}", $($arg)*)
+    };
+}
+
+macro_rules! fmt_float4 {
+    ($($arg:tt)*) => {
+        fmt_float!("{:.2}", $($arg)*)
+    };
+}
+
 fn dec_to_pct(dec: f32) -> String {
-    format!("{}%", (dec * 100.0) as u8)
+    fmt_float2!(dec * 100.0) + "%"
 }
 
 impl Display for Color {
@@ -399,9 +446,9 @@ impl Display for Color {
             Self::Rgb(val) => write!(
                 f,
                 "rgb({} {} {})",
-                (val.red * 255.0) as u8,
-                (val.green * 255.0) as u8,
-                (val.blue * 255.0) as u8,
+                (val.red * 255.0).round() as u8,
+                (val.green * 255.0).round() as u8,
+                (val.blue * 255.0).round() as u8,
             ),
             Self::Hsl(val) => write!(
                 f,
@@ -412,17 +459,17 @@ impl Display for Color {
             ),
             Self::Hsluv(val) => write!(
                 f,
-                "hsluv({:.0} {:.2} {:.2})",
+                "hsluv({:.0} {} {})",
                 val.hue.into_positive_degrees(),
-                val.saturation,
-                val.l
+                fmt_float2!(val.saturation),
+                fmt_float2!(val.l)
             ),
             Self::Hsv(val) => write!(
                 f,
-                "hsv({:.0} {:.2} {:.2})",
+                "hsv({:.0} {} {})",
                 val.hue.into_positive_degrees(),
-                val.saturation,
-                val.value
+                fmt_float2!(val.saturation),
+                fmt_float2!(val.value)
             ),
             Self::Hwb(val) => write!(
                 f,
@@ -433,31 +480,31 @@ impl Display for Color {
             ),
             Self::Lab(val) => write!(
                 f,
-                "lab({} {:.4} {:.4})",
+                "lab({} {} {})",
                 dec_to_pct(val.l / Lab::<D65, f32>::max_l()),
-                val.a,
-                val.b
+                fmt_float4!(val.a),
+                fmt_float4!(val.b)
             ),
             Self::Lch(val) => write!(
                 f,
-                "lch({} {:.2} {:.2})",
+                "lch({} {} {})",
                 dec_to_pct(val.l / Lch::<D65, f32>::max_l()),
-                val.chroma,
-                val.hue.into_positive_degrees()
+                fmt_float2!(val.chroma),
+                fmt_float2!(val.hue.into_positive_degrees())
             ),
             Self::Lchuv(val) => write!(
                 f,
-                "lchuv({} {:.2} {:.2})",
+                "lchuv({} {} {})",
                 dec_to_pct(val.l / Lchuv::<D65, f32>::max_l()),
-                val.chroma,
-                val.hue.into_positive_degrees()
+                fmt_float2!(val.chroma),
+                fmt_float2!(val.hue.into_positive_degrees())
             ),
             Self::Luv(val) => write!(
                 f,
-                "luv({} {:.2} {:.2})",
+                "luv({} {} {})",
                 dec_to_pct(val.l / Luv::<D65, f32>::max_l()),
-                val.u,
-                val.v
+                fmt_float2!(val.u),
+                fmt_float2!(val.v)
             ),
             Self::Okhsl(val) => {
                 write!(
@@ -486,10 +533,10 @@ impl Display for Color {
             Self::Oklch(val) => {
                 write!(
                     f,
-                    "oklch({} {:.4} {:.4})",
+                    "oklch({} {} {})",
                     dec_to_pct(val.l),
-                    val.chroma,
-                    val.hue.into_positive_degrees()
+                    fmt_float!("{:.4}", val.chroma),
+                    fmt_float!("{:.4}", val.hue.into_positive_degrees())
                 )
             }
             Self::Xyz(val) => write!(f, "xyz({:.4} {:.4} {:.4})", val.x, val.y, val.z),
@@ -550,3 +597,7 @@ const ANSI_HEX: [&str; 256] = [
     "#585858", "#626262", "#6c6c6c", "#767676", "#808080", "#8a8a8a", "#949494", "#9e9e9e",
     "#a8a8a8", "#b2b2b2", "#bcbcbc", "#c6c6c6", "#d0d0d0", "#dadada", "#e4e4e4", "#eeeeee",
 ];
+
+#[cfg(test)]
+#[path = "./color_test.rs"]
+mod color_test;
