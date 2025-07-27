@@ -151,6 +151,7 @@ pub fn color_scheme() -> ThemeMode {
         .unwrap_or(ThemeMode::Dark)
 }
 
+#[derive(Clone, Debug)]
 pub struct NamedColor<'a> {
     pub color: Color,
     pub group: Cow<'a, str>,
