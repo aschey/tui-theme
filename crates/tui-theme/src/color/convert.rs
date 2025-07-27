@@ -198,6 +198,19 @@ impl From<Color> for Option<anstyle::Color> {
     }
 }
 
+#[derive(Debug, thiserror::Error, PartialEq, Eq)]
+pub enum TryFromColorError {
+    #[error("unsupported color conversion")]
+    Unsupported,
+}
+
+impl TryFrom<Color> for anstyle::Color {
+    type Error = TryFromColorError;
+    fn try_from(value: Color) -> Result<Self, Self::Error> {
+        value.into_anstyle().ok_or(TryFromColorError::Unsupported)
+    }
+}
+
 macro_rules! from_color {
     ($type:ident) => {
         impl From<$type> for Color {
