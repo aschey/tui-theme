@@ -8,730 +8,730 @@ pub struct Tailwind {}
 
 impl Tailwind {
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_50: Color = Color::Rgb(::palette::Srgb::new(0.9968, 0.9496, 0.9496));
+    pub const RED_50: Color = Color::Rgb(254, 242, 242);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_100: Color = Color::Rgb(::palette::Srgb::new(0.9993, 0.8856, 0.8857));
+    pub const RED_100: Color = Color::Rgb(255, 226, 226);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_200: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.7898, 0.7900));
+    pub const RED_200: Color = Color::Rgb(255, 201, 201);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_300: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.6347, 0.6364));
+    pub const RED_300: Color = Color::Rgb(255, 162, 162);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_400: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.3912, 0.4039));
+    pub const RED_400: Color = Color::Rgb(255, 100, 103);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_500: Color = Color::Rgb(::palette::Srgb::new(0.9827, 0.1718, 0.2131));
+    pub const RED_500: Color = Color::Rgb(251, 44, 54);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_600: Color = Color::Rgb(::palette::Srgb::new(0.9065, 0.0000, 0.0422));
+    pub const RED_600: Color = Color::Rgb(231, 0, 11);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_700: Color = Color::Rgb(::palette::Srgb::new(0.7569, 0.0000, 0.0288));
+    pub const RED_700: Color = Color::Rgb(193, 0, 7);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_800: Color = Color::Rgb(::palette::Srgb::new(0.6222, 0.0288, 0.0689));
+    pub const RED_800: Color = Color::Rgb(159, 7, 18);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_900: Color = Color::Rgb(::palette::Srgb::new(0.5092, 0.0923, 0.1007));
+    pub const RED_900: Color = Color::Rgb(130, 24, 26);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const RED_950: Color = Color::Rgb(::palette::Srgb::new(0.2754, 0.0316, 0.0345));
+    pub const RED_950: Color = Color::Rgb(70, 8, 9);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_50: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.9691, 0.9293));
+    pub const ORANGE_50: Color = Color::Rgb(255, 247, 237);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_100: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.9289, 0.8326));
+    pub const ORANGE_100: Color = Color::Rgb(255, 237, 212);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_200: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.8411, 0.6568));
+    pub const ORANGE_200: Color = Color::Rgb(255, 214, 167);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_300: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.7223, 0.4139));
+    pub const ORANGE_300: Color = Color::Rgb(255, 184, 106);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_400: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.5370, 0.0138));
+    pub const ORANGE_400: Color = Color::Rgb(255, 137, 4);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_500: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.4107, 0.0000));
+    pub const ORANGE_500: Color = Color::Rgb(255, 105, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_600: Color = Color::Rgb(::palette::Srgb::new(0.9607, 0.2882, 0.0000));
+    pub const ORANGE_600: Color = Color::Rgb(245, 73, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_700: Color = Color::Rgb(::palette::Srgb::new(0.7919, 0.2073, 0.0000));
+    pub const ORANGE_700: Color = Color::Rgb(202, 53, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_800: Color = Color::Rgb(::palette::Srgb::new(0.6245, 0.1766, 0.0000));
+    pub const ORANGE_800: Color = Color::Rgb(159, 45, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_900: Color = Color::Rgb(::palette::Srgb::new(0.4951, 0.1654, 0.0457));
+    pub const ORANGE_900: Color = Color::Rgb(126, 42, 12);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ORANGE_950: Color = Color::Rgb(::palette::Srgb::new(0.2664, 0.0744, 0.0219));
+    pub const ORANGE_950: Color = Color::Rgb(68, 19, 6);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_50: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.9845, 0.9200));
+    pub const AMBER_50: Color = Color::Rgb(255, 251, 235);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_100: Color = Color::Rgb(::palette::Srgb::new(0.9970, 0.9531, 0.7775));
+    pub const AMBER_100: Color = Color::Rgb(254, 243, 198);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_200: Color = Color::Rgb(::palette::Srgb::new(0.9957, 0.9012, 0.5222));
+    pub const AMBER_200: Color = Color::Rgb(254, 230, 133);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_300: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.8238, 0.1876));
+    pub const AMBER_300: Color = Color::Rgb(255, 210, 48);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_400: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.7273, 0.0000));
+    pub const AMBER_400: Color = Color::Rgb(255, 185, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_500: Color = Color::Rgb(::palette::Srgb::new(0.9943, 0.6021, 0.0000));
+    pub const AMBER_500: Color = Color::Rgb(254, 154, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_600: Color = Color::Rgb(::palette::Srgb::new(0.8838, 0.4434, 0.0000));
+    pub const AMBER_600: Color = Color::Rgb(225, 113, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_700: Color = Color::Rgb(::palette::Srgb::new(0.7318, 0.3010, 0.0000));
+    pub const AMBER_700: Color = Color::Rgb(187, 77, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_800: Color = Color::Rgb(::palette::Srgb::new(0.5903, 0.2338, 0.0000));
+    pub const AMBER_800: Color = Color::Rgb(151, 60, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_900: Color = Color::Rgb(::palette::Srgb::new(0.4804, 0.1998, 0.0248));
+    pub const AMBER_900: Color = Color::Rgb(123, 51, 6);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const AMBER_950: Color = Color::Rgb(::palette::Srgb::new(0.2741, 0.0985, 0.0047));
+    pub const AMBER_950: Color = Color::Rgb(70, 25, 1);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_50: Color = Color::Rgb(::palette::Srgb::new(0.9956, 0.9878, 0.9101));
+    pub const YELLOW_50: Color = Color::Rgb(254, 252, 232);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_100: Color = Color::Rgb(::palette::Srgb::new(0.9970, 0.9768, 0.7597));
+    pub const YELLOW_100: Color = Color::Rgb(254, 249, 194);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_200: Color = Color::Rgb(::palette::Srgb::new(0.9987, 0.9411, 0.5228));
+    pub const YELLOW_200: Color = Color::Rgb(255, 240, 133);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_300: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.8763, 0.1257));
+    pub const YELLOW_300: Color = Color::Rgb(255, 223, 32);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_400: Color = Color::Rgb(::palette::Srgb::new(0.9930, 0.7819, 0.0000));
+    pub const YELLOW_400: Color = Color::Rgb(253, 199, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_500: Color = Color::Rgb(::palette::Srgb::new(0.9413, 0.6929, 0.0000));
+    pub const YELLOW_500: Color = Color::Rgb(240, 177, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_600: Color = Color::Rgb(::palette::Srgb::new(0.8176, 0.5296, 0.0000));
+    pub const YELLOW_600: Color = Color::Rgb(208, 135, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_700: Color = Color::Rgb(::palette::Srgb::new(0.6511, 0.3732, 0.0000));
+    pub const YELLOW_700: Color = Color::Rgb(166, 95, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_800: Color = Color::Rgb(::palette::Srgb::new(0.5359, 0.2927, 0.0000));
+    pub const YELLOW_800: Color = Color::Rgb(137, 75, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_900: Color = Color::Rgb(::palette::Srgb::new(0.4505, 0.2424, 0.0409));
+    pub const YELLOW_900: Color = Color::Rgb(115, 62, 10);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const YELLOW_950: Color = Color::Rgb(::palette::Srgb::new(0.2619, 0.1240, 0.0174));
+    pub const YELLOW_950: Color = Color::Rgb(67, 32, 4);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_50: Color = Color::Rgb(::palette::Srgb::new(0.9690, 0.9965, 0.9062));
+    pub const LIME_50: Color = Color::Rgb(247, 254, 231);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_100: Color = Color::Rgb(::palette::Srgb::new(0.9251, 0.9888, 0.7934));
+    pub const LIME_100: Color = Color::Rgb(236, 252, 202);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_200: Color = Color::Rgb(::palette::Srgb::new(0.8478, 0.9783, 0.5999));
+    pub const LIME_200: Color = Color::Rgb(216, 249, 153);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_300: Color = Color::Rgb(::palette::Srgb::new(0.7329, 0.9552, 0.3178));
+    pub const LIME_300: Color = Color::Rgb(187, 244, 81);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_400: Color = Color::Rgb(::palette::Srgb::new(0.6024, 0.9017, 0.0000));
+    pub const LIME_400: Color = Color::Rgb(154, 230, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_500: Color = Color::Rgb(::palette::Srgb::new(0.4873, 0.8099, 0.0000));
+    pub const LIME_500: Color = Color::Rgb(124, 207, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_600: Color = Color::Rgb(::palette::Srgb::new(0.3687, 0.6475, 0.0000));
+    pub const LIME_600: Color = Color::Rgb(94, 165, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_700: Color = Color::Rgb(::palette::Srgb::new(0.2848, 0.4915, 0.0000));
+    pub const LIME_700: Color = Color::Rgb(73, 125, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_800: Color = Color::Rgb(::palette::Srgb::new(0.2372, 0.3881, 0.0000));
+    pub const LIME_800: Color = Color::Rgb(60, 99, 0);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_900: Color = Color::Rgb(::palette::Srgb::new(0.2070, 0.3272, 0.0552));
+    pub const LIME_900: Color = Color::Rgb(53, 83, 14);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const LIME_950: Color = Color::Rgb(::palette::Srgb::new(0.0991, 0.1813, 0.0109));
+    pub const LIME_950: Color = Color::Rgb(25, 46, 3);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_50: Color = Color::Rgb(::palette::Srgb::new(0.9414, 0.9922, 0.9570));
+    pub const GREEN_50: Color = Color::Rgb(240, 253, 244);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_100: Color = Color::Rgb(::palette::Srgb::new(0.8609, 0.9882, 0.9047));
+    pub const GREEN_100: Color = Color::Rgb(220, 252, 231);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_200: Color = Color::Rgb(::palette::Srgb::new(0.7251, 0.9713, 0.8118));
+    pub const GREEN_200: Color = Color::Rgb(185, 248, 207);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_300: Color = Color::Rgb(::palette::Srgb::new(0.4815, 0.9463, 0.6570));
+    pub const GREEN_300: Color = Color::Rgb(123, 241, 168);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_400: Color = Color::Rgb(::palette::Srgb::new(0.0199, 0.8753, 0.4485));
+    pub const GREEN_400: Color = Color::Rgb(5, 223, 114);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_500: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.7872, 0.3156));
+    pub const GREEN_500: Color = Color::Rgb(0, 201, 80);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_600: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.6513, 0.2420));
+    pub const GREEN_600: Color = Color::Rgb(0, 166, 62);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_700: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.5100, 0.2098));
+    pub const GREEN_700: Color = Color::Rgb(0, 130, 54);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_800: Color = Color::Rgb(::palette::Srgb::new(0.0058, 0.4015, 0.1886));
+    pub const GREEN_800: Color = Color::Rgb(1, 102, 48);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_900: Color = Color::Rgb(::palette::Srgb::new(0.0511, 0.3287, 0.1702));
+    pub const GREEN_900: Color = Color::Rgb(13, 84, 43);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GREEN_950: Color = Color::Rgb(::palette::Srgb::new(0.0120, 0.1810, 0.0835));
+    pub const GREEN_950: Color = Color::Rgb(3, 46, 21);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_50: Color = Color::Rgb(::palette::Srgb::new(0.9243, 0.9920, 0.9602));
+    pub const EMERALD_50: Color = Color::Rgb(236, 253, 245);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_100: Color = Color::Rgb(::palette::Srgb::new(0.8159, 0.9809, 0.8965));
+    pub const EMERALD_100: Color = Color::Rgb(208, 250, 229);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_200: Color = Color::Rgb(::palette::Srgb::new(0.6445, 0.9558, 0.8133));
+    pub const EMERALD_200: Color = Color::Rgb(164, 244, 207);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_300: Color = Color::Rgb(::palette::Srgb::new(0.3699, 0.9151, 0.7088));
+    pub const EMERALD_300: Color = Color::Rgb(94, 233, 181);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_400: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.8326, 0.5723));
+    pub const EMERALD_400: Color = Color::Rgb(0, 212, 146);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_500: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.7388, 0.4893));
+    pub const EMERALD_500: Color = Color::Rgb(0, 188, 125);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_600: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.5989, 0.3990));
+    pub const EMERALD_600: Color = Color::Rgb(0, 153, 102);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_700: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.4782, 0.3335));
+    pub const EMERALD_700: Color = Color::Rgb(0, 122, 85);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_800: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.3777, 0.2706));
+    pub const EMERALD_800: Color = Color::Rgb(0, 96, 69);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_900: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.3081, 0.2298));
+    pub const EMERALD_900: Color = Color::Rgb(0, 79, 59);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const EMERALD_950: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.1736, 0.1328));
+    pub const EMERALD_950: Color = Color::Rgb(0, 44, 34);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_50: Color = Color::Rgb(::palette::Srgb::new(0.9423, 0.9925, 0.9809));
+    pub const TEAL_50: Color = Color::Rgb(240, 253, 250);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_100: Color = Color::Rgb(::palette::Srgb::new(0.7968, 0.9858, 0.9457));
+    pub const TEAL_100: Color = Color::Rgb(203, 251, 241);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_200: Color = Color::Rgb(::palette::Srgb::new(0.5870, 0.9675, 0.8946));
+    pub const TEAL_200: Color = Color::Rgb(150, 247, 228);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_300: Color = Color::Rgb(::palette::Srgb::new(0.2756, 0.9274, 0.8335));
+    pub const TEAL_300: Color = Color::Rgb(70, 236, 213);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_400: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.8353, 0.7433));
+    pub const TEAL_400: Color = Color::Rgb(0, 213, 190);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_500: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.7334, 0.6549));
+    pub const TEAL_500: Color = Color::Rgb(0, 187, 167);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_600: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.5893, 0.5373));
+    pub const TEAL_600: Color = Color::Rgb(0, 150, 137);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_700: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.4690, 0.4350));
+    pub const TEAL_700: Color = Color::Rgb(0, 120, 111);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_800: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.3731, 0.3521));
+    pub const TEAL_800: Color = Color::Rgb(0, 95, 90);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_900: Color = Color::Rgb(::palette::Srgb::new(0.0420, 0.3082, 0.2918));
+    pub const TEAL_900: Color = Color::Rgb(11, 79, 74);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const TEAL_950: Color = Color::Rgb(::palette::Srgb::new(0.0081, 0.1848, 0.1808));
+    pub const TEAL_950: Color = Color::Rgb(2, 47, 46);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_50: Color = Color::Rgb(::palette::Srgb::new(0.9250, 0.9960, 1.0000));
+    pub const CYAN_50: Color = Color::Rgb(236, 254, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_100: Color = Color::Rgb(::palette::Srgb::new(0.8093, 0.9806, 0.9965));
+    pub const CYAN_100: Color = Color::Rgb(206, 250, 254);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_200: Color = Color::Rgb(::palette::Srgb::new(0.6366, 0.9554, 0.9922));
+    pub const CYAN_200: Color = Color::Rgb(162, 244, 253);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_300: Color = Color::Rgb(::palette::Srgb::new(0.3267, 0.9170, 0.9914));
+    pub const CYAN_300: Color = Color::Rgb(83, 234, 253);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_400: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.8274, 0.9510));
+    pub const CYAN_400: Color = Color::Rgb(0, 211, 242);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_500: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.7219, 0.8573));
+    pub const CYAN_500: Color = Color::Rgb(0, 184, 219);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_600: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.5742, 0.7226));
+    pub const CYAN_600: Color = Color::Rgb(0, 146, 184);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_700: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.4590, 0.5833));
+    pub const CYAN_700: Color = Color::Rgb(0, 117, 149);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_800: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.3712, 0.4712));
+    pub const CYAN_800: Color = Color::Rgb(0, 95, 120);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_900: Color = Color::Rgb(::palette::Srgb::new(0.0637, 0.3067, 0.3937));
+    pub const CYAN_900: Color = Color::Rgb(16, 78, 100);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const CYAN_950: Color = Color::Rgb(::palette::Srgb::new(0.0212, 0.2006, 0.2698));
+    pub const CYAN_950: Color = Color::Rgb(5, 51, 69);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_50: Color = Color::Rgb(::palette::Srgb::new(0.9398, 0.9766, 1.0000));
+    pub const SKY_50: Color = Color::Rgb(240, 249, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_100: Color = Color::Rgb(::palette::Srgb::new(0.8756, 0.9489, 0.9978));
+    pub const SKY_100: Color = Color::Rgb(223, 242, 254);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_200: Color = Color::Rgb(::palette::Srgb::new(0.7219, 0.9027, 0.9970));
+    pub const SKY_200: Color = Color::Rgb(184, 230, 254);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_300: Color = Color::Rgb(::palette::Srgb::new(0.4532, 0.8317, 1.0000));
+    pub const SKY_300: Color = Color::Rgb(116, 212, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_400: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.7364, 1.0000));
+    pub const SKY_400: Color = Color::Rgb(0, 188, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_500: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.6498, 0.9571));
+    pub const SKY_500: Color = Color::Rgb(0, 166, 244);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_600: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.5182, 0.8198));
+    pub const SKY_600: Color = Color::Rgb(0, 132, 209);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_700: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.4116, 0.6603));
+    pub const SKY_700: Color = Color::Rgb(0, 105, 168);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_800: Color = Color::Rgb(::palette::Srgb::new(0.0000, 0.3490, 0.5399));
+    pub const SKY_800: Color = Color::Rgb(0, 89, 138);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_900: Color = Color::Rgb(::palette::Srgb::new(0.0068, 0.2903, 0.4411));
+    pub const SKY_900: Color = Color::Rgb(2, 74, 112);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SKY_950: Color = Color::Rgb(::palette::Srgb::new(0.0198, 0.1839, 0.2906));
+    pub const SKY_950: Color = Color::Rgb(5, 47, 74);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_50: Color = Color::Rgb(::palette::Srgb::new(0.9369, 0.9640, 0.9989));
+    pub const BLUE_50: Color = Color::Rgb(239, 246, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_100: Color = Color::Rgb(::palette::Srgb::new(0.8582, 0.9178, 0.9973));
+    pub const BLUE_100: Color = Color::Rgb(219, 234, 254);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_200: Color = Color::Rgb(::palette::Srgb::new(0.7451, 0.8587, 1.0000));
+    pub const BLUE_200: Color = Color::Rgb(190, 219, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_300: Color = Color::Rgb(::palette::Srgb::new(0.5566, 0.7732, 1.0000));
+    pub const BLUE_300: Color = Color::Rgb(142, 197, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_400: Color = Color::Rgb(::palette::Srgb::new(0.3158, 0.6356, 1.0000));
+    pub const BLUE_400: Color = Color::Rgb(81, 162, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_500: Color = Color::Rgb(::palette::Srgb::new(0.1693, 0.4980, 1.0000));
+    pub const BLUE_500: Color = Color::Rgb(43, 127, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_600: Color = Color::Rgb(::palette::Srgb::new(0.0836, 0.3644, 0.9863));
+    pub const BLUE_600: Color = Color::Rgb(21, 93, 252);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_700: Color = Color::Rgb(::palette::Srgb::new(0.0779, 0.2791, 0.9018));
+    pub const BLUE_700: Color = Color::Rgb(20, 71, 230);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_800: Color = Color::Rgb(::palette::Srgb::new(0.0998, 0.2338, 0.7229));
+    pub const BLUE_800: Color = Color::Rgb(25, 60, 184);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_900: Color = Color::Rgb(::palette::Srgb::new(0.1091, 0.2222, 0.5575));
+    pub const BLUE_900: Color = Color::Rgb(28, 57, 142);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const BLUE_950: Color = Color::Rgb(::palette::Srgb::new(0.0873, 0.1431, 0.3357));
+    pub const BLUE_950: Color = Color::Rgb(22, 36, 86);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_50: Color = Color::Rgb(::palette::Srgb::new(0.9334, 0.9491, 1.0000));
+    pub const INDIGO_50: Color = Color::Rgb(238, 242, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_100: Color = Color::Rgb(::palette::Srgb::new(0.8780, 0.9059, 1.0000));
+    pub const INDIGO_100: Color = Color::Rgb(224, 231, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_200: Color = Color::Rgb(::palette::Srgb::new(0.7784, 0.8232, 1.0000));
+    pub const INDIGO_200: Color = Color::Rgb(198, 210, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_300: Color = Color::Rgb(::palette::Srgb::new(0.6391, 0.7021, 1.0000));
+    pub const INDIGO_300: Color = Color::Rgb(163, 179, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_400: Color = Color::Rgb(::palette::Srgb::new(0.4878, 0.5265, 1.0000));
+    pub const INDIGO_400: Color = Color::Rgb(124, 134, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_500: Color = Color::Rgb(::palette::Srgb::new(0.3822, 0.3719, 1.0000));
+    pub const INDIGO_500: Color = Color::Rgb(97, 95, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_600: Color = Color::Rgb(::palette::Srgb::new(0.3109, 0.2244, 0.9663));
+    pub const INDIGO_600: Color = Color::Rgb(79, 57, 246);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_700: Color = Color::Rgb(::palette::Srgb::new(0.2644, 0.1766, 0.8448));
+    pub const INDIGO_700: Color = Color::Rgb(67, 45, 215);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_800: Color = Color::Rgb(::palette::Srgb::new(0.2154, 0.1632, 0.6737));
+    pub const INDIGO_800: Color = Color::Rgb(55, 42, 172);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_900: Color = Color::Rgb(::palette::Srgb::new(0.1916, 0.1726, 0.5227));
+    pub const INDIGO_900: Color = Color::Rgb(49, 44, 133);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const INDIGO_950: Color = Color::Rgb(::palette::Srgb::new(0.1171, 0.1026, 0.3006));
+    pub const INDIGO_950: Color = Color::Rgb(30, 26, 77);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_50: Color = Color::Rgb(::palette::Srgb::new(0.9606, 0.9528, 0.9997));
+    pub const VIOLET_50: Color = Color::Rgb(245, 243, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_100: Color = Color::Rgb(::palette::Srgb::new(0.9290, 0.9130, 0.9971));
+    pub const VIOLET_100: Color = Color::Rgb(237, 233, 254);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_200: Color = Color::Rgb(::palette::Srgb::new(0.8665, 0.8379, 1.0000));
+    pub const VIOLET_200: Color = Color::Rgb(221, 214, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_300: Color = Color::Rgb(::palette::Srgb::new(0.7701, 0.7039, 1.0000));
+    pub const VIOLET_300: Color = Color::Rgb(196, 180, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_400: Color = Color::Rgb(::palette::Srgb::new(0.6526, 0.5169, 1.0000));
+    pub const VIOLET_400: Color = Color::Rgb(166, 132, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_500: Color = Color::Rgb(::palette::Srgb::new(0.5559, 0.3182, 1.0000));
+    pub const VIOLET_500: Color = Color::Rgb(142, 81, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_600: Color = Color::Rgb(::palette::Srgb::new(0.4999, 0.1337, 0.9960));
+    pub const VIOLET_600: Color = Color::Rgb(127, 34, 254);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_700: Color = Color::Rgb(::palette::Srgb::new(0.4397, 0.0314, 0.9064));
+    pub const VIOLET_700: Color = Color::Rgb(112, 8, 231);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_800: Color = Color::Rgb(::palette::Srgb::new(0.3654, 0.0555, 0.7533));
+    pub const VIOLET_800: Color = Color::Rgb(93, 14, 192);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_900: Color = Color::Rgb(::palette::Srgb::new(0.3025, 0.0891, 0.6037));
+    pub const VIOLET_900: Color = Color::Rgb(77, 23, 154);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const VIOLET_950: Color = Color::Rgb(::palette::Srgb::new(0.1825, 0.0509, 0.4064));
+    pub const VIOLET_950: Color = Color::Rgb(47, 13, 104);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_50: Color = Color::Rgb(::palette::Srgb::new(0.9804, 0.9611, 0.9998));
+    pub const PURPLE_50: Color = Color::Rgb(250, 245, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_100: Color = Color::Rgb(::palette::Srgb::new(0.9526, 0.9091, 1.0000));
+    pub const PURPLE_100: Color = Color::Rgb(243, 232, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_200: Color = Color::Rgb(::palette::Srgb::new(0.9150, 0.8331, 1.0000));
+    pub const PURPLE_200: Color = Color::Rgb(233, 212, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_300: Color = Color::Rgb(::palette::Srgb::new(0.8544, 0.6978, 1.0000));
+    pub const PURPLE_300: Color = Color::Rgb(218, 178, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_400: Color = Color::Rgb(::palette::Srgb::new(0.7596, 0.4798, 1.0000));
+    pub const PURPLE_400: Color = Color::Rgb(194, 122, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_500: Color = Color::Rgb(::palette::Srgb::new(0.6779, 0.2759, 1.0000));
+    pub const PURPLE_500: Color = Color::Rgb(173, 70, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_600: Color = Color::Rgb(::palette::Srgb::new(0.5968, 0.0617, 0.9814));
+    pub const PURPLE_600: Color = Color::Rgb(152, 16, 250);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_700: Color = Color::Rgb(::palette::Srgb::new(0.5099, 0.0000, 0.8573));
+    pub const PURPLE_700: Color = Color::Rgb(130, 0, 219);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_800: Color = Color::Rgb(::palette::Srgb::new(0.4300, 0.0666, 0.6907));
+    pub const PURPLE_800: Color = Color::Rgb(110, 17, 176);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_900: Color = Color::Rgb(::palette::Srgb::new(0.3507, 0.0873, 0.5452));
+    pub const PURPLE_900: Color = Color::Rgb(89, 22, 139);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PURPLE_950: Color = Color::Rgb(::palette::Srgb::new(0.2346, 0.0118, 0.4014));
+    pub const PURPLE_950: Color = Color::Rgb(60, 3, 102);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_50: Color = Color::Rgb(::palette::Srgb::new(0.9914, 0.9568, 0.9991));
+    pub const FUCHSIA_50: Color = Color::Rgb(253, 244, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_100: Color = Color::Rgb(::palette::Srgb::new(0.9816, 0.9089, 1.0000));
+    pub const FUCHSIA_100: Color = Color::Rgb(250, 232, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_200: Color = Color::Rgb(::palette::Srgb::new(0.9640, 0.8133, 1.0000));
+    pub const FUCHSIA_200: Color = Color::Rgb(246, 207, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_300: Color = Color::Rgb(::palette::Srgb::new(0.9551, 0.6573, 1.0000));
+    pub const FUCHSIA_300: Color = Color::Rgb(244, 168, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_400: Color = Color::Rgb(::palette::Srgb::new(0.9299, 0.4176, 1.0000));
+    pub const FUCHSIA_400: Color = Color::Rgb(237, 106, 255);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_500: Color = Color::Rgb(::palette::Srgb::new(0.8837, 0.1657, 0.9845));
+    pub const FUCHSIA_500: Color = Color::Rgb(225, 42, 251);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_600: Color = Color::Rgb(::palette::Srgb::new(0.7836, 0.0000, 0.8715));
+    pub const FUCHSIA_600: Color = Color::Rgb(200, 0, 222);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_700: Color = Color::Rgb(::palette::Srgb::new(0.6585, 0.0000, 0.7180));
+    pub const FUCHSIA_700: Color = Color::Rgb(168, 0, 183);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_800: Color = Color::Rgb(::palette::Srgb::new(0.5414, 0.0052, 0.5818));
+    pub const FUCHSIA_800: Color = Color::Rgb(138, 1, 148);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_900: Color = Color::Rgb(::palette::Srgb::new(0.4479, 0.0753, 0.4696));
+    pub const FUCHSIA_900: Color = Color::Rgb(114, 19, 120);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const FUCHSIA_950: Color = Color::Rgb(::palette::Srgb::new(0.2939, 0.0015, 0.3106));
+    pub const FUCHSIA_950: Color = Color::Rgb(75, 0, 79);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_50: Color = Color::Rgb(::palette::Srgb::new(0.9913, 0.9486, 0.9719));
+    pub const PINK_50: Color = Color::Rgb(253, 242, 248);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_100: Color = Color::Rgb(::palette::Srgb::new(0.9887, 0.9053, 0.9529));
+    pub const PINK_100: Color = Color::Rgb(252, 231, 243);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_200: Color = Color::Rgb(::palette::Srgb::new(0.9877, 0.8090, 0.9107));
+    pub const PINK_200: Color = Color::Rgb(252, 206, 232);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_300: Color = Color::Rgb(::palette::Srgb::new(0.9941, 0.6465, 0.8371));
+    pub const PINK_300: Color = Color::Rgb(253, 165, 213);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_400: Color = Color::Rgb(::palette::Srgb::new(0.9856, 0.3920, 0.7139));
+    pub const PINK_400: Color = Color::Rgb(251, 100, 182);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_500: Color = Color::Rgb(::palette::Srgb::new(0.9658, 0.1981, 0.6043));
+    pub const PINK_500: Color = Color::Rgb(246, 51, 154);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_600: Color = Color::Rgb(::palette::Srgb::new(0.9013, 0.0000, 0.4634));
+    pub const PINK_600: Color = Color::Rgb(230, 0, 118);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_700: Color = Color::Rgb(::palette::Srgb::new(0.7778, 0.0000, 0.3589));
+    pub const PINK_700: Color = Color::Rgb(198, 0, 92);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_800: Color = Color::Rgb(::palette::Srgb::new(0.6386, 0.0000, 0.2980));
+    pub const PINK_800: Color = Color::Rgb(163, 0, 76);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_900: Color = Color::Rgb(::palette::Srgb::new(0.5252, 0.0633, 0.2613));
+    pub const PINK_900: Color = Color::Rgb(134, 16, 67);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const PINK_950: Color = Color::Rgb(::palette::Srgb::new(0.3180, 0.0151, 0.1398));
+    pub const PINK_950: Color = Color::Rgb(81, 4, 36);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_50: Color = Color::Rgb(::palette::Srgb::new(0.9990, 0.9447, 0.9486));
+    pub const ROSE_50: Color = Color::Rgb(255, 241, 242);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_100: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.8934, 0.9013));
+    pub const ROSE_100: Color = Color::Rgb(255, 228, 230);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_200: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.8011, 0.8257));
+    pub const ROSE_200: Color = Color::Rgb(255, 204, 211);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_300: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.6299, 0.6795));
+    pub const ROSE_300: Color = Color::Rgb(255, 161, 173);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_400: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.3889, 0.4943));
+    pub const ROSE_400: Color = Color::Rgb(255, 99, 126);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_500: Color = Color::Rgb(::palette::Srgb::new(1.0000, 0.1246, 0.3390));
+    pub const ROSE_500: Color = Color::Rgb(255, 32, 86);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_600: Color = Color::Rgb(::palette::Srgb::new(0.9274, 0.0000, 0.2487));
+    pub const ROSE_600: Color = Color::Rgb(236, 0, 63);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_700: Color = Color::Rgb(::palette::Srgb::new(0.7785, 0.0000, 0.2107));
+    pub const ROSE_700: Color = Color::Rgb(199, 0, 54);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_800: Color = Color::Rgb(::palette::Srgb::new(0.6467, 0.0000, 0.2117));
+    pub const ROSE_800: Color = Color::Rgb(165, 0, 54);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_900: Color = Color::Rgb(::palette::Srgb::new(0.5445, 0.0300, 0.2107));
+    pub const ROSE_900: Color = Color::Rgb(139, 8, 54);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ROSE_950: Color = Color::Rgb(::palette::Srgb::new(0.3031, 0.0088, 0.0959));
+    pub const ROSE_950: Color = Color::Rgb(77, 2, 24);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_50: Color = Color::Rgb(::palette::Srgb::new(0.9731, 0.9800, 0.9869));
+    pub const SLATE_50: Color = Color::Rgb(248, 250, 252);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_100: Color = Color::Rgb(::palette::Srgb::new(0.9445, 0.9605, 0.9765));
+    pub const SLATE_100: Color = Color::Rgb(241, 245, 249);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_200: Color = Color::Rgb(::palette::Srgb::new(0.8860, 0.9102, 0.9425));
+    pub const SLATE_200: Color = Color::Rgb(226, 232, 240);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_300: Color = Color::Rgb(::palette::Srgb::new(0.7923, 0.8358, 0.8880));
+    pub const SLATE_300: Color = Color::Rgb(202, 213, 226);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_400: Color = Color::Rgb(::palette::Srgb::new(0.5648, 0.6317, 0.7252));
+    pub const SLATE_400: Color = Color::Rgb(144, 161, 185);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_500: Color = Color::Rgb(::palette::Srgb::new(0.3839, 0.4548, 0.5567));
+    pub const SLATE_500: Color = Color::Rgb(98, 116, 142);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_600: Color = Color::Rgb(::palette::Srgb::new(0.2710, 0.3341, 0.4242));
+    pub const SLATE_600: Color = Color::Rgb(69, 85, 108);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_700: Color = Color::Rgb(::palette::Srgb::new(0.1935, 0.2553, 0.3435));
+    pub const SLATE_700: Color = Color::Rgb(49, 65, 88);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_800: Color = Color::Rgb(::palette::Srgb::new(0.1121, 0.1600, 0.2387));
+    pub const SLATE_800: Color = Color::Rgb(29, 41, 61);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_900: Color = Color::Rgb(::palette::Srgb::new(0.0572, 0.0900, 0.1688));
+    pub const SLATE_900: Color = Color::Rgb(15, 23, 43);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const SLATE_950: Color = Color::Rgb(::palette::Srgb::new(0.0074, 0.0233, 0.0925));
+    pub const SLATE_950: Color = Color::Rgb(2, 6, 24);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_50: Color = Color::Rgb(::palette::Srgb::new(0.9764, 0.9810, 0.9856));
+    pub const GRAY_50: Color = Color::Rgb(249, 250, 251);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_100: Color = Color::Rgb(::palette::Srgb::new(0.9528, 0.9569, 0.9651));
+    pub const GRAY_100: Color = Color::Rgb(243, 244, 246);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_200: Color = Color::Rgb(::palette::Srgb::new(0.8983, 0.9064, 0.9226));
+    pub const GRAY_200: Color = Color::Rgb(229, 231, 235);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_300: Color = Color::Rgb(::palette::Srgb::new(0.8190, 0.8358, 0.8610));
+    pub const GRAY_300: Color = Color::Rgb(209, 213, 220);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_400: Color = Color::Rgb(::palette::Srgb::new(0.6000, 0.6314, 0.6852));
+    pub const GRAY_400: Color = Color::Rgb(153, 161, 175);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_500: Color = Color::Rgb(::palette::Srgb::new(0.4155, 0.4471, 0.5105));
+    pub const GRAY_500: Color = Color::Rgb(106, 114, 130);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_600: Color = Color::Rgb(::palette::Srgb::new(0.2888, 0.3335, 0.3961));
+    pub const GRAY_600: Color = Color::Rgb(74, 85, 101);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_700: Color = Color::Rgb(::palette::Srgb::new(0.2115, 0.2550, 0.3247));
+    pub const GRAY_700: Color = Color::Rgb(54, 65, 83);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_800: Color = Color::Rgb(::palette::Srgb::new(0.1170, 0.1608, 0.2220));
+    pub const GRAY_800: Color = Color::Rgb(30, 41, 57);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_900: Color = Color::Rgb(::palette::Srgb::new(0.0645, 0.0937, 0.1568));
+    pub const GRAY_900: Color = Color::Rgb(16, 24, 40);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const GRAY_950: Color = Color::Rgb(::palette::Srgb::new(0.0116, 0.0276, 0.0719));
+    pub const GRAY_950: Color = Color::Rgb(3, 7, 18);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_50: Color = Color::Rgb(::palette::Srgb::new(0.9803, 0.9803, 0.9803));
+    pub const ZINC_50: Color = Color::Rgb(250, 250, 250);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_100: Color = Color::Rgb(::palette::Srgb::new(0.9564, 0.9564, 0.9593));
+    pub const ZINC_100: Color = Color::Rgb(244, 244, 245);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_200: Color = Color::Rgb(::palette::Srgb::new(0.8945, 0.8945, 0.9062));
+    pub const ZINC_200: Color = Color::Rgb(228, 228, 231);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_300: Color = Color::Rgb(::palette::Srgb::new(0.8311, 0.8311, 0.8483));
+    pub const ZINC_300: Color = Color::Rgb(212, 212, 216);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_400: Color = Color::Rgb(::palette::Srgb::new(0.6226, 0.6226, 0.6634));
+    pub const ZINC_400: Color = Color::Rgb(159, 159, 169);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_500: Color = Color::Rgb(::palette::Srgb::new(0.4430, 0.4429, 0.4838));
+    pub const ZINC_500: Color = Color::Rgb(113, 113, 123);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_600: Color = Color::Rgb(::palette::Srgb::new(0.3212, 0.3211, 0.3621));
+    pub const ZINC_600: Color = Color::Rgb(82, 82, 92);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_700: Color = Color::Rgb(::palette::Srgb::new(0.2465, 0.2464, 0.2765));
+    pub const ZINC_700: Color = Color::Rgb(63, 63, 70);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_800: Color = Color::Rgb(::palette::Srgb::new(0.1529, 0.1529, 0.1658));
+    pub const ZINC_800: Color = Color::Rgb(39, 39, 42);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_900: Color = Color::Rgb(::palette::Srgb::new(0.0938, 0.0938, 0.1058));
+    pub const ZINC_900: Color = Color::Rgb(24, 24, 27);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const ZINC_950: Color = Color::Rgb(::palette::Srgb::new(0.0354, 0.0354, 0.0443));
+    pub const ZINC_950: Color = Color::Rgb(9, 9, 11);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_50: Color = Color::Rgb(::palette::Srgb::new(0.9803, 0.9803, 0.9803));
+    pub const NEUTRAL_50: Color = Color::Rgb(250, 250, 250);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_100: Color = Color::Rgb(::palette::Srgb::new(0.9606, 0.9606, 0.9606));
+    pub const NEUTRAL_100: Color = Color::Rgb(245, 245, 245);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_200: Color = Color::Rgb(::palette::Srgb::new(0.8982, 0.8982, 0.8982));
+    pub const NEUTRAL_200: Color = Color::Rgb(229, 229, 229);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_300: Color = Color::Rgb(::palette::Srgb::new(0.8314, 0.8314, 0.8314));
+    pub const NEUTRAL_300: Color = Color::Rgb(212, 212, 212);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_400: Color = Color::Rgb(::palette::Srgb::new(0.6302, 0.6302, 0.6302));
+    pub const NEUTRAL_400: Color = Color::Rgb(161, 161, 161);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_500: Color = Color::Rgb(::palette::Srgb::new(0.4515, 0.4515, 0.4515));
+    pub const NEUTRAL_500: Color = Color::Rgb(115, 115, 115);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_600: Color = Color::Rgb(::palette::Srgb::new(0.3220, 0.3220, 0.3220));
+    pub const NEUTRAL_600: Color = Color::Rgb(82, 82, 82);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_700: Color = Color::Rgb(::palette::Srgb::new(0.2505, 0.2505, 0.2505));
+    pub const NEUTRAL_700: Color = Color::Rgb(64, 64, 64);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_800: Color = Color::Rgb(::palette::Srgb::new(0.1494, 0.1494, 0.1494));
+    pub const NEUTRAL_800: Color = Color::Rgb(38, 38, 38);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_900: Color = Color::Rgb(::palette::Srgb::new(0.0905, 0.0905, 0.0905));
+    pub const NEUTRAL_900: Color = Color::Rgb(23, 23, 23);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const NEUTRAL_950: Color = Color::Rgb(::palette::Srgb::new(0.0394, 0.0394, 0.0394));
+    pub const NEUTRAL_950: Color = Color::Rgb(10, 10, 10);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_50: Color = Color::Rgb(::palette::Srgb::new(0.9805, 0.9805, 0.9776));
+    pub const STONE_50: Color = Color::Rgb(250, 250, 249);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_100: Color = Color::Rgb(::palette::Srgb::new(0.9609, 0.9609, 0.9579));
+    pub const STONE_100: Color = Color::Rgb(245, 245, 244);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_200: Color = Color::Rgb(::palette::Srgb::new(0.9067, 0.8975, 0.8929));
+    pub const STONE_200: Color = Color::Rgb(231, 229, 228);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_300: Color = Color::Rgb(::palette::Srgb::new(0.8412, 0.8275, 0.8184));
+    pub const STONE_300: Color = Color::Rgb(214, 211, 209);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_400: Color = Color::Rgb(::palette::Srgb::new(0.6521, 0.6262, 0.6089));
+    pub const STONE_400: Color = Color::Rgb(166, 160, 155);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_500: Color = Color::Rgb(::palette::Srgb::new(0.4727, 0.4420, 0.4200));
+    pub const STONE_500: Color = Color::Rgb(121, 113, 107);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_600: Color = Color::Rgb(::palette::Srgb::new(0.3427, 0.3247, 0.3022));
+    pub const STONE_600: Color = Color::Rgb(87, 83, 77);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_700: Color = Color::Rgb(::palette::Srgb::new(0.2685, 0.2504, 0.2323));
+    pub const STONE_700: Color = Color::Rgb(68, 64, 59);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_800: Color = Color::Rgb(::palette::Srgb::new(0.1616, 0.1442, 0.1398));
+    pub const STONE_800: Color = Color::Rgb(41, 37, 36);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_900: Color = Color::Rgb(::palette::Srgb::new(0.1095, 0.0980, 0.0903));
+    pub const STONE_900: Color = Color::Rgb(28, 25, 23);
 
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
-    pub const STONE_950: Color = Color::Rgb(::palette::Srgb::new(0.0470, 0.0394, 0.0355));
+    pub const STONE_950: Color = Color::Rgb(12, 10, 9);
 
     pub const RED: ThemeArray<11> = ThemeArray([
         Self::RED_50,

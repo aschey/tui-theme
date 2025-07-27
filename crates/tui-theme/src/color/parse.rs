@@ -3,7 +3,6 @@ use std::fmt::Display;
 use std::str::FromStr;
 use std::sync::LazyLock;
 
-use ::palette::rgb::Rgb;
 use ::palette::white_point::D50;
 use ::palette::{
     Hsl, Hsluv, Hwb, Lab, Lch, Lchuv, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch, Srgb, Xyz, Yxy,
@@ -139,7 +138,7 @@ impl Color {
     pub(super) fn parse_hex(s: &str) -> Option<Self> {
         if HEX_RE.is_match(s) {
             let rgb: Srgb<u8> = s.parse().unwrap();
-            Some(Self::Rgb(rgb.into()))
+            Some(Self::Rgb(rgb.red, rgb.green, rgb.blue))
         } else {
             None
         }
@@ -147,11 +146,14 @@ impl Color {
 
     fn parse_rgb(s: &str) -> Option<Self> {
         RGB_RE.captures(s).and_then(|captures| {
-            Some(Self::Rgb(Rgb::new(
-                parse_capture(1, None, &captures)? / 255.0,
-                parse_capture(2, None, &captures)? / 255.0,
-                parse_capture(3, None, &captures)? / 255.0,
-            )))
+            Some(
+                Srgb::new(
+                    parse_capture(1, None, &captures)? / 255.0,
+                    parse_capture(2, None, &captures)? / 255.0,
+                    parse_capture(3, None, &captures)? / 255.0,
+                )
+                .into(),
+            )
         })
     }
 
@@ -496,7 +498,7 @@ impl Color {
             "ansilightblue" => Some(Self::LightBlue),
             "ansilightmagenta" => Some(Self::LightMagenta),
             "ansilightcyan" => Some(Self::LightCyan),
-            s => ::palette::named::from_str(s).map(|c| Self::Rgb(c.into())),
+            s => ::palette::named::from_str(s).map(Into::into),
         }
     }
 }

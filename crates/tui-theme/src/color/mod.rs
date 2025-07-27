@@ -5,8 +5,8 @@ use std::io::{self, IsTerminal};
 use std::sync::{Arc, OnceLock};
 use std::time::Duration;
 
-use ::palette::rgb::Rgb;
 use ::palette::{Darken, Lighten};
+use palette::Srgb;
 use termprofile::TermProfile;
 
 mod convert;
@@ -29,8 +29,16 @@ struct ColorPalette {
 impl From<terminal_colorsaurus::ColorPalette> for ColorPalette {
     fn from(value: terminal_colorsaurus::ColorPalette) -> Self {
         ColorPalette {
-            fg: Color::Rgb(scale_color(&value.foreground)),
-            bg: Color::Rgb(scale_color(&value.background)),
+            fg: Color::Rgb(
+                value.foreground.r as u8,
+                value.foreground.g as u8,
+                value.foreground.b as u8,
+            ),
+            bg: Color::Rgb(
+                value.background.r as u8,
+                value.background.g as u8,
+                value.background.b as u8,
+            ),
             theme_mode: override_color_scheme().unwrap_or_else(|| value.theme_mode().into()),
         }
     }
@@ -158,7 +166,7 @@ impl NamedColor<'_> {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Clone, Copy, Debug, PartialEq)]
 pub enum Color {
-    Rgb(Rgb),
+    Rgb(u8, u8, u8),
     #[default]
     Reset,
     /// ANSI Color: Black. Foreground: 30, Background: 40
@@ -207,7 +215,12 @@ pub enum Color {
 macro_rules! color_op {
     ($self:ident, $op:ident, $factor:expr) => {
         match $self {
-            Self::Rgb(val) => Self::Rgb(val.into_linear().$op($factor).into()),
+            Self::Rgb(r, g, b) => {
+                palette::Srgb::new(*r as f32 / 255., *g as f32 / 255., *b as f32 / 255.)
+                    .into_linear()
+                    .$op($factor)
+                    .into()
+            }
             Self::Indexed(i) => indexed_to_color(*i).$op($factor),
             Self::Reset => Self::Reset,
             Self::Black => indexed_to_color(0).$op($factor),
@@ -226,27 +239,6 @@ macro_rules! color_op {
             Self::LightMagenta => indexed_to_color(13).$op($factor),
             Self::LightCyan => indexed_to_color(14).$op($factor),
             Self::White => indexed_to_color(15).$op($factor),
-        }
-    };
-}
-
-fn scale_color(color: &terminal_colorsaurus::Color) -> Rgb {
-    let color = color.scale_to_8bit();
-    Rgb::new(
-        color.0 as f32 / 255.,
-        color.1 as f32 / 255.,
-        color.2 as f32 / 255.,
-    )
-}
-
-macro_rules! as_variant {
-    ($fn:ident, $type:ident) => {
-        pub fn $fn(&self) -> Option<$type> {
-            if let Self::$type(val) = self {
-                Some(*val)
-            } else {
-                None
-            }
         }
     };
 }
@@ -282,7 +274,7 @@ impl Color {
             | Self::DarkGray => color_support >= TermProfile::Ansi16,
             Self::Indexed(index) if *index < 16 => color_support >= TermProfile::Ansi16,
             Self::Indexed(_) => color_support >= TermProfile::Ansi256,
-            Self::Rgb(_) => color_support >= TermProfile::TrueColor,
+            Self::Rgb(_, _, _) => color_support >= TermProfile::TrueColor,
         }
     }
 
@@ -345,23 +337,14 @@ fn indexed_to_color(index: u8) -> Color {
     Color::parse_hex(ANSI_HEX[index as usize]).unwrap()
 }
 
-pub fn indexed_to_rgb(index: u8) -> Rgb {
-    let Color::Rgb(rgb) = indexed_to_color(index) else {
-        unreachable!()
-    };
-    rgb
+pub fn indexed_to_rgb(index: u8) -> Srgb<u8> {
+    ANSI_HEX[index as usize].parse().unwrap()
 }
 
 impl Display for Color {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Rgb(val) => write!(
-                f,
-                "rgb({} {} {})",
-                (val.red * 255.0).round() as u8,
-                (val.green * 255.0).round() as u8,
-                (val.blue * 255.0).round() as u8,
-            ),
+            Self::Rgb(r, g, b) => write!(f, "rgb({r} {g} {b})",),
             Self::Indexed(i) => write!(f, "{i}"),
             Self::Reset => write!(f, "reset"),
             Self::Black => write!(f, "black"),

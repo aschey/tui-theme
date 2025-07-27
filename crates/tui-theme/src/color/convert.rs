@@ -1,18 +1,20 @@
-use palette::rgb::Rgb;
+use palette::bool_mask::LazySelect;
+use palette::num::{Arithmetics, MulSub, PartialCmp, Powf, Real};
+use palette::stimulus::IntoStimulus;
 use palette::{
-    FromColor, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, Luv, Okhsl, Okhsv, Okhwb, Oklab, Oklch, Xyz,
-    Yxy,
+    FromColor, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, LinSrgb, Luv, Okhsl, Okhsv, Okhwb, Oklab,
+    Oklch, Srgb, Xyz, Yxy,
 };
 use termprofile::TermProfile;
 
 use super::{Color, indexed_to_rgb, profile};
 
 impl Color {
-    pub fn to_rgb_fg(self) -> Rgb {
+    pub fn to_rgb_fg(self) -> Srgb<u8> {
         self.to_rgb(true)
     }
 
-    pub fn to_rgb_bg(self) -> Rgb {
+    pub fn to_rgb_bg(self) -> Srgb<u8> {
         self.to_rgb(false)
     }
 
@@ -26,18 +28,12 @@ impl Color {
 
     pub fn to_hex(self, is_fg: bool) -> String {
         let rgb = self.to_rgb(is_fg);
-        format!(
-            "#{:02x}{:02x}{:02x}",
-            (rgb.red * 255.0).round() as u8,
-            (rgb.green * 255.0).round() as u8,
-            (rgb.blue * 255.0).round() as u8
-        )
-        .to_uppercase()
+        format!("#{:02x}{:02x}{:02x}", rgb.red, rgb.green, rgb.blue).to_uppercase()
     }
 
-    fn to_rgb(self, is_fg: bool) -> Rgb {
+    fn to_rgb(self, is_fg: bool) -> Srgb<u8> {
         match self {
-            Self::Rgb(val) => val,
+            Self::Rgb(r, g, b) => Srgb::new(r, g, b),
             Self::Reset => {
                 if is_fg {
                     Self::terminal_foreground().to_rgb_fg()
@@ -92,32 +88,17 @@ impl Color {
             Color::LightCyan => anstyle::Color::Ansi(anstyle::AnsiColor::BrightCyan),
             Color::White => anstyle::Color::Ansi(anstyle::AnsiColor::BrightWhite),
             Color::Indexed(index) => anstyle::Color::Ansi256(anstyle::Ansi256Color(index)),
-            Color::Rgb(rgb_color) => palette_to_anstyle(rgb_color),
+            Color::Rgb(r, g, b) => anstyle::Color::Rgb(anstyle::RgbColor(r, g, b)),
         };
         let profile = profile().unwrap_or(TermProfile::TrueColor);
         profile.adapt_color(value)
     }
 }
 
-fn palette_to_anstyle<T>(val: T) -> anstyle::Color
-where
-    Rgb<palette::encoding::Srgb>: FromColor<T>,
-{
-    rgb_to_anstyle(Rgb::<::palette::encoding::Srgb, _>::from_color(val))
-}
-
-fn rgb_to_anstyle(rgb_color: Rgb) -> anstyle::Color {
-    anstyle::Color::Rgb(anstyle::RgbColor(
-        (rgb_color.red * 255.) as u8,
-        (rgb_color.green * 255.) as u8,
-        (rgb_color.blue * 255.) as u8,
-    ))
-}
-
 impl From<Color> for ratatui::style::Color {
     fn from(value: Color) -> Self {
         match value.into_adaptive() {
-            Color::Rgb(val) => val.into(),
+            Color::Rgb(r, g, b) => ratatui::style::Color::Rgb(r, g, b),
             Color::Reset => ratatui::style::Color::Reset,
             Color::Black => ratatui::style::Color::Black,
             Color::Red => ratatui::style::Color::Red,
@@ -160,9 +141,7 @@ impl From<ratatui::style::Color> for Color {
             ratatui::style::Color::LightMagenta => Color::LightMagenta,
             ratatui::style::Color::LightCyan => Color::LightCyan,
             ratatui::style::Color::White => Color::White,
-            ratatui::style::Color::Rgb(r, g, b) => {
-                Color::Rgb(Rgb::new(r as f32 / 255., g as f32 / 255., b as f32 / 255.))
-            }
+            ratatui::style::Color::Rgb(r, g, b) => Color::Rgb(r, g, b),
             ratatui::style::Color::Indexed(idx) => Color::Indexed(idx),
         }
     }
@@ -188,12 +167,28 @@ impl From<anstyle::Color> for Color {
             anstyle::Color::Ansi(anstyle::AnsiColor::BrightCyan) => Color::LightCyan,
             anstyle::Color::Ansi(anstyle::AnsiColor::BrightWhite) => Color::White,
             anstyle::Color::Ansi256(anstyle::Ansi256Color(index)) => Color::Indexed(index),
-            anstyle::Color::Rgb(rgb_color) => Color::Rgb(Rgb::new(
-                rgb_color.r() as f32 / 255.,
-                rgb_color.g() as f32 / 255.,
-                rgb_color.b() as f32 / 255.,
-            )),
+            anstyle::Color::Rgb(rgb_color) => {
+                Color::Rgb(rgb_color.r(), rgb_color.g(), rgb_color.b())
+            }
         }
+    }
+}
+
+impl<T: IntoStimulus<u8>> From<Srgb<T>> for Color {
+    fn from(color: Srgb<T>) -> Self {
+        let (red, green, blue) = color.into_format().into_components();
+        Self::Rgb(red, green, blue)
+    }
+}
+
+impl<T: IntoStimulus<u8>> From<LinSrgb<T>> for Color
+where
+    T: Real + Powf + MulSub + Arithmetics + PartialCmp + Clone,
+    T::Mask: LazySelect<T>,
+{
+    fn from(color: LinSrgb<T>) -> Self {
+        let srgb_color = Srgb::<T>::from_linear(color);
+        Self::from(srgb_color)
     }
 }
 
@@ -203,17 +198,12 @@ impl From<Color> for Option<anstyle::Color> {
     }
 }
 
-impl From<Rgb> for Color {
-    fn from(value: Rgb) -> Self {
-        Self::Rgb(value)
-    }
-}
-
 macro_rules! from_color {
     ($type:ident) => {
         impl From<$type> for Color {
             fn from(value: $type) -> Self {
-                Self::Rgb(Rgb::from_color(value))
+                let rgb: Srgb = Srgb::from_color(value);
+                rgb.into()
             }
         }
     };

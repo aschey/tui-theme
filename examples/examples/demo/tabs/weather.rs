@@ -148,7 +148,7 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
 
     let (filled_color, unfilled_color) = if enhanced_color_support() {
         let progress_value = Color::progress_value().to_rgb_fg();
-        let color = Okhsv::from_color(progress_value);
+        let color = Okhsv::from_color(progress_value.into_linear());
         let hue = color.hue - (percent as f32 * 0.6);
 
         let value = Okhsv::max_value();

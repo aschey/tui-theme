@@ -90,14 +90,14 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
         ));
 
         let color: Color = val.parse().unwrap();
-        let Color::Rgb(color) = color else {
+        let Color::Rgb(r, g, b) = color else {
             panic!("invalid color");
         };
         writeln!(
             out,
             "    #[allow(clippy::excessive_precision, clippy::approx_constant)]"
         )?;
-        writeln!(out, "{}", generate_const(&name, color))?;
+        writeln!(out, "{}", generate_const(&name, r, g, b))?;
     }
 
     for (color_group, colors) in &color_groups {
@@ -120,9 +120,6 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
     Ok(())
 }
 
-fn generate_const(name: &str, color: ::palette::Srgb) -> String {
-    format!(
-        "    pub const {name}: Color = Color::Rgb(::palette::Srgb::new({:.4}, {:.4}, {:.4}));\n",
-        color.red, color.green, color.blue
-    )
+fn generate_const(name: &str, r: u8, g: u8, b: u8) -> String {
+    format!("    pub const {name}: Color = Color::Rgb({r}, {g}, {b});\n")
 }

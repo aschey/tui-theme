@@ -123,7 +123,7 @@ const BASIC_ANSI_THEME: Colors = Colors {
 static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
     let bg = Color::terminal_background();
     let fg = Color::terminal_foreground();
-    let rel_luma = bg.to_rgb_bg().relative_luminance();
+    let rel_luma = bg.to_rgb_bg().into_linear::<f32>().relative_luminance();
     let factor = 0.15;
     let base2 = if rel_luma.luma <= 0.01 {
         bg.lighten(factor)

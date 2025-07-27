@@ -29,13 +29,18 @@ fn main() -> io::Result<()> {
                 variant,
             } = named_color;
 
-            let color_luminance = named_color.color.to_rgb_fg().relative_luminance().luma;
+            let color_luminance = named_color
+                .color
+                .to_rgb_fg()
+                .into_linear::<f32>()
+                .relative_luminance()
+                .luma;
             let anstyle_color: Option<anstyle::Color> = (*color).into();
             if let Some(anstyle_color) = anstyle_color {
                 let fg_color: Color = if color_luminance < 0.179 {
-                    "rgb(220 220 220)".parse().unwrap()
+                    Color::Rgb(220, 220, 220)
                 } else {
-                    "rgb(20 20 20)".parse().unwrap()
+                    Color::Rgb(20, 20, 20)
                 };
                 let style = to_crossterm(
                     anstyle::Style::new()
