@@ -1,12 +1,9 @@
-use std::ffi::OsStr;
-use std::fs::{self, File};
-use std::io::{self, Read};
+use std::io::{self};
 
 use base64::Engine;
 use base64::prelude::BASE64_URL_SAFE_NO_PAD;
 use dialoguer::Select;
 use dialoguer::theme::ColorfulTheme;
-use tui_theme::Color;
 use tui_theme_util::{parse_theme_css, read_themes_from_dir};
 
 fn main() -> io::Result<()> {

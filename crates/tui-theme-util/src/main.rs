@@ -1,6 +1,6 @@
 use std::fs;
 use std::fs::File;
-use std::io::{self, Read, Write};
+use std::io::{self, Write};
 use std::path::Path;
 use std::process::Command;
 

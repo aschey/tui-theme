@@ -7,7 +7,6 @@ use dialoguer::Select;
 use dialoguer::theme::ColorfulTheme;
 use indexmap::{IndexMap, IndexSet};
 use palette::color_difference::Wcag21RelativeContrast;
-use tui_theme::palette::{Gruvbox, Tailwind};
 use tui_theme::{Color, NamedColor};
 use tui_theme_util::{parse_theme_css, read_themes_from_dir};
 
@@ -83,7 +82,7 @@ impl PrintableTheme {
         let headers: IndexSet<&Cow<'_, str>> = colors.iter().map(|c| &c.group).collect();
         let headers: Vec<_> = headers.into_iter().collect();
 
-        let max_header_len = headers.iter().map(|h| h.len()).max().unwrap() + 2;
+        let max_header_len = (headers.iter().map(|h| h.len()).max().unwrap() + 2).max(9);
         let columns_per_section = width / (max_header_len + 1);
 
         let sections = headers

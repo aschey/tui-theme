@@ -1,7 +1,7 @@
 use std::sync::LazyLock;
 
 use palette::color_difference::Wcag21RelativeContrast;
-use tui_theme::palette::{Catppuccin, Everforest, RosePine};
+use tui_theme::palette::{Catppuccin, Everforest, Gruvbox, Kanagawa, RosePine};
 use tui_theme::profile::TermProfile;
 use tui_theme::{Color, Dark, Light, ProfileVariant, SetTheme, Style, Theme, is_supported};
 
@@ -120,7 +120,7 @@ const BASIC_ANSI_THEME: Colors = Colors {
     selected: Color::Yellow,
 };
 
-static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
+static THEMES: LazyLock<[Colors; 6]> = LazyLock::new(|| {
     let bg = Color::terminal_background();
     let fg = Color::terminal_foreground();
     let rel_luma = bg.to_rgb_bg().into_linear::<f32>().relative_luminance();
@@ -183,6 +183,32 @@ static THEMES: LazyLock<[Colors; 4]> = LazyLock::new(|| {
             text_muted: RosePine::GRAY[(Light(6), Dark(5))],
             text_bright: RosePine::GRAY[(Light(9), Dark(1))],
             selected: RosePine::GOLD[(Light(7), Dark(3))],
+        },
+        Colors {
+            base1: Gruvbox::BROWN[(Light(1), Dark(9))],
+            base2: Gruvbox::BROWN[(Light(0), Dark(10))],
+            primary: Gruvbox::GREEN[(Light(7), Dark(3))],
+            accent: Gruvbox::ORANGE[(Light(7), Dark(3))],
+            success: Gruvbox::AQUA[(Light(7), Dark(3))],
+            warning: Gruvbox::YELLOW[(Light(7), Dark(3))],
+            danger: Gruvbox::RED[(Light(7), Dark(3))],
+            text: Gruvbox::GRAY[(Light(7), Dark(3))],
+            text_muted: Gruvbox::GRAY[(Light(6), Dark(5))],
+            text_bright: Gruvbox::GRAY[(Light(9), Dark(1))],
+            selected: Gruvbox::YELLOW[(Light(7), Dark(3))],
+        },
+        Colors {
+            base1: Kanagawa::HONEYDEW[(Light(1), Dark(9))],
+            base2: Kanagawa::HONEYDEW[(Light(0), Dark(10))],
+            primary: Kanagawa::INDIGO[(Light(7), Dark(3))],
+            accent: Kanagawa::AQUA[(Light(7), Dark(3))],
+            success: Kanagawa::GREEN[(Light(7), Dark(3))],
+            warning: Kanagawa::PEACH[(Light(7), Dark(3))],
+            danger: Kanagawa::RED[(Light(7), Dark(3))],
+            text: Kanagawa::GRAY[(Light(7), Dark(3))],
+            text_muted: Kanagawa::GRAY[(Light(6), Dark(5))],
+            text_bright: Kanagawa::GRAY[(Light(9), Dark(1))],
+            selected: Kanagawa::EARTH_YELLOW[(Light(7), Dark(3))],
         },
     ]
 });
