@@ -3,10 +3,13 @@ use std::io::{self, stdout};
 
 use anstyle_crossterm::to_crossterm;
 use crossterm::style::Stylize;
+use dialoguer::Select;
+use dialoguer::theme::ColorfulTheme;
 use indexmap::{IndexMap, IndexSet};
 use palette::color_difference::Wcag21RelativeContrast;
 use tui_theme::palette::{Gruvbox, Tailwind};
 use tui_theme::{Color, NamedColor};
+use tui_theme_util::{parse_theme_css, read_themes_from_dir};
 
 struct PrintableTheme {
     column_width: usize,
@@ -98,7 +101,19 @@ fn main() -> io::Result<()> {
     tui_theme::load_color_palette();
     tui_theme::load_profile(&stdout());
     let columns = crossterm::terminal::window_size().unwrap().columns;
-    let theme = PrintableTheme::new(Tailwind::ALL_COLORS, columns as usize);
+
+    let theme_files = read_themes_from_dir("themes");
+    let selection = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Select theme")
+        .default(0)
+        .items(&theme_files[..])
+        .interact()
+        .unwrap();
+
+    let file = format!("themes/{}.css", theme_files[selection]);
+    let colors = parse_theme_css(file)?;
+
+    let theme = PrintableTheme::new(colors, columns as usize);
     let column_width = theme.column_width;
     println!();
     for section in theme.sections {

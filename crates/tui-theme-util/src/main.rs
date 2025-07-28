@@ -7,6 +7,7 @@ use std::process::Command;
 use convert_case::{Case, Casing};
 use indexmap::IndexMap;
 use tui_theme::Color;
+use tui_theme_util::{parse_theme_css, read_themes_from_dir};
 
 fn main() -> io::Result<()> {
     // palettes created with https://www.tints.dev
@@ -14,17 +15,12 @@ fn main() -> io::Result<()> {
     fs::remove_dir_all(palette_dir)?;
     fs::create_dir_all(palette_dir)?;
     let mut mod_file = File::create(palette_dir.join("mod.rs"))?;
-    for path in fs::read_dir("themes")? {
-        let path = path.unwrap().path();
-        let name = path
-            .file_name()
-            .unwrap()
-            .to_string_lossy()
-            .to_string()
-            .replace(".css", "");
 
-        read_theme(&name, &path).unwrap();
-        let mod_name = name.to_case(Case::Snake);
+    let theme_files = read_themes_from_dir("themes");
+
+    for theme in theme_files {
+        read_theme(&theme, "themes/".to_string() + &theme + ".css").unwrap();
+        let mod_name = theme.to_case(Case::Snake);
         writeln!(mod_file, "mod {mod_name};")?;
         writeln!(mod_file, "pub use {mod_name}::*;")?;
     }
@@ -38,19 +34,8 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn read_theme(name: &str, path: &Path) -> io::Result<()> {
-    let mut file = File::open(path)?;
-
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-    let lines = contents.split("\n").filter_map(|l| {
-        let l = l.trim();
-        if !l.starts_with("--") {
-            return None;
-        }
-        Some(l)
-    });
-
+fn read_theme(name: &str, path: String) -> io::Result<()> {
+    let theme = parse_theme_css(path)?;
     let mut out = File::create(format!(
         "../tui-theme/src/palette/{}.rs",
         name.to_case(Case::Snake)
@@ -65,31 +50,23 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
     writeln!(out, "impl {name_caps} {{")?;
     let mut color_groups: IndexMap<String, Vec<String>> = IndexMap::new();
     let mut all_colors: Vec<String> = Vec::new();
-    for line in lines {
-        let parts: Vec<_> = line.split(": ").collect();
-        let [name, val] = parts.as_slice() else {
-            panic!("invalid format");
-        };
-        let name = name
-            .replacen("--", "", 1)
-            .replace("-", "_")
-            .replacen("color_", "", 1)
-            .to_ascii_uppercase();
+    for named_color in theme {
+        let color = named_color.color;
+        let group = named_color.group.to_string();
+        let group_upper = group.to_ascii_uppercase();
+        let variant = named_color.variant.to_string();
+        let color_const = format!("{group}_{variant}").to_ascii_uppercase();
 
-        let name_base = name.rsplitn(2, "_").last().unwrap();
-        if let Some(colors) = color_groups.get_mut(name_base) {
-            colors.push(name.clone());
+        if let Some(colors) = color_groups.get_mut(&group_upper) {
+            colors.push(color_const.clone());
         } else {
-            color_groups.insert(name_base.to_string(), vec![name.clone()]);
+            color_groups.insert(group_upper.clone(), vec![color_const.clone()]);
         }
-        let variant = name.rsplit("_").next().unwrap().to_ascii_lowercase();
-        let name_base_lower = name_base.to_ascii_lowercase();
         all_colors.push(format!(
             "NamedColor {{ variant: Cow::Borrowed(\"{variant}\"), group: \
-             Cow::Borrowed(\"{name_base_lower}\"), color: Self::{name} }}",
+             Cow::Borrowed(\"{group}\"), color: Self::{color_const} }}",
         ));
 
-        let color: Color = val.parse().unwrap();
         let Color::Rgb(r, g, b) = color else {
             panic!("invalid color");
         };
@@ -97,7 +74,7 @@ fn read_theme(name: &str, path: &Path) -> io::Result<()> {
             out,
             "    #[allow(clippy::excessive_precision, clippy::approx_constant)]"
         )?;
-        writeln!(out, "{}", generate_const(&name, r, g, b))?;
+        writeln!(out, "{}", generate_const(&color_const, r, g, b))?;
     }
 
     for (color_group, colors) in &color_groups {
