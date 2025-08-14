@@ -7,7 +7,7 @@ use dialoguer::Select;
 use dialoguer::theme::ColorfulTheme;
 use indexmap::{IndexMap, IndexSet};
 use palette::color_difference::Wcag21RelativeContrast;
-use tui_theme::{Color, NamedColor};
+use tui_theme::{Color, NamedColor, Style};
 use tui_theme_util::{parse_theme_css, read_themes_from_dir};
 
 struct PrintableTheme {
@@ -30,8 +30,8 @@ impl Row {
 }
 
 struct Cell {
-    fg: anstyle::Color,
-    bg: anstyle::Color,
+    fg: Color,
+    bg: Color,
 }
 
 impl Cell {
@@ -39,13 +39,13 @@ impl Cell {
         let rgb_color = color.to_rgb_bg();
         let color_luminance = rgb_color.into_linear::<f32>().relative_luminance().luma;
         let fg = if color_luminance < 0.179 {
-            anstyle::RgbColor(220, 220, 220)
+            Color::Rgb(220, 220, 220)
         } else {
-            anstyle::RgbColor(20, 20, 20)
+            Color::Rgb(20, 20, 20)
         };
         Cell {
-            fg: fg.into(),
-            bg: anstyle::RgbColor(rgb_color.red, rgb_color.green, rgb_color.blue).into(),
+            fg,
+            bg: rgb_color.into(),
         }
     }
 }
@@ -124,11 +124,8 @@ fn main() -> io::Result<()> {
         for row in section.rows {
             let label = row.label;
             for cell in row.cells {
-                let style = to_crossterm(
-                    anstyle::Style::new()
-                        .fg_color(Some(cell.fg))
-                        .bg_color(Some(cell.bg)),
-                );
+                let an: anstyle::Style = Style::new().fg(cell.fg).bg(cell.bg).into();
+                let style = to_crossterm(an);
                 print!("{} ", style.apply(format!("{label:^column_width$}")));
             }
             println!();
