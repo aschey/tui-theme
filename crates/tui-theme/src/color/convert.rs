@@ -7,7 +7,7 @@ use palette::{
 };
 use termprofile::TermProfile;
 
-use super::{Color, indexed_to_rgb, profile};
+use super::{Color, indexed_to_rgb, term_profile};
 
 impl Color {
     pub fn to_rgb_fg(self) -> Srgb<u8> {
@@ -65,7 +65,7 @@ impl Color {
         if self.is_compatible() {
             return self;
         }
-        self.into_anstyle().map(Into::into).unwrap_or(Self::Reset)
+        self.into_tui().map(Into::into).unwrap_or(Self::Reset)
     }
 
     fn into_anstyle(self) -> Option<anstyle::Color> {
@@ -90,14 +90,12 @@ impl Color {
             Color::Indexed(index) => anstyle::Color::Ansi256(anstyle::Ansi256Color(index)),
             Color::Rgb(r, g, b) => anstyle::Color::Rgb(anstyle::RgbColor(r, g, b)),
         };
-        let profile = profile().unwrap_or(TermProfile::TrueColor);
+        let profile = term_profile().unwrap_or(TermProfile::TrueColor);
         profile.adapt_color(value)
     }
-}
 
-impl From<Color> for ratatui::style::Color {
-    fn from(value: Color) -> Self {
-        match value.into_adaptive() {
+    fn into_tui(self) -> Option<ratatui::style::Color> {
+        let value = match self {
             Color::Rgb(r, g, b) => ratatui::style::Color::Rgb(r, g, b),
             Color::Reset => ratatui::style::Color::Reset,
             Color::Black => ratatui::style::Color::Black,
@@ -117,7 +115,15 @@ impl From<Color> for ratatui::style::Color {
             Color::LightCyan => ratatui::style::Color::LightCyan,
             Color::White => ratatui::style::Color::White,
             Color::Indexed(idx) => ratatui::style::Color::Indexed(idx),
-        }
+        };
+        let profile = term_profile().unwrap_or(TermProfile::TrueColor);
+        profile.adapt_color(value)
+    }
+}
+
+impl From<Color> for ratatui::style::Color {
+    fn from(value: Color) -> Self {
+        value.into_tui().unwrap_or(ratatui::style::Color::Reset)
     }
 }
 

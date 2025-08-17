@@ -12,7 +12,9 @@ manyhow = "0.11"
 ratatui = "0.29"
 palette = "0.7.6"
 serde = "1"
-termprofile = { git = "https://github.com/aschey/termprofile", rev = "796651984cd97b3bd8a2c1956a0013b815719261" }
+termprofile = { git = "https://github.com/aschey/termprofile", rev = "870aeb5da92d47f89c13ae33ac4e628771a65041", features = [
+    "ratatui",
+] }
 terminal-colorsaurus = "1"
 serde_json = "1"
 regex = "1"

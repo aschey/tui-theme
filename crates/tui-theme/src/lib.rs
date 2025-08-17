@@ -85,7 +85,7 @@ impl<T> ProfileVariant<T> {
     }
 
     pub fn adapt(self) -> T {
-        let current_profile = profile().unwrap_or(TermProfile::TrueColor);
+        let current_profile = term_profile().unwrap_or(TermProfile::TrueColor);
         if current_profile <= TermProfile::NoTty
             && let Some(no_tty) = self.no_tty
         {

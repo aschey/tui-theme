@@ -4,7 +4,7 @@ use anstyle_crossterm::to_crossterm;
 use termprofile::ProfileColor;
 use tui_theme::{
     Color, SetTheme, Style, Styled, Stylize, Theme, load_color_palette, load_profile, palette,
-    profile,
+    term_profile,
 };
 
 #[derive(Clone, Default, Debug)]
@@ -58,8 +58,8 @@ fn main() {
     Color::primary2();
     Style::primary();
     ratatui::style::Color::primary2();
-    let a: Option<Color> = ProfileColor::new(Color::Reset)
-        .try_adapt(&profile().unwrap())
+    let a: Option<Color> = ProfileColor::new(anstyle::RgbColor(0, 0, 0), term_profile().unwrap())
+        .adapt()
         .map(Into::into);
     let fg = Color::terminal_background();
     println!("{fg:?}");

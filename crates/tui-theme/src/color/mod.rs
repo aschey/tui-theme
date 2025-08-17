@@ -118,12 +118,12 @@ fn set_palette_from_override(fg: Color, bg: Color) {
     let _ = COLOR_PALETTE.set(Ok(ColorPalette { fg, bg, theme_mode }));
 }
 
-pub fn profile() -> Result<TermProfile, ProfileError> {
+pub fn term_profile() -> Result<TermProfile, ProfileError> {
     TERM_PROFILE.get().copied().ok_or(ProfileError::NotLoaded)
 }
 
-pub fn is_supported(term_profile: TermProfile) -> Result<bool, ProfileError> {
-    profile().map(|p| p >= term_profile)
+pub fn is_supported(profile: TermProfile) -> Result<bool, ProfileError> {
+    term_profile().map(|p| p >= profile)
 }
 
 fn color_palette() -> Result<ColorPalette, PaletteError> {
@@ -254,7 +254,7 @@ impl Color {
     }
 
     pub fn is_compatible(&self) -> bool {
-        let color_support = profile().unwrap_or(TermProfile::TrueColor);
+        let color_support = term_profile().unwrap_or(TermProfile::TrueColor);
         match self {
             Self::White
             | Self::Gray

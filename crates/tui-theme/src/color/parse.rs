@@ -35,13 +35,13 @@ fn parse_capture(
 ) -> Option<f32> {
     let bounds = bounds.into();
     let s = captures.get(i).unwrap().as_str();
-    if let Some(bounds) = bounds {
-        if s.ends_with('%') {
-            let s = s.trim_end_matches('%');
-            let mut val: f32 = s.parse().unwrap();
-            val /= 100.0;
-            return Some(val * (bounds.max - bounds.min) + bounds.min);
-        }
+    if let Some(bounds) = bounds
+        && s.ends_with('%')
+    {
+        let s = s.trim_end_matches('%');
+        let mut val: f32 = s.parse().unwrap();
+        val /= 100.0;
+        return Some(val * (bounds.max - bounds.min) + bounds.min);
     }
     s.parse().ok()
 }
