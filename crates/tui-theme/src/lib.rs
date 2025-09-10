@@ -3,7 +3,8 @@ pub mod palette;
 mod style;
 mod theme;
 
-// hack for referencing the current crate in proc macros https://github.com/bkchr/proc-macro-crate/issues/14#issuecomment-1742071768
+// hack for referencing the current crate in proc macros 
+// https://github.com/bkchr/proc-macro-crate/issues/14#issuecomment-1742071768
 extern crate self as tui_theme;
 
 use std::ops::{Deref, DerefMut, Index};
@@ -91,7 +92,7 @@ impl<T> ProfileVariant<T> {
         {
             return no_tty;
         }
-        if current_profile <= TermProfile::Ascii
+        if current_profile <= TermProfile::NoColor
             && let Some(ascii) = self.ascii
         {
             return ascii;

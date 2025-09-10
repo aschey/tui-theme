@@ -7,6 +7,7 @@ use dialoguer::Select;
 use dialoguer::theme::ColorfulTheme;
 use indexmap::{IndexMap, IndexSet};
 use palette::color_difference::Wcag21RelativeContrast;
+use tui_theme::profile::DetectorSettings;
 use tui_theme::{Color, NamedColor, Style};
 use tui_theme_util::{parse_theme_css, read_themes_from_dir};
 
@@ -98,7 +99,7 @@ impl PrintableTheme {
 
 fn main() -> io::Result<()> {
     tui_theme::load_color_palette();
-    tui_theme::load_profile(&stdout());
+    tui_theme::load_profile(&stdout(), DetectorSettings::new());
     let columns = crossterm::terminal::window_size().unwrap().columns;
 
     let theme_files = read_themes_from_dir("themes");

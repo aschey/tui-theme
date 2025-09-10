@@ -1,7 +1,7 @@
 use std::io::stdout;
 
 use anstyle_crossterm::to_crossterm;
-use termprofile::ProfileColor;
+use termprofile::{DetectorSettings, ProfileColor};
 use tui_theme::{
     Color, SetTheme, Style, Styled, Stylize, Theme, load_color_palette, load_profile, palette,
     term_profile,
@@ -51,16 +51,19 @@ struct AppTheme {
 }
 
 fn main() {
-    load_profile(&stdout());
+    load_profile(&stdout(), DetectorSettings::new());
     load_color_palette();
 
     ratatui::style::Style::new().fg_primary2();
     Color::primary2();
     Style::primary();
     ratatui::style::Color::primary2();
-    let a: Option<Color> = ProfileColor::new(anstyle::RgbColor(0, 0, 0), term_profile().unwrap())
-        .adapt()
-        .map(Into::into);
+    let a: Option<Color> = ProfileColor::new(
+        anstyle::Color::Rgb(anstyle::RgbColor(0, 0, 0)),
+        term_profile().unwrap(),
+    )
+    .adapt()
+    .map(Into::into);
     let fg = Color::terminal_background();
     println!("{fg:?}");
     println!("{:?}", palette::RosePine::ROSE_500.into_adaptive());

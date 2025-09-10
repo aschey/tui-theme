@@ -7,7 +7,7 @@ use std::time::Duration;
 
 use ::palette::{Darken, Lighten};
 use palette::Srgb;
-use termprofile::TermProfile;
+use termprofile::{DetectorSettings, TermProfile};
 
 mod convert;
 mod parse;
@@ -84,11 +84,11 @@ impl From<terminal_colorsaurus::Error> for PaletteError {
     }
 }
 
-pub fn load_profile<T>(stream: &T)
+pub fn load_profile<T>(stream: &T, settings: DetectorSettings)
 where
     T: IsTerminal,
 {
-    let _ = TERM_PROFILE.set(TermProfile::detect(stream));
+    let _ = TERM_PROFILE.set(TermProfile::detect(stream, settings));
 }
 
 pub fn load_color_palette() {

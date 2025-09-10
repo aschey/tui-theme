@@ -12,8 +12,8 @@ manyhow = "0.11"
 ratatui = "0.29"
 palette = "0.7.6"
 serde = "1"
-termprofile = { git = "https://github.com/aschey/termprofile", rev = "870aeb5da92d47f89c13ae33ac4e628771a65041", features = [
-    "ratatui",
+termprofile = { git = "https://github.com/aschey/termprofile", rev = "9b5992e574b610b01927d00565cf624bbd37c974", features = [
+  "ratatui",
 ] }
 terminal-colorsaurus = "1"
 serde_json = "1"
@@ -25,8 +25,9 @@ convert_case = "0.8"
 proc-macro-crate = "3"
 open = "5"
 base64 = "0.22"
-dialoguer = "0.11"
+dialoguer = "0.12"
 indexmap = "2"
+termina = "0.1"
 
 crossterm = "0.28"
 anstyle-crossterm = "3"
