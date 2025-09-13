@@ -155,9 +155,9 @@ impl From<Style> for ratatui::style::Style {
         if let Some(bg) = val.bg {
             ratatui_style = ratatui_style.bg(bg.into());
         }
-        if let Some(underline) = val.underline_color {
-            ratatui_style = ratatui_style.underline_color(underline.into());
-        }
+        // if let Some(underline) = val.underline_color {
+        //     ratatui_style = ratatui_style.underline_color(underline.into());
+        // }
         let ratatui_style = ratatui_style
             .add_modifier(val.add_modifier.into())
             .remove_modifier(val.sub_modifier.into());
@@ -171,7 +171,8 @@ impl From<ratatui::style::Style> for Style {
         Style {
             fg: value.fg.map(Into::into),
             bg: value.bg.map(Into::into),
-            underline_color: value.underline_color.map(Into::into),
+            underline_color: None,
+            // underline_color: value.underline_color.map(Into::into),
             add_modifier: value.add_modifier.into(),
             sub_modifier: value.sub_modifier.into(),
         }
