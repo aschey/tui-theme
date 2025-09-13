@@ -9,7 +9,7 @@ proc-macro2 = "1"
 quote = "1"
 syn = "2"
 manyhow = "0.11"
-ratatui = "0.29"
+ratatui = { version = "0.29", default-features = false }
 palette = "0.7.6"
 serde = "1"
 termprofile = { git = "https://github.com/aschey/termprofile", rev = "9b5992e574b610b01927d00565cf624bbd37c974", features = [

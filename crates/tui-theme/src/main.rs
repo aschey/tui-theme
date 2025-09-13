@@ -1,6 +1,5 @@
 use std::io::stdout;
 
-use anstyle_crossterm::to_crossterm;
 use termprofile::{DetectorSettings, ProfileColor};
 use tui_theme::{
     Color, SetTheme, Style, Styled, Stylize, Theme, load_color_palette, load_profile, palette,
@@ -68,8 +67,8 @@ fn main() {
     println!("{fg:?}");
     println!("{:?}", palette::RosePine::ROSE_500.into_adaptive());
     let fg2: Option<anstyle::Color> = palette::RosePine::ROSE_500.into_adaptive().into();
-    let s = to_crossterm(anstyle::Style::new().fg_color(fg2));
-    println!("{}", s.apply("yoo"));
+    //let s = to_crossterm(anstyle::Style::new().fg_color(fg2));
+    //println!("{}", s.apply("yoo"));
 
     let col: Color = "chartreuse".parse().unwrap();
     let col2 = col.into_adaptive();

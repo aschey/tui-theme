@@ -16,9 +16,6 @@ terminal-colorsaurus = { workspace = true }
 bitflags = { workspace = true }
 thiserror = { workspace = true }
 
-crossterm = { workspace = true }
-anstyle-crossterm = { workspace = true }
-
 [features]
 serde = ["dep:serde", "bitflags/serde"]
 color-cache = ["termprofile/color-cache"]
