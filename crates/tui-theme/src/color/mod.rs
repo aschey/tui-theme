@@ -206,7 +206,7 @@ pub fn is_supported(profile: TermProfile) -> bool {
     term_profile() >= profile
 }
 
-fn color_palette() -> ColorPalette {
+pub fn color_palette() -> ColorPalette {
     ColorPalette::override_current()
 }
 
