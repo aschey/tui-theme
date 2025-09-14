@@ -5,7 +5,6 @@ use palette::{
     FromColor, Hsl, Hsluv, Hsv, Hwb, Lab, Lch, Lchuv, LinSrgb, Luv, Okhsl, Okhsv, Okhwb, Oklab,
     Oklch, Srgb, Xyz, Yxy,
 };
-use termprofile::TermProfile;
 
 use super::{Color, indexed_to_rgb, term_profile};
 
@@ -90,7 +89,7 @@ impl Color {
             Color::Indexed(index) => anstyle::Color::Ansi256(anstyle::Ansi256Color(index)),
             Color::Rgb(r, g, b) => anstyle::Color::Rgb(anstyle::RgbColor(r, g, b)),
         };
-        let profile = term_profile().unwrap_or(TermProfile::TrueColor);
+        let profile = term_profile();
         profile.adapt_color(value)
     }
 
@@ -116,7 +115,7 @@ impl Color {
             Color::White => ratatui::style::Color::White,
             Color::Indexed(idx) => ratatui::style::Color::Indexed(idx),
         };
-        let profile = term_profile().unwrap_or(TermProfile::TrueColor);
+        let profile = term_profile();
         profile.adapt_color(value)
     }
 }

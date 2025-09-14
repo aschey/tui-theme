@@ -1,14 +1,18 @@
 mod color;
+pub(crate) mod local_override;
 pub mod palette;
 mod style;
 mod theme;
 
-// hack for referencing the current crate in proc macros 
+// hack for referencing the current crate in proc macros
 // https://github.com/bkchr/proc-macro-crate/issues/14#issuecomment-1742071768
 extern crate self as tui_theme;
 
 use std::ops::{Deref, DerefMut, Index};
 
+pub mod __macro_support {
+    pub use crate::local_override;
+}
 pub use color::*;
 pub use style::*;
 use termprofile::TermProfile;
@@ -86,7 +90,7 @@ impl<T> ProfileVariant<T> {
     }
 
     pub fn adapt(self) -> T {
-        let current_profile = term_profile().unwrap_or(TermProfile::TrueColor);
+        let current_profile = term_profile();
         if current_profile <= TermProfile::NoTty
             && let Some(no_tty) = self.no_tty
         {

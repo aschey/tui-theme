@@ -59,7 +59,7 @@ fn main() {
     ratatui::style::Color::primary2();
     let a: Option<Color> = ProfileColor::new(
         anstyle::Color::Rgb(anstyle::RgbColor(0, 0, 0)),
-        term_profile().unwrap(),
+        term_profile(),
     )
     .adapt()
     .map(Into::into);

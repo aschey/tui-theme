@@ -53,7 +53,7 @@ fn subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
 }
 
 #[manyhow(proc_macro_derive(Theme, attributes(subtheme, variants)))]
-pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Result {
+pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Result {
     let Data::Struct(data_struct) = &input.data else {
         bail!(input.span(), "Theme can only be derived on structs");
     };
@@ -69,18 +69,19 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
         Span::call_site(),
     );
 
+    let tui_theme = get_import("tui-theme");
     let fields = subtheme_fields(&data_struct.fields);
     let set_local: TokenStream = fields
         .iter()
-        .map(|(f, _)| quote!(self.#f.set_local();))
+        .map(|(f, _)| quote!(#tui_theme::SetTheme::set_local(&self.#f);))
         .collect();
     let set_global: TokenStream = fields
         .iter()
-        .map(|(f, _)| quote!(self.#f.set_global();))
+        .map(|(f, _)| quote!(#tui_theme::SetTheme::set_global(&self.#f);))
         .collect();
     let unset_local: TokenStream = fields
         .iter()
-        .map(|(_, ty)| quote!(#ty::unset_local();))
+        .map(|(_, ty)| quote!(<#ty as #tui_theme::SetTheme>::unset_local();))
         .collect();
 
     let style_trait = Ident::new(&(struct_name.to_string() + "Style"), Span::call_site());
@@ -104,7 +105,7 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
             }
         })
         .collect();
-    let tui_theme = get_import("tui-theme");
+
     let ratatui = get_import("ratatui");
 
     let style_impl_fns: TokenStream = style_fields
@@ -113,8 +114,7 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
             let style_fn = Ident::new(&format!("style_{f}"), Span::call_site());
             quote! {
                 fn #style_fn(self) -> T {
-                    use #tui_theme::SetTheme;
-                    #struct_name::with_theme(|t| self.set_style(t.#f))
+                    <#struct_name as #tui_theme::SetTheme>::with_theme(|t| self.set_style(t.#f))
                 }
             }
         })
@@ -231,47 +231,34 @@ pub fn derive_theme(input: DeriveInput, emitter: &mut Emitter) -> manyhow::Resul
         .collect();
 
     Ok(quote! {
-        static #global_theme: ::std::sync::LazyLock<
-            ::std::sync::Arc<::std::sync::RwLock<#struct_name>>
-        > =
-            ::std::sync::LazyLock::new(Default::default);
-
-        thread_local! {
-            static #local_theme: ::std::cell::RefCell<Option<#struct_name>> = Default::default();
-        }
+        #tui_theme::__macro_support::local_override!(#struct_name, #global_theme, #local_theme);
 
         impl #tui_theme::SetTheme for #struct_name {
             type Theme = Self;
 
             fn set_local(&self) {
                 #set_local
-                #local_theme.with(|t| *t.borrow_mut() = Some(self.clone()));
+                self.override_set_local();
             }
 
             fn set_global(&self) {
                 #set_global
-                *#global_theme.write().unwrap() = self.clone();
+                self.override_set_global();
             }
 
             fn unset_local() {
                 #unset_local
-                #local_theme.with(|t| *t.borrow_mut() = None);
+                Self::override_unset_local();
             }
 
             fn current() -> Self {
-                #local_theme
-                    .with(|t| t.borrow().clone())
-                    .unwrap_or_else(|| #global_theme.read().unwrap().clone())
+                Self::override_current()
             }
 
             fn with_theme< F, T>(f: F) -> T
             where
                 F: FnOnce(&Self::Theme) -> T {
-                if #local_theme.with(|t| t.borrow().is_some()) {
-                    #local_theme.with(|t| f(&t.borrow().as_ref().unwrap()))
-                } else {
-                    f(&*#global_theme.read().unwrap())
-                }
+                Self::override_with_value(f)
             }
         }
 

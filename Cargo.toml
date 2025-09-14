@@ -12,7 +12,7 @@ manyhow = "0.11"
 ratatui = { version = "0.29", default-features = false }
 palette = "0.7.6"
 serde = "1"
-termprofile = { git = "https://github.com/aschey/termprofile", rev = "f48c64d25d23e1ba2eeaa093d533c0aaefbe0b1c", features = [
+termprofile = { git = "https://github.com/aschey/termprofile", rev = "8a8baa54a1a5504bf92241dd47a0cc65f1000b46", features = [
   "ratatui",
 ] }
 terminal-colorsaurus = "1"

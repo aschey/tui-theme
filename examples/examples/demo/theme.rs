@@ -216,7 +216,7 @@ pub fn num_themes() -> usize {
 }
 
 pub fn enhanced_color_support() -> bool {
-    matches!(is_supported(TermProfile::Ansi256), Ok(true))
+    is_supported(TermProfile::Ansi256)
 }
 
 pub fn init_theme(index: usize) {
