@@ -7,7 +7,7 @@ use std::time::Duration;
 
 use ::palette::{Darken, Lighten};
 use palette::Srgb;
-use termprofile::{DetectorSettings, TermProfile, TermVars};
+use termprofile::{DetectorSettings, QueryTerminal, TermProfile, TermVars};
 
 mod convert;
 mod parse;
@@ -103,32 +103,28 @@ impl From<terminal_colorsaurus::Error> for PaletteError {
     }
 }
 
-pub fn load_profile<T>(stream: &T, settings: DetectorSettings)
+pub fn load_profile<T, Q>(stream: &T, settings: DetectorSettings<Q>)
 where
     T: IsTerminal,
+    Q: QueryTerminal,
 {
     CurrentProfile(TermProfile::detect(stream, settings)).override_set_global();
 }
 
-pub fn load_profile_local<T>(stream: &T, settings: DetectorSettings)
+pub fn load_profile_local<T, Q>(stream: &T, settings: DetectorSettings<Q>)
 where
     T: IsTerminal,
+    Q: QueryTerminal,
 {
     CurrentProfile(TermProfile::detect(stream, settings)).override_set_local();
 }
 
-pub fn load_profile_with_vars<T>(stream: &T, vars: TermVars)
-where
-    T: IsTerminal,
-{
-    CurrentProfile(TermProfile::detect_with_vars(stream, vars)).override_set_global();
+pub fn load_profile_with_vars(vars: TermVars) {
+    CurrentProfile(TermProfile::detect_with_vars(vars)).override_set_global();
 }
 
-pub fn load_profile_local_with_vars<T>(stream: &T, vars: TermVars)
-where
-    T: IsTerminal,
-{
-    CurrentProfile(TermProfile::detect_with_vars(stream, vars)).override_set_local();
+pub fn load_profile_local_with_vars(vars: TermVars) {
+    CurrentProfile(TermProfile::detect_with_vars(vars)).override_set_local();
 }
 
 pub fn set_profile(profile: TermProfile) {
