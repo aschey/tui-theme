@@ -1,5 +1,6 @@
+#[doc(hidden)]
 #[macro_export]
-macro_rules! local_override {
+macro_rules! __local_override {
     ($struct_name:ident, $global_name:ident, $local_name:ident) => {
         static $global_name: ::std::sync::LazyLock<
             ::std::sync::Arc<::std::sync::RwLock<$struct_name>>,

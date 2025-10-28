@@ -13,3 +13,4 @@ strum = { workspace = true, features = ["derive"] }
 unicode-width = { workspace = true }
 time = { workspace = true }
 tui-theme = { workspace = true }
+termprofile = { workspace = true, features = ["terminfo", "query-detect"] }

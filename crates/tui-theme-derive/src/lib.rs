@@ -231,7 +231,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         .collect();
 
     Ok(quote! {
-        #tui_theme::__macro_support::local_override!(#struct_name, #global_theme, #local_theme);
+        #tui_theme::__local_override!(#struct_name, #global_theme, #local_theme);
 
         impl #tui_theme::SetTheme for #struct_name {
             type Theme = Self;

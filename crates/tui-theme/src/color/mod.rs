@@ -13,7 +13,7 @@ mod convert;
 mod parse;
 pub use parse::*;
 
-use crate::{ThemeMode, local_override};
+use crate::{__local_override, ThemeMode};
 
 #[derive(Clone)]
 struct CurrentProfile(TermProfile);
@@ -24,9 +24,9 @@ impl Default for CurrentProfile {
     }
 }
 
-local_override!(CurrentProfile, GLOBAL_TERM_PROFILE, LOCAL_TERM_PROFILE);
+__local_override!(CurrentProfile, GLOBAL_TERM_PROFILE, LOCAL_TERM_PROFILE);
 
-local_override!(ColorPalette, GLOBAL_COLOR_PALETTE, LOCAL_COLOR_PALETTE);
+__local_override!(ColorPalette, GLOBAL_COLOR_PALETTE, LOCAL_COLOR_PALETTE);
 
 #[derive(Clone, Copy, Debug)]
 pub struct ColorPalette {

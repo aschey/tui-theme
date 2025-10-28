@@ -31,9 +31,13 @@ use crossterm::execute;
 use crossterm::terminal::{EnterAlternateScreen, LeaveAlternateScreen};
 use ratatui::layout::Rect;
 use ratatui::{TerminalOptions, Viewport};
+use tui_theme::profile::DetectorSettings;
 
 fn main() -> Result<()> {
     color_eyre::install()?;
+    tui_theme::load_color_palette();
+    tui_theme::load_profile(&stdout(), DetectorSettings::with_query()?);
+
     // this size is to match the size of the terminal when running the demo
     // using vhs in a 1280x640 sized window (github social preview size)
     let viewport = Viewport::Fixed(Rect::new(0, 0, 81, 18));

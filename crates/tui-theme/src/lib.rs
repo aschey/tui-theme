@@ -1,5 +1,5 @@
 mod color;
-pub(crate) mod local_override;
+mod local_override;
 pub mod palette;
 mod style;
 mod theme;
@@ -10,9 +10,6 @@ extern crate self as tui_theme;
 
 use std::ops::{Deref, DerefMut, Index};
 
-pub mod __macro_support {
-    pub use crate::local_override;
-}
 pub use color::*;
 pub use style::*;
 use termprofile::TermProfile;

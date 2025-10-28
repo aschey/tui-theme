@@ -1,4 +1,3 @@
-use std::io::stdout;
 use std::time::Duration;
 
 use color_eyre::Result;
@@ -13,7 +12,6 @@ use ratatui::widgets::{Block, Tabs, Widget};
 use ratatui::{DefaultTerminal, Frame};
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 use tui_theme::Style;
-use tui_theme::profile::DetectorSettings;
 
 use crate::tabs::{AboutTab, EmailTab, RecipeTab, TracerouteTab, WeatherTab};
 use crate::theme::{AppThemeStyle, AppThemeStyleExt as _, KeyBindingStyle, init_theme, num_themes};
@@ -50,8 +48,6 @@ enum Tab {
 impl App {
     /// Run the app until the user quits.
     pub fn run(mut self, mut terminal: DefaultTerminal) -> Result<()> {
-        tui_theme::load_color_palette();
-        tui_theme::load_profile(&stdout(), DetectorSettings::new());
         init_theme(0);
         while self.is_running() {
             terminal
