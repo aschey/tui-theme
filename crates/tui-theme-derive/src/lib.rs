@@ -5,15 +5,23 @@ use quote::{ToTokens, quote};
 use syn::spanned::Spanned;
 use syn::{Data, DeriveInput, Fields, Ident, Type};
 
-fn style_fields(fields: &Fields) -> Vec<&Ident> {
+fn is_style(s: &str) -> bool {
+    matches!(s, "Style" | "tui_theme::Style" | "ratatui::style::Style")
+}
+
+fn is_color(s: &str) -> bool {
+    matches!(s, "Color" | "tui_theme::Color" | "ratatui::style::Color")
+}
+
+fn filter_fields<F>(fields: &Fields, filter: F) -> Vec<&Ident>
+where
+    F: Fn(&str) -> bool,
+{
     fields
         .iter()
         .filter_map(|f| {
             let ty = f.ty.to_token_stream().to_string().replace(" ", "");
-            if matches!(
-                ty.as_str(),
-                "Style" | "tui_theme::Style" | "ratatui::style::Style"
-            ) {
+            if filter(ty.as_str()) {
                 f.ident.as_ref()
             } else {
                 None
@@ -22,21 +30,12 @@ fn style_fields(fields: &Fields) -> Vec<&Ident> {
         .collect()
 }
 
+fn style_fields(fields: &Fields) -> Vec<&Ident> {
+    filter_fields(fields, is_style)
+}
+
 fn color_fields(fields: &Fields) -> Vec<&Ident> {
-    fields
-        .iter()
-        .filter_map(|f| {
-            let ty = f.ty.to_token_stream().to_string().replace(" ", "");
-            if matches!(
-                ty.as_str(),
-                "Color" | "tui_theme::Color" | "ratatui::style::Color"
-            ) {
-                f.ident.as_ref()
-            } else {
-                None
-            }
-        })
-        .collect()
+    filter_fields(fields, is_color)
 }
 
 fn subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
@@ -52,7 +51,7 @@ fn subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
         .collect()
 }
 
-#[manyhow(proc_macro_derive(Theme, attributes(subtheme, variants)))]
+#[manyhow(proc_macro_derive(Theme, attributes(subtheme)))]
 pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Result {
     let Data::Struct(data_struct) = &input.data else {
         bail!(input.span(), "Theme can only be derived on structs");
@@ -93,10 +92,10 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         bail!(input.span(), "Theme can only be derived on structs");
     };
 
-    let style_fields = style_fields(&data_struct.fields);
-    let color_fields = color_fields(&data_struct.fields);
+    let style_idents = style_fields(&data_struct.fields);
+    let color_idents = color_fields(&data_struct.fields);
 
-    let style_trait_fns: TokenStream = style_fields
+    let style_trait_fns: TokenStream = style_idents
         .iter()
         .map(|f| {
             let style_fn = Ident::new(&format!("style_{f}"), Span::call_site());
@@ -108,7 +107,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
 
     let ratatui = get_import("ratatui");
 
-    let style_impl_fns: TokenStream = style_fields
+    let style_impl_fns: TokenStream = style_idents
         .iter()
         .map(|f| {
             let style_fn = Ident::new(&format!("style_{f}"), Span::call_site());
@@ -120,7 +119,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let color_trait_fns: TokenStream = color_fields
+    let color_trait_fns: TokenStream = color_idents
         .iter()
         .map(|f| {
             let fg_fn = Ident::new(&format!("fg_{f}"), Span::call_site());
@@ -135,7 +134,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let color_extension_fns: TokenStream = color_fields
+    let color_ext_fns: TokenStream = color_idents
         .iter()
         .map(|f| {
             let color_fn = Ident::new(&f.to_string(), Span::call_site());
@@ -146,7 +145,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let style_ext_fns: TokenStream = style_fields
+    let style_ext_fns: TokenStream = style_idents
         .iter()
         .map(|f| {
             let style_fn = Ident::new(&f.to_string(), Span::call_site());
@@ -175,7 +174,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let color_impl_fns: TokenStream = color_fields
+    let color_impl_fns: TokenStream = color_idents
         .iter()
         .map(|f| {
             let fg_fn = Ident::new(&format!("fg_{f}"), Span::call_site());
@@ -202,7 +201,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let color_ext_impl_fns: TokenStream = color_fields
+    let color_ext_impl_fns: TokenStream = color_idents
         .iter()
         .map(|f| {
             let color_fn = Ident::new(&f.to_string(), Span::call_site());
@@ -216,7 +215,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let style_ext_impl_fns: TokenStream = style_fields
+    let style_ext_impl_fns: TokenStream = style_idents
         .iter()
         .map(|f| {
             let style_fn = Ident::new(&f.to_string(), Span::call_site());
@@ -238,27 +237,27 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
 
             fn set_local(&self) {
                 #set_local
-                self.override_set_local();
+                self.__override_set_local();
             }
 
             fn set_global(&self) {
                 #set_global
-                self.override_set_global();
+                self.__override_set_global();
             }
 
             fn unset_local() {
                 #unset_local
-                Self::override_unset_local();
+                Self::__override_unset_local();
             }
 
             fn current() -> Self {
-                Self::override_current()
+                Self::__override_current()
             }
 
             fn with_theme< F, T>(f: F) -> T
             where
                 F: FnOnce(&Self::Theme) -> T {
-                Self::override_with_value(f)
+                Self::__override_with_value(f)
             }
         }
 
@@ -289,7 +288,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         }
 
         pub trait #color_ext_trait {
-            #color_extension_fns
+            #color_ext_fns
         }
 
         impl #color_ext_trait for #tui_theme::Color {
@@ -316,8 +315,9 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
 }
 
 fn get_import(crate_name_str: &str) -> TokenStream {
-    let found_crate =
-        crate_name(crate_name_str).unwrap_or_else(|_| panic!("{crate_name_str} not found"));
+    let found_crate = crate_name(crate_name_str).unwrap_or_else(|_| {
+        panic!("{crate_name_str} not found. Please add {crate_name_str} to your dependencies.")
+    });
     match found_crate {
         FoundCrate::Itself => {
             let ident = Ident::new(&crate_name_str.replace("-", "_"), Span::call_site());

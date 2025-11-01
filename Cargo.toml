@@ -1,6 +1,13 @@
 [workspace]
-members = ["crates/*", "examples"]
+members = ["crates/*", "examples", "tests"]
 resolver = "3"
+
+[workspace.package]
+edition = "2024"
+authors = ["Austin Schey <aschey13@gmail.com>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/aschey/tui-theme"
+homepage = "https://github.com/aschey/tui-theme"
 
 [workspace.dependencies]
 tui-theme = { path = "./crates/tui-theme" }
@@ -34,3 +41,4 @@ itertools = "0.14"
 strum = "0.27"
 unicode-width = "0.2"
 time = "0.3"
+rstest = "0.26"

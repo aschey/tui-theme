@@ -8,7 +8,7 @@ use termprofile::TermProfile;
 use crate::{Color, term_profile};
 
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Clone, Copy, Debug, PartialEq)]
+#[derive(Default, Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Style {
     fg: Option<Color>,
     bg: Option<Color>,

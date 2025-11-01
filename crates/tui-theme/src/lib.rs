@@ -20,16 +20,16 @@ pub mod profile {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum ThemeMode {
+pub enum ColorScheme {
     Dark,
     Light,
 }
 
-impl From<terminal_colorsaurus::ThemeMode> for ThemeMode {
+impl From<terminal_colorsaurus::ThemeMode> for ColorScheme {
     fn from(value: terminal_colorsaurus::ThemeMode) -> Self {
         match value {
-            terminal_colorsaurus::ThemeMode::Dark => ThemeMode::Dark,
-            terminal_colorsaurus::ThemeMode::Light => ThemeMode::Light,
+            terminal_colorsaurus::ThemeMode::Dark => ColorScheme::Dark,
+            terminal_colorsaurus::ThemeMode::Light => ColorScheme::Light,
         }
     }
 }
@@ -37,7 +37,7 @@ impl From<terminal_colorsaurus::ThemeMode> for ThemeMode {
 pub struct Adaptive<T> {
     dark: T,
     light: T,
-    choice: ThemeMode,
+    choice: ColorScheme,
 }
 
 impl<T> Adaptive<T> {
@@ -46,7 +46,7 @@ impl<T> Adaptive<T> {
         Self::new(dark, light, theme)
     }
 
-    pub fn new(dark: T, light: T, theme: ThemeMode) -> Self {
+    pub fn new(dark: T, light: T, theme: ColorScheme) -> Self {
         Self {
             dark,
             light,
@@ -56,8 +56,8 @@ impl<T> Adaptive<T> {
 
     pub fn adapt(&self) -> &T {
         match self.choice {
-            ThemeMode::Dark => &self.dark,
-            ThemeMode::Light => &self.light,
+            ColorScheme::Dark => &self.dark,
+            ColorScheme::Light => &self.light,
         }
     }
 }
@@ -139,7 +139,7 @@ impl<const N: usize> Index<(Light, Dark)> for ThemeArray<N> {
     type Output = Color;
 
     fn index(&self, (light, dark): (Light, Dark)) -> &Self::Output {
-        if color_scheme() == ThemeMode::Light {
+        if color_scheme() == ColorScheme::Light {
             &self.0[light.0]
         } else {
             &self.0[dark.0]
@@ -151,7 +151,7 @@ impl<const N: usize> Index<(Dark, Light)> for ThemeArray<N> {
     type Output = Color;
 
     fn index(&self, (dark, light): (Dark, Light)) -> &Self::Output {
-        if color_scheme() == ThemeMode::Light {
+        if color_scheme() == ColorScheme::Light {
             &self.0[light.0]
         } else {
             &self.0[dark.0]

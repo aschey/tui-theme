@@ -12,25 +12,30 @@ macro_rules! __local_override {
 
         #[allow(dead_code)]
         impl $struct_name {
-            fn override_set_local(&self) {
+            #[doc(hidden)]
+            fn __override_set_local(&self) {
                 $local_name.with(|t| *t.borrow_mut() = Some(self.clone()));
             }
 
-            fn override_set_global(&self) {
+            #[doc(hidden)]
+            fn __override_set_global(&self) {
                 *$global_name.write().unwrap() = self.clone();
             }
 
-            fn override_unset_local() {
+            #[doc(hidden)]
+            fn __override_unset_local() {
                 $local_name.with(|t| *t.borrow_mut() = None);
             }
 
-            fn override_current() -> Self {
+            #[doc(hidden)]
+            fn __override_current() -> Self {
                 $local_name
                     .with(|t| t.borrow().clone())
                     .unwrap_or_else(|| $global_name.read().unwrap().clone())
             }
 
-            fn override_with_value<F, T>(f: F) -> T
+            #[doc(hidden)]
+            fn __override_with_value<F, T>(f: F) -> T
             where
                 F: FnOnce(&$struct_name) -> T,
             {

@@ -13,7 +13,7 @@ mod convert;
 mod parse;
 pub use parse::*;
 
-use crate::{__local_override, ThemeMode};
+use crate::{__local_override, ColorScheme};
 
 #[derive(Clone)]
 struct CurrentProfile(TermProfile);
@@ -32,7 +32,7 @@ __local_override!(ColorPalette, GLOBAL_COLOR_PALETTE, LOCAL_COLOR_PALETTE);
 pub struct ColorPalette {
     pub fg: Color,
     pub bg: Color,
-    pub theme_mode: ThemeMode,
+    pub color_scheme: ColorScheme,
 }
 
 impl Default for ColorPalette {
@@ -40,7 +40,7 @@ impl Default for ColorPalette {
         Self {
             fg: Color::White,
             bg: Color::Black,
-            theme_mode: ThemeMode::Dark,
+            color_scheme: ColorScheme::Dark,
         }
     }
 }
@@ -58,7 +58,7 @@ impl From<terminal_colorsaurus::ColorPalette> for ColorPalette {
                 value.background.g as u8,
                 value.background.b as u8,
             ),
-            theme_mode: override_color_scheme().unwrap_or_else(|| value.theme_mode().into()),
+            color_scheme: override_color_scheme().unwrap_or_else(|| value.theme_mode().into()),
         }
     }
 }
@@ -108,7 +108,7 @@ where
     T: IsTerminal,
     Q: QueryTerminal,
 {
-    CurrentProfile(TermProfile::detect(stream, settings)).override_set_global();
+    CurrentProfile(TermProfile::detect(stream, settings)).__override_set_global();
 }
 
 pub fn load_profile_local<T, Q>(stream: &T, settings: DetectorSettings<Q>)
@@ -116,23 +116,23 @@ where
     T: IsTerminal,
     Q: QueryTerminal,
 {
-    CurrentProfile(TermProfile::detect(stream, settings)).override_set_local();
+    CurrentProfile(TermProfile::detect(stream, settings)).__override_set_local();
 }
 
 pub fn load_profile_with_vars(vars: TermVars) {
-    CurrentProfile(TermProfile::detect_with_vars(vars)).override_set_global();
+    CurrentProfile(TermProfile::detect_with_vars(vars)).__override_set_global();
 }
 
 pub fn load_profile_local_with_vars(vars: TermVars) {
-    CurrentProfile(TermProfile::detect_with_vars(vars)).override_set_local();
+    CurrentProfile(TermProfile::detect_with_vars(vars)).__override_set_local();
 }
 
 pub fn set_profile(profile: TermProfile) {
-    CurrentProfile(profile).override_set_global();
+    CurrentProfile(profile).__override_set_global();
 }
 
 pub fn set_profile_local(profile: TermProfile) {
-    CurrentProfile(profile).override_set_local();
+    CurrentProfile(profile).__override_set_local();
 }
 
 pub fn load_color_palette() {
@@ -146,12 +146,12 @@ pub fn load_color_palette() {
     ) && let Some((fg, bg)) = Color::parse_colorfgbg("COLORFGBG")
     {
         let palette = get_palette_from_override(fg, bg);
-        palette.override_set_global();
+        palette.__override_set_global();
         return;
     }
     if let Ok(palette) = palette {
         let palette: ColorPalette = palette.into();
-        palette.override_set_global();
+        palette.__override_set_global();
     }
 }
 
@@ -166,36 +166,40 @@ pub fn load_color_palette_local() {
     ) && let Some((fg, bg)) = Color::parse_colorfgbg("COLORFGBG")
     {
         let palette = get_palette_from_override(fg, bg);
-        palette.override_set_local();
+        palette.__override_set_local();
         return;
     }
     if let Ok(palette) = palette {
         let palette: ColorPalette = palette.into();
-        palette.override_set_local();
+        palette.__override_set_local();
     }
 }
 
 pub fn set_color_palette(palette: ColorPalette) {
-    palette.override_set_global();
+    palette.__override_set_global();
 }
 
 pub fn set_color_palette_local(palette: ColorPalette) {
-    palette.override_set_global();
+    palette.__override_set_global();
 }
 
 fn get_palette_from_override(fg: Color, bg: Color) -> ColorPalette {
     let theme_mode = override_color_scheme().unwrap_or_else(|| {
         if bg == Color::White || bg == Color::Gray {
-            ThemeMode::Light
+            ColorScheme::Light
         } else {
-            ThemeMode::Dark
+            ColorScheme::Dark
         }
     });
-    ColorPalette { fg, bg, theme_mode }
+    ColorPalette {
+        fg,
+        bg,
+        color_scheme: theme_mode,
+    }
 }
 
 pub fn term_profile() -> TermProfile {
-    CurrentProfile::override_current().0
+    CurrentProfile::__override_current().0
 }
 
 pub fn is_supported(profile: TermProfile) -> bool {
@@ -203,23 +207,23 @@ pub fn is_supported(profile: TermProfile) -> bool {
 }
 
 pub fn color_palette() -> ColorPalette {
-    ColorPalette::override_current()
+    ColorPalette::__override_current()
 }
 
-fn override_color_scheme() -> Option<ThemeMode> {
+fn override_color_scheme() -> Option<ColorScheme> {
     // https://wiki.tau.garden/cli-theme/
     match env::var("CLITHEME")
         .map(|s| s.to_ascii_lowercase())
         .as_deref()
     {
-        Ok("light") => Some(ThemeMode::Light),
-        Ok("dark") => Some(ThemeMode::Dark),
+        Ok("light") => Some(ColorScheme::Light),
+        Ok("dark") => Some(ColorScheme::Dark),
         _ => None,
     }
 }
 
-pub fn color_scheme() -> ThemeMode {
-    color_palette().theme_mode
+pub fn color_scheme() -> ColorScheme {
+    color_palette().color_scheme
 }
 
 #[derive(Clone, Debug)]
@@ -236,7 +240,7 @@ impl NamedColor<'_> {
 }
 
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Clone, Copy, Debug, PartialEq)]
+#[derive(Default, Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Color {
     Rgb(u8, u8, u8),
     #[default]

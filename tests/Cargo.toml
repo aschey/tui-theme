@@ -1,0 +1,10 @@
+[package]
+name = "tests"
+publish = false
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+tui-theme = { workspace = true }
+ratatui = { workspace = true }
+rstest = { workspace = true }
