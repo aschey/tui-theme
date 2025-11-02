@@ -1,7 +1,9 @@
 [package]
 name = "tui-theme-examples"
 version = "0.1.0"
-edition = "2024"
+publish = false
+edition.workspace = true
+license.workspace = true
 
 [dependencies]
 ratatui = { workspace = true, features = ["widget-calendar", "crossterm"] }
