@@ -35,7 +35,7 @@ fn main() -> io::Result<()> {
 }
 
 fn read_theme(name: &str, path: String) -> io::Result<()> {
-    let theme = parse_theme_css(path)?;
+    let theme = parse_theme_css(&path)?;
     let mut out = File::create(format!(
         "../tui-theme/src/palette/{}.rs",
         name.to_case(Case::Snake)
@@ -48,6 +48,7 @@ fn read_theme(name: &str, path: String) -> io::Result<()> {
     writeln!(out, "// Auto-generated file. Do not edit.\n")?;
     writeln!(out, "pub struct {name_caps} {{}}\n")?;
     writeln!(out, "impl {name_caps} {{")?;
+    writeln!(out, "pub const NAME: &str = \"{name}\";\n")?;
     let mut color_groups: IndexMap<String, Vec<String>> = IndexMap::new();
     let mut all_colors: Vec<String> = Vec::new();
     for named_color in theme {

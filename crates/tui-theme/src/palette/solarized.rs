@@ -7,6 +7,8 @@ use crate::{Color, NamedColor, ThemeArray};
 pub struct Solarized {}
 
 impl Solarized {
+    pub const NAME: &str = "solarized";
+
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
     pub const BASE_BLUE_50: Color = Color::Rgb(229, 246, 255);
 

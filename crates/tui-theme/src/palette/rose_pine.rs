@@ -7,6 +7,8 @@ use crate::{Color, NamedColor, ThemeArray};
 pub struct RosePine {}
 
 impl RosePine {
+    pub const NAME: &str = "rose-pine";
+
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
     pub const GRAY_50: Color = Color::Rgb(241, 240, 244);
 

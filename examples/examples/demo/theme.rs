@@ -1,7 +1,7 @@
 use std::sync::LazyLock;
 
 use palette::color_difference::Wcag21RelativeContrast;
-use tui_theme::palette::{Catppuccin, Everforest, Gruvbox, Kanagawa, RosePine};
+use tui_theme::palette::{Catppuccin, Everforest, Gruvbox, Kanagawa, Monokai, RosePine};
 use tui_theme::profile::TermProfile;
 use tui_theme::{Color, Dark, Light, ProfileVariant, SetTheme, Style, Theme, is_supported};
 
@@ -90,7 +90,8 @@ pub struct Weather {
 }
 
 #[derive(Theme, Default, Clone, Debug)]
-pub struct Colors {
+pub struct ThemeColors {
+    theme_name: &'static str,
     base1: Color,
     base2: Color,
     text: Color,
@@ -104,7 +105,8 @@ pub struct Colors {
     selected: Color,
 }
 
-const BASIC_ANSI_THEME: Colors = Colors {
+const BASIC_ANSI_THEME: ThemeColors = ThemeColors {
+    theme_name: "ansi",
     base1: Color::Reset,
     base2: Color::Reset,
     primary: Color::Blue,
@@ -118,7 +120,7 @@ const BASIC_ANSI_THEME: Colors = Colors {
     selected: Color::Yellow,
 };
 
-static THEMES: LazyLock<[Colors; 6]> = LazyLock::new(|| {
+static THEMES: LazyLock<[ThemeColors; 7]> = LazyLock::new(|| {
     let bg = Color::terminal_background();
     let fg = Color::terminal_foreground();
     let rel_luma = bg.to_rgb_bg().into_linear::<f32>().relative_luminance();
@@ -129,90 +131,127 @@ static THEMES: LazyLock<[Colors; 6]> = LazyLock::new(|| {
         bg.darken(factor)
     };
 
+    let ansi = ThemeColors {
+        theme_name: "ansi",
+        base1: bg,
+        base2,
+        primary: Color::Blue,
+        accent: Color::Cyan,
+        success: Color::Green,
+        warning: Color::Yellow,
+        danger: Color::Red,
+        text: fg,
+        text_muted: fg.darken(0.15),
+        text_bright: fg.lighten(0.15),
+        selected: Color::Yellow,
+    };
+    let base1 = (Light(1), Dark(9));
+    let base2 = (Light(0), Dark(10));
+    let primary = (Light(7), Dark(3));
+    let accent = (Light(7), Dark(3));
+    let success = (Light(7), Dark(3));
+    let warning = (Light(7), Dark(3));
+    let danger = (Light(7), Dark(3));
+    let text = (Light(7), Dark(3));
+    let text_muted = (Light(6), Dark(5));
+    let text_bright = (Light(9), Dark(1));
+    let selected = (Light(7), Dark(3));
+
     [
-        Colors {
-            base1: bg,
-            base2,
-            primary: Color::Blue,
-            accent: Color::Cyan,
-            success: Color::Green,
-            warning: Color::Yellow,
-            danger: Color::Red,
-            text: fg,
-            text_muted: fg.darken(0.15),
-            text_bright: fg.lighten(0.15),
-            selected: Color::Yellow,
+        ansi,
+        ThemeColors {
+            theme_name: Catppuccin::NAME,
+            base1: Catppuccin::GRAY[base1],
+            base2: Catppuccin::GRAY[base2],
+            primary: Catppuccin::BLUE[primary],
+            accent: Catppuccin::BLUE[accent],
+            success: Catppuccin::GREEN[success],
+            warning: Catppuccin::YELLOW[warning],
+            danger: Catppuccin::ROSEWATER[danger],
+            text: Catppuccin::GRAY[text],
+            text_muted: Catppuccin::GRAY[text_muted],
+            text_bright: Catppuccin::GRAY[text_bright],
+            selected: Catppuccin::YELLOW[selected],
         },
-        Colors {
-            base1: Catppuccin::GRAY[(Light(1), Dark(9))],
-            base2: Catppuccin::GRAY[(Light(0), Dark(10))],
-            primary: Catppuccin::BLUE[(Light(7), Dark(3))],
-            accent: Catppuccin::BLUE[(Light(7), Dark(3))],
-            success: Catppuccin::GREEN[(Light(7), Dark(3))],
-            warning: Catppuccin::YELLOW[(Light(7), Dark(3))],
-            danger: Catppuccin::ROSEWATER[(Light(7), Dark(3))],
-            text: Catppuccin::GRAY[(Light(7), Dark(3))],
-            text_muted: Catppuccin::GRAY[(Light(6), Dark(5))],
-            text_bright: Catppuccin::GRAY[(Light(9), Dark(1))],
-            selected: Catppuccin::YELLOW[(Light(7), Dark(3))],
+        ThemeColors {
+            theme_name: Everforest::NAME,
+            base1: Everforest::BLUE_GRAY[base1],
+            base2: Everforest::BLUE_GRAY[base2],
+            primary: Everforest::BLUE_GRAY[primary],
+            accent: Everforest::BLUE[accent],
+            success: Everforest::GREEN[success],
+            warning: Everforest::YELLOW[warning],
+            danger: Everforest::RED[danger],
+            text: Everforest::BLUE[text],
+            text_muted: Everforest::BLUE_GRAY[text_muted],
+            text_bright: Everforest::BLUE_GRAY[text_bright],
+            selected: Everforest::YELLOW[selected],
         },
-        Colors {
-            base1: Everforest::BLUE_GRAY[(Light(1), Dark(9))],
-            base2: Everforest::BLUE_GRAY[(Light(0), Dark(10))],
-            primary: Everforest::BLUE_GRAY[(Light(7), Dark(3))],
-            accent: Everforest::BLUE[(Light(7), Dark(3))],
-            success: Everforest::GREEN[(Light(7), Dark(3))],
-            warning: Everforest::YELLOW[(Light(7), Dark(3))],
-            danger: Everforest::RED[(Light(7), Dark(3))],
-            text: Everforest::BLUE[(Light(7), Dark(3))],
-            text_muted: Everforest::BLUE_GRAY[(Light(6), Dark(5))],
-            text_bright: Everforest::BLUE_GRAY[(Light(9), Dark(1))],
-            selected: Everforest::YELLOW[(Light(7), Dark(3))],
+        ThemeColors {
+            theme_name: RosePine::NAME,
+            base1: RosePine::GRAY[base1],
+            base2: RosePine::GRAY[base2],
+            primary: RosePine::PINE[primary],
+            accent: RosePine::ROSE[accent],
+            success: RosePine::FOAM[success],
+            warning: RosePine::GOLD[warning],
+            danger: RosePine::ROSE[danger],
+            text: RosePine::GRAY[text],
+            text_muted: RosePine::GRAY[text_muted],
+            text_bright: RosePine::GRAY[text_bright],
+            selected: RosePine::GOLD[selected],
         },
-        Colors {
-            base1: RosePine::GRAY[(Light(1), Dark(9))],
-            base2: RosePine::GRAY[(Light(0), Dark(10))],
-            primary: RosePine::PINE[(Light(7), Dark(3))],
-            accent: RosePine::ROSE[(Light(7), Dark(3))],
-            success: RosePine::FOAM[(Light(7), Dark(3))],
-            warning: RosePine::GOLD[(Light(7), Dark(3))],
-            danger: RosePine::ROSE[(Light(7), Dark(3))],
-            text: RosePine::GRAY[(Light(7), Dark(3))],
-            text_muted: RosePine::GRAY[(Light(6), Dark(5))],
-            text_bright: RosePine::GRAY[(Light(9), Dark(1))],
-            selected: RosePine::GOLD[(Light(7), Dark(3))],
+        ThemeColors {
+            theme_name: Gruvbox::NAME,
+            base1: Gruvbox::BROWN[base1],
+            base2: Gruvbox::BROWN[base2],
+            primary: Gruvbox::GREEN[primary],
+            accent: Gruvbox::ORANGE[accent],
+            success: Gruvbox::AQUA[success],
+            warning: Gruvbox::YELLOW[warning],
+            danger: Gruvbox::RED[danger],
+            text: Gruvbox::GRAY[text],
+            text_muted: Gruvbox::GRAY[text_muted],
+            text_bright: Gruvbox::GRAY[text_bright],
+            selected: Gruvbox::YELLOW[selected],
         },
-        Colors {
-            base1: Gruvbox::BROWN[(Light(1), Dark(9))],
-            base2: Gruvbox::BROWN[(Light(0), Dark(10))],
-            primary: Gruvbox::GREEN[(Light(7), Dark(3))],
-            accent: Gruvbox::ORANGE[(Light(7), Dark(3))],
-            success: Gruvbox::AQUA[(Light(7), Dark(3))],
-            warning: Gruvbox::YELLOW[(Light(7), Dark(3))],
-            danger: Gruvbox::RED[(Light(7), Dark(3))],
-            text: Gruvbox::GRAY[(Light(7), Dark(3))],
-            text_muted: Gruvbox::GRAY[(Light(6), Dark(5))],
-            text_bright: Gruvbox::GRAY[(Light(9), Dark(1))],
-            selected: Gruvbox::YELLOW[(Light(7), Dark(3))],
+        ThemeColors {
+            theme_name: Kanagawa::NAME,
+            base1: Kanagawa::HONEYDEW[base1],
+            base2: Kanagawa::HONEYDEW[base2],
+            primary: Kanagawa::INDIGO[primary],
+            accent: Kanagawa::AQUA[accent],
+            success: Kanagawa::GREEN[success],
+            warning: Kanagawa::PEACH[warning],
+            danger: Kanagawa::RED[danger],
+            text: Kanagawa::GRAY[text],
+            text_muted: Kanagawa::GRAY[text_muted],
+            text_bright: Kanagawa::GRAY[text_bright],
+            selected: Kanagawa::EARTH_YELLOW[selected],
         },
-        Colors {
-            base1: Kanagawa::HONEYDEW[(Light(1), Dark(9))],
-            base2: Kanagawa::HONEYDEW[(Light(0), Dark(10))],
-            primary: Kanagawa::INDIGO[(Light(7), Dark(3))],
-            accent: Kanagawa::AQUA[(Light(7), Dark(3))],
-            success: Kanagawa::GREEN[(Light(7), Dark(3))],
-            warning: Kanagawa::PEACH[(Light(7), Dark(3))],
-            danger: Kanagawa::RED[(Light(7), Dark(3))],
-            text: Kanagawa::GRAY[(Light(7), Dark(3))],
-            text_muted: Kanagawa::GRAY[(Light(6), Dark(5))],
-            text_bright: Kanagawa::GRAY[(Light(9), Dark(1))],
-            selected: Kanagawa::EARTH_YELLOW[(Light(7), Dark(3))],
+        ThemeColors {
+            theme_name: Monokai::NAME,
+            base1: Monokai::GRAY[base1],
+            base2: Monokai::GRAY[base2],
+            primary: Monokai::GRAY[primary],
+            accent: Monokai::BLUE[accent],
+            success: Monokai::GREEN[success],
+            warning: Monokai::YELLOW[warning],
+            danger: Monokai::RED[warning],
+            text: Monokai::GRAY[text],
+            text_muted: Monokai::GRAY[text_muted],
+            text_bright: Monokai::GRAY[text_bright],
+            selected: Monokai::YELLOW[selected],
         },
     ]
 });
 
 pub fn num_themes() -> usize {
     THEMES.len()
+}
+
+pub fn theme_name(index: usize) -> &'static str {
+    THEMES[index].theme_name
 }
 
 pub fn enhanced_color_support() -> bool {

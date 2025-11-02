@@ -13,12 +13,6 @@
 //! [examples]: https://github.com/ratatui/ratatui/blob/main/examples
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
-#![allow(
-    clippy::missing_errors_doc,
-    clippy::module_name_repetitions,
-    clippy::must_use_candidate
-)]
-
 mod app;
 mod tabs;
 mod theme;
@@ -27,10 +21,6 @@ use std::io::stdout;
 
 use app::App;
 use color_eyre::Result;
-use crossterm::execute;
-use crossterm::terminal::{EnterAlternateScreen, LeaveAlternateScreen};
-use ratatui::layout::Rect;
-use ratatui::{TerminalOptions, Viewport};
 use tui_theme::profile::DetectorSettings;
 
 fn main() -> Result<()> {
@@ -38,13 +28,8 @@ fn main() -> Result<()> {
     tui_theme::load_color_palette();
     tui_theme::load_profile(&stdout(), DetectorSettings::with_query()?);
 
-    // this size is to match the size of the terminal when running the demo
-    // using vhs in a 1280x640 sized window (github social preview size)
-    let viewport = Viewport::Fixed(Rect::new(0, 0, 81, 18));
-    let terminal = ratatui::init_with_options(TerminalOptions { viewport });
-    execute!(stdout(), EnterAlternateScreen).expect("failed to enter alternate screen");
+    let terminal = ratatui::init();
     let app_result = App::default().run(terminal);
-    execute!(stdout(), LeaveAlternateScreen).expect("failed to leave alternate screen");
     ratatui::restore();
     app_result
 }

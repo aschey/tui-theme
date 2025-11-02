@@ -7,6 +7,8 @@ use crate::{Color, NamedColor, ThemeArray};
 pub struct Everforest {}
 
 impl Everforest {
+    pub const NAME: &str = "everforest";
+
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
     pub const BLUE_GRAY_50: Color = Color::Rgb(241, 244, 247);
 

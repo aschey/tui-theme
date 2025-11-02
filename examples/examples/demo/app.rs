@@ -14,7 +14,9 @@ use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 use tui_theme::Style;
 
 use crate::tabs::{AboutTab, EmailTab, RecipeTab, TracerouteTab, WeatherTab};
-use crate::theme::{AppThemeStyle, AppThemeStyleExt as _, KeyBindingStyle, init_theme, num_themes};
+use crate::theme::{
+    AppThemeStyle, AppThemeStyleExt as _, KeyBindingStyle, init_theme, num_themes, theme_name,
+};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct App {
@@ -133,7 +135,8 @@ impl App {
 /// entire app state on every frame. For this example, the app state is small enough that it doesn't
 /// matter, but for larger apps this can be a significant performance improvement.
 impl Widget for &App {
-    fn render(self, area: Rect, buf: &mut Buffer) {
+    fn render(self, mut area: Rect, buf: &mut Buffer) {
+        area.width = area.width.min(120);
         let vertical = Layout::vertical([
             Constraint::Length(1),
             Constraint::Min(0),
@@ -144,7 +147,7 @@ impl Widget for &App {
         Block::new().style_root().render(area, buf);
         self.render_title_bar(title_bar, buf);
         self.render_selected_tab(tab, buf);
-        App::render_bottom_bar(bottom_bar, buf);
+        self.render_bottom_bar(bottom_bar, buf);
     }
 }
 
@@ -174,7 +177,7 @@ impl App {
         };
     }
 
-    fn render_bottom_bar(area: Rect, buf: &mut Buffer) {
+    fn render_bottom_bar(&self, area: Rect, buf: &mut Buffer) {
         let keys = [
             ("H/←", "Left"),
             ("L/→", "Right"),
@@ -193,6 +196,7 @@ impl App {
             .collect_vec();
         Block::new().style_app_title().render(area, buf);
         Line::from(spans).centered().render(area, buf);
+        format!("Theme: {}", theme_name(self.theme_index)).render(area, buf);
     }
 }
 

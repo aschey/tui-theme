@@ -7,6 +7,8 @@ use crate::{Color, NamedColor, ThemeArray};
 pub struct Tailwind {}
 
 impl Tailwind {
+    pub const NAME: &str = "tailwind";
+
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
     pub const RED_50: Color = Color::Rgb(254, 242, 242);
 

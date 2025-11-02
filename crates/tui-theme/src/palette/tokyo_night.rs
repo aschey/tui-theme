@@ -7,6 +7,8 @@ use crate::{Color, NamedColor, ThemeArray};
 pub struct TokyoNight {}
 
 impl TokyoNight {
+    pub const NAME: &str = "tokyo-night";
+
     #[allow(clippy::excessive_precision, clippy::approx_constant)]
     pub const GRAY_50: Color = Color::Rgb(243, 243, 247);
 
