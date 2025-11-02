@@ -101,7 +101,7 @@ fn render_crate_description(area: Rect, buf: &mut Buffer) {
 /// rat's eye. The eye color alternates between two colors based on the selected row.
 #[allow(clippy::cast_possible_truncation)]
 pub fn render_logo(selected_row: usize, area: Rect, buf: &mut Buffer) {
-    let eye_color = if selected_row % 2 == 0 {
+    let eye_color = if selected_row.is_multiple_of(2) {
         Color::rat_eye().into()
     } else {
         Color::rat_eye_alt().into()
