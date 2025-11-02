@@ -14,6 +14,7 @@
 //! [examples readme]: https://github.com/ratatui/ratatui/blob/main/examples/README.md
 
 mod app;
+mod colors;
 mod tabs;
 mod theme;
 

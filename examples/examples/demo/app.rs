@@ -13,10 +13,9 @@ use ratatui::{DefaultTerminal, Frame};
 use strum::{Display, EnumIter, FromRepr, IntoEnumIterator};
 use tui_theme::Style;
 
+use crate::colors::{num_themes, theme_name};
 use crate::tabs::{AboutTab, EmailTab, RecipeTab, TracerouteTab, WeatherTab};
-use crate::theme::{
-    AppThemeStyle, AppThemeStyleExt as _, KeyBindingStyle, init_theme, num_themes, theme_name,
-};
+use crate::theme::{AppThemeStyle, AppThemeStyleExt as _, KeyBindingStyle, init_theme};
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct App {
