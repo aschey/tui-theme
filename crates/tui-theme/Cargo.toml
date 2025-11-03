@@ -10,7 +10,6 @@ tui-theme-derive = { workspace = true }
 palette = { workspace = true, features = ["serializing"] }
 serde = { workspace = true, features = ["derive"], optional = true }
 termprofile = { workspace = true, features = ["convert", "ratatui"] }
-serde_json = { workspace = true }
 regex = { workspace = true }
 anstyle = { workspace = true }
 terminal-colorsaurus = { workspace = true }
