@@ -56,6 +56,13 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
     let Data::Struct(data_struct) = &input.data else {
         bail!(input.span(), "Theme can only be derived on structs");
     };
+    if input.generics.lifetimes().next().is_some() || input.generics.type_params().next().is_some()
+    {
+        bail!(
+            input.span(),
+            "Lifetimes and generics are not supported here"
+        );
+    }
     let struct_name = &input.ident;
     let struct_name_upper = struct_name.to_string().to_ascii_uppercase();
 

@@ -1,30 +1,43 @@
+use std::borrow::Cow;
 use std::sync::LazyLock;
 
+use confique::Config;
 use palette::color_difference::Wcag21RelativeContrast;
 use tui_theme::palette::{
     Catppuccin, Everforest, Gruvbox, Kanagawa, Monokai, Nord, OneDark, RosePine, Solarized,
     Tailwind, TokyoNight,
 };
-use tui_theme::{Color, Dark, Light, Theme};
+use tui_theme::{Color, Dark, Light, Theme, deserialize_color};
 
-#[derive(Theme, Default, Clone, Debug)]
+#[derive(Theme, Config, Default, Clone, Debug)]
 pub struct ThemeColors {
-    theme_name: &'static str,
+    theme_name: Cow<'static, str>,
+    #[config(deserialize_with = deserialize_color)]
     base1: Color,
+    #[config(deserialize_with = deserialize_color)]
     base2: Color,
+    #[config(deserialize_with = deserialize_color)]
     text: Color,
+    #[config(deserialize_with = deserialize_color)]
     text_muted: Color,
+    #[config(deserialize_with = deserialize_color)]
     text_bright: Color,
+    #[config(deserialize_with = deserialize_color)]
     primary: Color,
+    #[config(deserialize_with = deserialize_color)]
     accent: Color,
+    #[config(deserialize_with = deserialize_color)]
     success: Color,
+    #[config(deserialize_with = deserialize_color)]
     warning: Color,
+    #[config(deserialize_with = deserialize_color)]
     danger: Color,
+    #[config(deserialize_with = deserialize_color)]
     selected: Color,
 }
 
 pub const BASIC_ANSI_THEME: ThemeColors = ThemeColors {
-    theme_name: "ansi",
+    theme_name: Cow::Borrowed("ansi"),
     base1: Color::Reset,
     base2: Color::Reset,
     primary: Color::Blue,
@@ -38,7 +51,13 @@ pub const BASIC_ANSI_THEME: ThemeColors = ThemeColors {
     selected: Color::Yellow,
 };
 
-pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
+pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
+    let file_config = match ThemeColors::builder().file("theme.toml").load() {
+        Ok(config) => config,
+        Err(e) => {
+            panic!("{e:#?}")
+        }
+    };
     let bg = Color::terminal_background();
     let fg = Color::terminal_foreground();
     let rel_luma = bg.to_rgb_bg().into_linear::<f32>().relative_luminance();
@@ -50,7 +69,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
     };
 
     let ansi = ThemeColors {
-        theme_name: "ansi",
+        theme_name: Cow::Borrowed("ansi"),
         base1: bg,
         base2,
         primary: Color::Blue,
@@ -76,9 +95,10 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
     let selected = (Light(7), Dark(3));
 
     [
+        file_config,
         ansi,
         ThemeColors {
-            theme_name: Catppuccin::NAME,
+            theme_name: Cow::Borrowed(Catppuccin::NAME),
             base1: Catppuccin::GRAY[base1],
             base2: Catppuccin::GRAY[base2],
             primary: Catppuccin::BLUE[primary],
@@ -92,7 +112,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: Catppuccin::YELLOW[selected],
         },
         ThemeColors {
-            theme_name: Everforest::NAME,
+            theme_name: Cow::Borrowed(Everforest::NAME),
             base1: Everforest::BLUE_GRAY[base1],
             base2: Everforest::BLUE_GRAY[base2],
             primary: Everforest::BLUE_GRAY[primary],
@@ -106,7 +126,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: Everforest::YELLOW[selected],
         },
         ThemeColors {
-            theme_name: RosePine::NAME,
+            theme_name: Cow::Borrowed(RosePine::NAME),
             base1: RosePine::GRAY[base1],
             base2: RosePine::GRAY[base2],
             primary: RosePine::PINE[primary],
@@ -120,7 +140,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: RosePine::GOLD[selected],
         },
         ThemeColors {
-            theme_name: Gruvbox::NAME,
+            theme_name: Cow::Borrowed(Gruvbox::NAME),
             base1: Gruvbox::BROWN[base1],
             base2: Gruvbox::BROWN[base2],
             primary: Gruvbox::GREEN[primary],
@@ -134,7 +154,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: Gruvbox::YELLOW[selected],
         },
         ThemeColors {
-            theme_name: Kanagawa::NAME,
+            theme_name: Cow::Borrowed(Kanagawa::NAME),
             base1: Kanagawa::HONEYDEW[base1],
             base2: Kanagawa::HONEYDEW[base2],
             primary: Kanagawa::INDIGO[primary],
@@ -148,7 +168,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: Kanagawa::EARTH_YELLOW[selected],
         },
         ThemeColors {
-            theme_name: Monokai::NAME,
+            theme_name: Cow::Borrowed(Monokai::NAME),
             base1: Monokai::GRAY[base1],
             base2: Monokai::GRAY[base2],
             primary: Monokai::BLUE[primary],
@@ -162,7 +182,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: Monokai::YELLOW[selected],
         },
         ThemeColors {
-            theme_name: Nord::NAME,
+            theme_name: Cow::Borrowed(Nord::NAME),
             base1: Nord::GRAY[base1],
             base2: Nord::GRAY[base2],
             primary: Nord::BLUE[primary],
@@ -176,7 +196,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: Nord::YELLOW[selected],
         },
         ThemeColors {
-            theme_name: OneDark::NAME,
+            theme_name: Cow::Borrowed(OneDark::NAME),
             base1: OneDark::GRAY[base1],
             base2: OneDark::GRAY[base2],
             primary: OneDark::BLUE[primary],
@@ -190,7 +210,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: OneDark::PEACH[selected],
         },
         ThemeColors {
-            theme_name: Solarized::NAME,
+            theme_name: Cow::Borrowed(Solarized::NAME),
             base1: Solarized::BASE_BLUE[base1],
             base2: Solarized::BASE_BLUE[base2],
             primary: Solarized::BLUE[primary],
@@ -204,7 +224,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: Solarized::YELLOW[selected],
         },
         ThemeColors {
-            theme_name: Tailwind::NAME,
+            theme_name: Cow::Borrowed(Tailwind::NAME),
             base1: Tailwind::GRAY[base1],
             base2: Tailwind::GRAY[base2],
             primary: Tailwind::SKY[primary],
@@ -218,7 +238,7 @@ pub static THEMES: LazyLock<[ThemeColors; 12]> = LazyLock::new(|| {
             selected: Tailwind::AMBER[selected],
         },
         ThemeColors {
-            theme_name: TokyoNight::NAME,
+            theme_name: Cow::Borrowed(TokyoNight::NAME),
             base1: TokyoNight::GRAY[base1],
             base2: TokyoNight::GRAY[base2],
             primary: TokyoNight::BLUE[primary],
@@ -238,6 +258,6 @@ pub fn num_themes() -> usize {
     THEMES.len()
 }
 
-pub fn theme_name(index: usize) -> &'static str {
-    THEMES[index].theme_name
+pub fn theme_name(index: usize) -> String {
+    THEMES[index].theme_name.to_string()
 }

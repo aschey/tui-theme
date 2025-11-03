@@ -482,7 +482,7 @@ impl Color {
             .replace("_", "")
             .trim()
         {
-            "ansireset" => Some(Self::Reset),
+            "" | "reset" | "ansireset" => Some(Self::Reset),
             "ansiblack" => Some(Self::Black),
             "ansired" => Some(Self::Red),
             "ansigreen" => Some(Self::Green),
@@ -492,6 +492,7 @@ impl Color {
             "ansicyan" => Some(Self::Cyan),
             "ansigray" | "ansigrey" => Some(Self::Gray),
             "ansidarkgray" | "ansidarkgrey" => Some(Self::DarkGray),
+            "ansiwhite" => Some(Self::White),
             "ansilightred" => Some(Self::LightRed),
             "ansilightgreen" => Some(Self::LightGreen),
             "ansilightyellow" => Some(Self::LightYellow),
@@ -503,14 +504,26 @@ impl Color {
     }
 }
 
+#[cfg(feature = "serde")]
+pub fn deserialize_color<'de, D>(deser: D) -> Result<Color, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    use serde::de::Error;
+
+    let res = <String as serde::Deserialize>::deserialize(deser)?;
+    let color = res.parse().map_err(D::Error::custom)?;
+    Ok(color)
+}
+
 #[derive(Debug)]
-pub struct InvalidColor;
+pub struct InvalidColor(String);
 
 impl Error for InvalidColor {}
 
 impl Display for InvalidColor {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("invalid color")
+        write!(f, "invalid color: {}", self.0)
     }
 }
 
@@ -577,6 +590,6 @@ impl FromStr for Color {
         if let Some(val) = Self::parse_yxy(s) {
             return Ok(val);
         }
-        Err(InvalidColor)
+        Err(InvalidColor(s.to_string()))
     }
 }

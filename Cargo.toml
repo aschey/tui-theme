@@ -33,6 +33,7 @@ base64 = "0.22"
 dialoguer = "0.12"
 indexmap = "2"
 termina = "0.1"
+confique = "0.4"
 
 crossterm = "0.28"
 anstyle-crossterm = "3"
