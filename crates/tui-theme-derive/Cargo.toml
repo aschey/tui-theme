@@ -13,3 +13,4 @@ quote = { workspace = true }
 syn = { workspace = true, features = ["full"] }
 manyhow = { workspace = true }
 proc-macro-crate = { workspace = true }
+itertools = { workspace = true }

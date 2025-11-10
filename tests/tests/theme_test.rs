@@ -75,6 +75,8 @@ fn set_custom() {
     assert_eq!(theme, BorderTheme::current());
     assert_eq!(theme.primary, BorderTheme::primary());
     assert_eq!(theme.secondary, BorderTheme::secondary());
+    assert_eq!(theme.primary, Borders::primary());
+    assert_eq!(theme.secondary, Borders::secondary());
 }
 
 #[test]
@@ -108,5 +110,7 @@ fn set_nested() {
     assert_eq!(theme.color2.primary2, Color::primary2());
     assert_eq!(theme.color2.secondary2, Color::secondary2());
     assert_eq!(theme.style.primary, Style::primary());
-    assert_eq!(theme.style.secondary, Style::secondary())
+    assert_eq!(theme.style.secondary, Style::secondary());
+    assert_eq!(theme.borders.primary, Borders::primary());
+    assert_eq!(theme.borders.secondary, Borders::secondary());
 }

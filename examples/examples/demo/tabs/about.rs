@@ -4,7 +4,7 @@ use ratatui::layout::{Alignment, Constraint, Layout, Margin, Rect};
 use ratatui::widgets::{Block, Borders, Clear, Padding, Paragraph, Widget, Wrap};
 use tui_theme::Color;
 
-use crate::theme::{AppThemeStyle, LogoColorExt};
+use crate::theme::{AppThemeStyle, LogoColorThemeExt};
 
 const RATATUI_LOGO: [&str; 32] = [
     "               ███              ",

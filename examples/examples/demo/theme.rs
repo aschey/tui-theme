@@ -1,7 +1,7 @@
 use tui_theme::profile::TermProfile;
 use tui_theme::{Color, ProfileVariant, SetTheme, Style, Theme, is_supported};
 
-use crate::colors::{BASIC_ANSI_THEME, THEMES, ThemeColorsColorExt, ThemeColorsColorTheme};
+use crate::colors::{BASIC_ANSI_THEME, THEMES, ThemeColorsColorTheme, ThemeColorsColorThemeExt};
 
 #[derive(Theme, Default, Clone, Debug)]
 pub struct AppTheme {

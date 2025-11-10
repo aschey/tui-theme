@@ -1,9 +1,10 @@
+use itertools::Itertools;
 use manyhow::{Emitter, bail, manyhow};
 use proc_macro_crate::{FoundCrate, crate_name};
 use proc_macro2::{Span, TokenStream};
 use quote::{ToTokens, quote};
 use syn::spanned::Spanned;
-use syn::{Data, DeriveInput, Fields, Ident, Type};
+use syn::{Data, DeriveInput, Fields, Ident, Path, Type};
 
 fn is_style(s: &str) -> bool {
     matches!(s, "Style" | "tui_theme::Style" | "ratatui::style::Style")
@@ -30,15 +31,34 @@ where
         .collect()
 }
 
-fn style_fields(fields: &Fields) -> Vec<&Ident> {
+fn get_style_fields(fields: &Fields) -> Vec<&Ident> {
     filter_fields(fields, is_style)
 }
 
-fn color_fields(fields: &Fields) -> Vec<&Ident> {
+fn get_color_fields(fields: &Fields) -> Vec<&Ident> {
     filter_fields(fields, is_color)
 }
 
-fn subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
+fn get_other_fields(fields: &Fields) -> Vec<(&Ident, &Path)> {
+    fields
+        .iter()
+        .filter_map(|f| {
+            let ty = f.ty.to_token_stream().to_string().replace(" ", "");
+            if !f.attrs.iter().any(|a| a.meta.path().is_ident("subtheme"))
+                && !is_color(&ty)
+                && !is_style(&ty)
+                && let Type::Path(path) = &f.ty
+                && path.qself.is_none()
+            {
+                f.ident.as_ref().map(|i| (i, &path.path))
+            } else {
+                None
+            }
+        })
+        .collect()
+}
+
+fn get_subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
     fields
         .iter()
         .filter_map(|f| {
@@ -76,16 +96,18 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
     );
 
     let tui_theme = get_import("tui-theme");
-    let fields = subtheme_fields(&data_struct.fields);
-    let set_local: TokenStream = fields
+    let subtheme_fields = get_subtheme_fields(&data_struct.fields);
+    let other_fields = get_other_fields(&data_struct.fields);
+
+    let subtheme_set_local: TokenStream = subtheme_fields
         .iter()
         .map(|(f, _)| quote!(#tui_theme::SetTheme::set_local(&self.#f);))
         .collect();
-    let set_global: TokenStream = fields
+    let subtheme_set_global: TokenStream = subtheme_fields
         .iter()
         .map(|(f, _)| quote!(#tui_theme::SetTheme::set_global(&self.#f);))
         .collect();
-    let unset_local: TokenStream = fields
+    let subtheme_unset_local: TokenStream = subtheme_fields
         .iter()
         .map(|(_, ty)| quote!(<#ty as #tui_theme::SetTheme>::unset_local();))
         .collect();
@@ -93,16 +115,65 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
     let style_trait = Ident::new(&(struct_name.to_string() + "Style"), Span::call_site());
     let style_ext_trait = Ident::new(&(struct_name.to_string() + "StyleExt"), Span::call_site());
     let color_trait = Ident::new(&(struct_name.to_string() + "ColorTheme"), Span::call_site());
-    let color_ext_trait = Ident::new(&(struct_name.to_string() + "ColorExt"), Span::call_site());
+    let color_ext_trait = Ident::new(
+        &(struct_name.to_string() + "ColorThemeExt"),
+        Span::call_site(),
+    );
+
+    let other_traits: TokenStream = other_fields
+        .iter()
+        .chunk_by(|(_, ty)| ty)
+        .into_iter()
+        .map(|(ty, group)| {
+            let trait_name = Ident::new(
+                &(struct_name.to_string()
+                    + &ty
+                        .segments
+                        .iter()
+                        .map(|s| s.ident.to_string())
+                        .collect::<String>()
+                    + "Ext"),
+                Span::call_site(),
+            );
+            let methods: Vec<_> = group
+                .into_iter()
+                .map(|(ident, _)| {
+                    (
+                        quote! {
+                            fn #ident() -> #ty;
+                        },
+                        quote! {
+                            fn #ident() -> #ty {
+                                use #tui_theme::SetTheme;
+                                #struct_name::with_theme(|t| t.#ident.clone())
+                            }
+                        },
+                    )
+                })
+                .collect();
+
+            let method_defs: TokenStream = methods.iter().map(|(m, _)| m.clone()).collect();
+            let method_impls: TokenStream = methods.into_iter().map(|(_, m)| m).collect();
+            quote! {
+                pub trait #trait_name {
+                    #method_defs
+                }
+
+                impl #trait_name for #ty {
+                    #method_impls
+                }
+            }
+        })
+        .collect();
 
     let Data::Struct(data_struct) = &input.data else {
         bail!(input.span(), "Theme can only be derived on structs");
     };
 
-    let style_idents = style_fields(&data_struct.fields);
-    let color_idents = color_fields(&data_struct.fields);
+    let style_fields = get_style_fields(&data_struct.fields);
+    let color_fields = get_color_fields(&data_struct.fields);
 
-    let style_trait_fns: TokenStream = style_idents
+    let style_trait_fns: TokenStream = style_fields
         .iter()
         .map(|f| {
             let style_fn = Ident::new(&format!("style_{f}"), Span::call_site());
@@ -114,7 +185,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
 
     let ratatui = get_import("ratatui");
 
-    let style_impl_fns: TokenStream = style_idents
+    let style_impl_fns: TokenStream = style_fields
         .iter()
         .map(|f| {
             let style_fn = Ident::new(&format!("style_{f}"), Span::call_site());
@@ -126,7 +197,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let color_trait_fns: TokenStream = color_idents
+    let color_trait_fns: TokenStream = color_fields
         .iter()
         .map(|f| {
             let fg_fn = Ident::new(&format!("fg_{f}"), Span::call_site());
@@ -141,7 +212,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let color_ext_fns: TokenStream = color_idents
+    let color_ext_fns: TokenStream = color_fields
         .iter()
         .map(|f| {
             let color_fn = Ident::new(&f.to_string(), Span::call_site());
@@ -152,7 +223,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let style_ext_fns: TokenStream = style_idents
+    let style_ext_fns: TokenStream = style_fields
         .iter()
         .map(|f| {
             let style_fn = Ident::new(&f.to_string(), Span::call_site());
@@ -170,7 +241,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
             if let Some(ident) = &f.ident {
                 let ty = &f.ty;
                 Some(quote! {
-                    fn #ident() -> #ty {
+                    pub fn #ident() -> #ty {
                         use #tui_theme::SetTheme;
                         #struct_name::with_theme(|t| t.#ident.clone())
                     }
@@ -181,7 +252,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let color_impl_fns: TokenStream = color_idents
+    let color_impl_fns: TokenStream = color_fields
         .iter()
         .map(|f| {
             let fg_fn = Ident::new(&format!("fg_{f}"), Span::call_site());
@@ -208,7 +279,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let color_ext_impl_fns: TokenStream = color_idents
+    let color_ext_impl_fns: TokenStream = color_fields
         .iter()
         .map(|f| {
             let color_fn = Ident::new(&f.to_string(), Span::call_site());
@@ -222,7 +293,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let style_ext_impl_fns: TokenStream = style_idents
+    let style_ext_impl_fns: TokenStream = style_fields
         .iter()
         .map(|f| {
             let style_fn = Ident::new(&f.to_string(), Span::call_site());
@@ -243,17 +314,17 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
             type Theme = Self;
 
             fn set_local(&self) {
-                #set_local
+                #subtheme_set_local
                 self.__override_set_local();
             }
 
             fn set_global(&self) {
-                #set_global
+                #subtheme_set_global
                 self.__override_set_global();
             }
 
             fn unset_local() {
-                #unset_local
+                #subtheme_unset_local
                 Self::__override_unset_local();
             }
 
@@ -318,6 +389,7 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
             #style_ext_impl_fns
         }
 
+        #other_traits
     })
 }
 

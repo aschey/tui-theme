@@ -9,7 +9,7 @@ use time::OffsetDateTime;
 use tui_theme::{Color, Style};
 
 use crate::theme::{
-    AppThemeStyle, WeatherColorExt, WeatherColorTheme as _, WeatherStyleExt as _,
+    AppThemeStyle, WeatherColorTheme, WeatherColorThemeExt, WeatherStyleExt as _,
     enhanced_color_support,
 };
 

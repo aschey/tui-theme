@@ -9,7 +9,9 @@ use ratatui::widgets::{
 };
 use tui_theme::{Color, Style};
 
-use crate::theme::{AppThemeStyle as _, TracerouteColorExt, TracerouteStyle, TracerouteStyleExt};
+use crate::theme::{
+    AppThemeStyle as _, TracerouteColorThemeExt, TracerouteStyle, TracerouteStyleExt,
+};
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct TracerouteTab {
