@@ -10,7 +10,7 @@ proc-macro = true
 [dependencies]
 proc-macro2 = { workspace = true }
 quote = { workspace = true }
-syn = { workspace = true, features = ["full"] }
+syn = { workspace = true, features = ["full", "extra-traits"] }
 manyhow = { workspace = true }
 proc-macro-crate = { workspace = true }
 itertools = { workspace = true }
