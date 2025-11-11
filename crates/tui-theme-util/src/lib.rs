@@ -1,13 +1,14 @@
 use std::ffi::OsStr;
-use std::fs::{self, File};
 use std::io::{self, Read};
-use std::path::Path;
+use std::path::PathBuf;
 
+use fs::File;
+use fs_err as fs;
 use tui_theme::{Color, NamedColor};
 
 pub fn read_themes_from_dir<P>(dir: P) -> Vec<String>
 where
-    P: AsRef<Path>,
+    P: Into<PathBuf>,
 {
     let theme_files = fs::read_dir(dir)
         .unwrap()
@@ -24,7 +25,7 @@ where
 
 pub fn parse_theme_css<P>(path: P) -> io::Result<Vec<NamedColor<'static>>>
 where
-    P: AsRef<Path>,
+    P: Into<PathBuf>,
 {
     let mut file = File::open(path)?;
 

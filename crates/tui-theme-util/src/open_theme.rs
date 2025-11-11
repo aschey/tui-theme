@@ -4,9 +4,10 @@ use base64::Engine;
 use base64::prelude::BASE64_URL_SAFE_NO_PAD;
 use dialoguer::Select;
 use dialoguer::theme::ColorfulTheme;
-use tui_theme_util::{parse_theme_css, read_themes_from_dir};
 
-fn main() -> io::Result<()> {
+use crate::{parse_theme_css, read_themes_from_dir};
+
+pub fn open() -> io::Result<()> {
     let theme_files = read_themes_from_dir("themes");
     let selection = Select::with_theme(&ColorfulTheme::default())
         .with_prompt("Select theme")

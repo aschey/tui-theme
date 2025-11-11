@@ -34,6 +34,8 @@ indexmap = "2"
 termina = "0.1"
 confique = "0.4"
 itertools = "0.14"
+clap = "4.5"
+fs-err = "3"
 
 crossterm = "0.28"
 anstyle-crossterm = "3"

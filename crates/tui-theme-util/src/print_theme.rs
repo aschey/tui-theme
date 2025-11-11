@@ -9,7 +9,8 @@ use indexmap::{IndexMap, IndexSet};
 use palette::color_difference::Wcag21RelativeContrast;
 use tui_theme::profile::DetectorSettings;
 use tui_theme::{Color, NamedColor, Style};
-use tui_theme_util::{parse_theme_css, read_themes_from_dir};
+
+use crate::{parse_theme_css, read_themes_from_dir};
 
 struct PrintableTheme {
     column_width: usize,
@@ -97,7 +98,7 @@ impl PrintableTheme {
     }
 }
 
-fn main() -> io::Result<()> {
+pub fn print() -> io::Result<()> {
     tui_theme::load_color_palette();
     tui_theme::load_profile(&stdout(), DetectorSettings::new());
     let columns = crossterm::terminal::window_size().unwrap().columns;
