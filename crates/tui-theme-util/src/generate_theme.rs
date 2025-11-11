@@ -41,9 +41,9 @@ pub fn generate(crate_dir: &Path, theme_dir: &Path, palette_dir: &Path) -> io::R
     Ok(())
 }
 
-fn read_theme(name: &str, palatte_dir: &str, path: String) -> io::Result<()> {
+fn read_theme(name: &str, palette_dir: &str, path: String) -> io::Result<()> {
     let theme = parse_theme_css(&path)?;
-    let mut out = File::create(format!("{palatte_dir}/{}.rs", name.to_case(Case::Snake)))?;
+    let mut out = File::create(format!("{palette_dir}/{}.rs", name.to_case(Case::Snake)))?;
     let name_caps = name.to_case(Case::UpperCamel);
     writeln!(out, "use crate::Color;")?;
     writeln!(out, "use crate::NamedColor;")?;
