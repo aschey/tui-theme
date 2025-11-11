@@ -7,10 +7,11 @@ use fs::File;
 use fs_err as fs;
 use indexmap::IndexMap;
 use tui_theme::Color;
+use tui_theme_util::{EmbedOrFile, EmbedOrPath};
 
 use crate::{parse_theme_css, read_themes_from_path};
 
-pub fn generate(crate_dir: &Path, theme_dir: &Path, palette_dir: &Path) -> io::Result<()> {
+pub fn generate(crate_dir: &Path, theme_dir: &EmbedOrPath, palette_dir: &Path) -> io::Result<()> {
     // palettes created with https://www.tints.dev
     //  let palette_dir = Path::new("../tui-theme/src/palette");
     fs::remove_dir_all(palette_dir)?;
@@ -19,8 +20,8 @@ pub fn generate(crate_dir: &Path, theme_dir: &Path, palette_dir: &Path) -> io::R
 
     let theme_files = read_themes_from_path(theme_dir);
     let palette_dir_str = palette_dir.as_os_str().to_string_lossy();
-    for theme in theme_files {
-        read_theme(&theme.name, &palette_dir_str, &theme.path).unwrap();
+    for mut theme in theme_files {
+        read_theme(&theme.name, &palette_dir_str, &mut theme.file).unwrap();
         let mod_name = theme.name.to_case(Case::Snake);
         writeln!(mod_file, "mod {mod_name};")?;
         writeln!(mod_file, "pub use {mod_name}::*;")?;
@@ -35,7 +36,7 @@ pub fn generate(crate_dir: &Path, theme_dir: &Path, palette_dir: &Path) -> io::R
     Ok(())
 }
 
-fn read_theme(name: &str, palette_dir: &str, path: &Path) -> io::Result<()> {
+fn read_theme(name: &str, palette_dir: &str, path: &mut EmbedOrFile) -> io::Result<()> {
     let theme = parse_theme_css(path)?;
     let mut out = File::create(format!("{palette_dir}/{}.rs", name.to_case(Case::Snake)))?;
     let name_caps = name.to_case(Case::UpperCamel);

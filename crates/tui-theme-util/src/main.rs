@@ -2,7 +2,7 @@ use std::io::{self};
 use std::path::PathBuf;
 
 use clap::{Args, Parser};
-use tui_theme_util::{parse_theme_css, read_themes_from_path};
+use tui_theme_util::{EmbedOrPath, parse_theme_css, read_themes_from_path};
 
 mod generate_theme;
 mod open_theme;
@@ -21,8 +21,8 @@ struct GenerateArgs {
 #[derive(Parser)]
 enum Action {
     Generate(GenerateArgs),
-    Open { theme_path: PathBuf },
-    Print { theme_path: PathBuf },
+    Open { theme_path: Option<PathBuf> },
+    Print { theme_path: Option<PathBuf> },
 }
 
 fn main() -> io::Result<()> {
@@ -33,10 +33,12 @@ fn main() -> io::Result<()> {
             crate_dir,
             src_dir,
             dest_dir,
-        }) => generate_theme::generate(&crate_dir, &src_dir, &dest_dir),
-        Action::Open { theme_path } => open_theme::open(&theme_path),
-        Action::Print {
-            theme_path: theme_dir,
-        } => print_theme::print(&theme_dir),
+        }) => generate_theme::generate(&crate_dir, &EmbedOrPath::Path(src_dir), &dest_dir),
+        Action::Open { theme_path } => {
+            open_theme::open(&EmbedOrPath::from_optional_path(theme_path))
+        }
+        Action::Print { theme_path } => {
+            print_theme::print(&EmbedOrPath::from_optional_path(theme_path))
+        }
     }
 }

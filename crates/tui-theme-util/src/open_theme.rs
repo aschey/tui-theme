@@ -1,16 +1,15 @@
 use std::io::{self};
-use std::path::Path;
 
 use base64::Engine;
 use base64::prelude::BASE64_URL_SAFE_NO_PAD;
-use tui_theme_util::theme_selector;
+use tui_theme_util::{EmbedOrPath, theme_selector};
 
 use crate::{parse_theme_css, read_themes_from_path};
 
-pub fn open(path: &Path) -> io::Result<()> {
-    let theme_files = read_themes_from_path(path);
+pub fn open(path: &EmbedOrPath) -> io::Result<()> {
+    let mut theme_files = read_themes_from_path(path);
     let selection = theme_selector(&theme_files)?;
-    let colors = parse_theme_css(&theme_files[selection].path)?;
+    let colors = parse_theme_css(&mut theme_files[selection].file)?;
 
     let formatted: Vec<String> = colors
         .into_iter()

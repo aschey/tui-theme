@@ -1,6 +1,5 @@
 use std::borrow::Cow;
 use std::io::{self, stdout};
-use std::path::Path;
 
 use anstyle_crossterm::to_crossterm;
 use crossterm::style::Stylize;
@@ -8,7 +7,7 @@ use indexmap::{IndexMap, IndexSet};
 use palette::color_difference::Wcag21RelativeContrast;
 use tui_theme::profile::DetectorSettings;
 use tui_theme::{Color, NamedColor, Style};
-use tui_theme_util::theme_selector;
+use tui_theme_util::{EmbedOrPath, theme_selector};
 
 use crate::{parse_theme_css, read_themes_from_path};
 
@@ -98,14 +97,14 @@ impl PrintableTheme {
     }
 }
 
-pub fn print(theme_dir: &Path) -> io::Result<()> {
+pub fn print(theme_dir: &EmbedOrPath) -> io::Result<()> {
     tui_theme::load_color_palette();
     tui_theme::load_profile(&stdout(), DetectorSettings::new());
     let columns = crossterm::terminal::window_size().unwrap().columns;
 
-    let theme_files = read_themes_from_path(theme_dir);
+    let mut theme_files = read_themes_from_path(theme_dir);
     let selection = theme_selector(&theme_files)?;
-    let colors = parse_theme_css(&theme_files[selection].path)?;
+    let colors = parse_theme_css(&mut theme_files[selection].file)?;
 
     let theme = PrintableTheme::new(colors, columns as usize);
     let column_width = theme.column_width;

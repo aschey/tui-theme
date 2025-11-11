@@ -20,3 +20,4 @@ anstyle-crossterm = { workspace = true }
 indexmap = { workspace = true }
 clap = { workspace = true, features = ["derive"] }
 fs-err = { workspace = true }
+include_dir = { workspace = true, features = ["metadata"] }

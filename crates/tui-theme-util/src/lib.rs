@@ -6,56 +6,123 @@ use dialoguer::Select;
 use dialoguer::theme::ColorfulTheme;
 use fs::File;
 use fs_err as fs;
+use include_dir::{Dir, include_dir};
 use tui_theme::{Color, NamedColor};
 
-pub struct ThemeFile {
-    pub path: PathBuf,
-    pub name: String,
+pub static THEMES_DIR: Dir = include_dir!("$CARGO_MANIFEST_DIR/themes");
+
+#[derive(Clone)]
+pub enum EmbedOrPath {
+    Embed,
+    Path(PathBuf),
 }
 
-impl ThemeFile {
-    fn from_file(path: PathBuf) -> Self {
-        Self {
-            name: path
-                .file_name()
-                .unwrap_or_default()
-                .to_string_lossy()
-                .to_string()
-                .replace(".css", ""),
-            path,
+impl EmbedOrPath {
+    pub fn from_optional_path(path: Option<PathBuf>) -> Self {
+        match path {
+            Some(path) => EmbedOrPath::Path(path),
+            None => EmbedOrPath::Embed,
+        }
+    }
+
+    pub fn is_file(&self) -> bool {
+        match self {
+            Self::Embed => false,
+            Self::Path(path) => path.is_file(),
+        }
+    }
+
+    pub fn extension(&self) -> Option<&OsStr> {
+        match self {
+            Self::Embed => None,
+            Self::Path(p) => p.extension(),
+        }
+    }
+
+    pub fn as_file(&self) -> Option<EmbedOrFile> {
+        match self {
+            Self::Embed => None,
+            Self::Path(path) => Some(EmbedOrFile::File(fs::File::open(path).unwrap())),
+        }
+    }
+
+    pub fn read_css(&self) -> Vec<ThemeFile> {
+        match self {
+            Self::Embed => THEMES_DIR
+                .entries()
+                .iter()
+                .map(|e| ThemeFile::from_file(EmbedOrFile::Embed(e.as_file().unwrap().clone())))
+                .collect(),
+            Self::Path(path) => fs::read_dir(path)
+                .unwrap()
+                .filter_map(|f| f.ok().map(|f| f.path()))
+                .filter(|f| is_css_file(&EmbedOrPath::Path(f.clone())))
+                .map(|f| ThemeFile::from_file(EmbedOrFile::File(File::open(f).unwrap())))
+                .collect(),
         }
     }
 }
 
-pub fn read_themes_from_path<P>(path: P) -> Vec<ThemeFile>
-where
-    P: Into<PathBuf>,
-{
-    let path = path.into();
-    if is_css_file(&path) {
-        vec![ThemeFile::from_file(path)]
-    } else {
-        fs::read_dir(&path)
-            .unwrap()
-            .filter_map(|f| f.ok().map(|f| f.path()))
-            .filter(|f| is_css_file(f))
-            .map(ThemeFile::from_file)
-            .collect()
+pub enum EmbedOrFile {
+    Embed(include_dir::File<'static>),
+    File(fs::File),
+}
+
+impl EmbedOrFile {
+    fn path(&self) -> &Path {
+        match self {
+            Self::Embed(f) => f.path(),
+            Self::File(f) => f.path(),
+        }
+    }
+
+    fn read_to_string(&mut self) -> io::Result<String> {
+        match self {
+            Self::Embed(f) => Ok(f.contents_utf8().unwrap_or_default().to_string()),
+            Self::File(f) => {
+                let mut s = String::new();
+                f.read_to_string(&mut s)?;
+                Ok(s)
+            }
+        }
     }
 }
 
-fn is_css_file(path: &Path) -> bool {
+pub struct ThemeFile {
+    pub file: EmbedOrFile,
+    pub name: String,
+}
+
+impl ThemeFile {
+    fn from_file(file: EmbedOrFile) -> Self {
+        Self {
+            name: file
+                .path()
+                .file_name().unwrap_or_default()
+                .to_string_lossy()
+                .to_string()
+                .replace(".css", ""),
+            file,
+        }
+    }
+}
+
+pub fn read_themes_from_path(path: &EmbedOrPath) -> Vec<ThemeFile> {
+    if is_css_file(path)
+        && let Some(file) = path.as_file()
+    {
+        vec![ThemeFile::from_file(file)]
+    } else {
+        path.read_css()
+    }
+}
+
+fn is_css_file(path: &EmbedOrPath) -> bool {
     path.is_file() && path.extension() == Some(OsStr::new("css"))
 }
 
-pub fn parse_theme_css<P>(path: P) -> io::Result<Vec<NamedColor<'static>>>
-where
-    P: Into<PathBuf>,
-{
-    let mut file = File::open(path)?;
-
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
+pub fn parse_theme_css(file: &mut EmbedOrFile) -> io::Result<Vec<NamedColor<'static>>> {
+    let contents = file.read_to_string()?;
     let lines = contents
         .split("\n")
         .filter_map(|l| {
