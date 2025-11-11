@@ -8,7 +8,7 @@ use fs_err as fs;
 use indexmap::IndexMap;
 use tui_theme::Color;
 
-use crate::{parse_theme_css, read_themes_from_dir};
+use crate::{parse_theme_css, read_themes_from_path};
 
 pub fn generate(crate_dir: &Path, theme_dir: &Path, palette_dir: &Path) -> io::Result<()> {
     // palettes created with https://www.tints.dev
@@ -17,17 +17,11 @@ pub fn generate(crate_dir: &Path, theme_dir: &Path, palette_dir: &Path) -> io::R
     fs::create_dir_all(palette_dir)?;
     let mut mod_file = File::create(palette_dir.join("mod.rs"))?;
 
-    let theme_files = read_themes_from_dir(theme_dir);
+    let theme_files = read_themes_from_path(theme_dir);
     let palette_dir_str = palette_dir.as_os_str().to_string_lossy();
-    let theme_dir_str = theme_dir.as_os_str().to_string_lossy();
     for theme in theme_files {
-        read_theme(
-            &theme,
-            &palette_dir_str,
-            format!("{theme_dir_str}/{theme}.css"),
-        )
-        .unwrap();
-        let mod_name = theme.to_case(Case::Snake);
+        read_theme(&theme.name, &palette_dir_str, &theme.path).unwrap();
+        let mod_name = theme.name.to_case(Case::Snake);
         writeln!(mod_file, "mod {mod_name};")?;
         writeln!(mod_file, "pub use {mod_name}::*;")?;
     }
@@ -41,8 +35,8 @@ pub fn generate(crate_dir: &Path, theme_dir: &Path, palette_dir: &Path) -> io::R
     Ok(())
 }
 
-fn read_theme(name: &str, palette_dir: &str, path: String) -> io::Result<()> {
-    let theme = parse_theme_css(&path)?;
+fn read_theme(name: &str, palette_dir: &str, path: &Path) -> io::Result<()> {
+    let theme = parse_theme_css(path)?;
     let mut out = File::create(format!("{palette_dir}/{}.rs", name.to_case(Case::Snake)))?;
     let name_caps = name.to_case(Case::UpperCamel);
     writeln!(out, "use crate::Color;")?;

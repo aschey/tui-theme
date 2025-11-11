@@ -1,23 +1,17 @@
 use std::io::{self};
+use std::path::Path;
 
 use base64::Engine;
 use base64::prelude::BASE64_URL_SAFE_NO_PAD;
-use dialoguer::Select;
-use dialoguer::theme::ColorfulTheme;
+use tui_theme_util::theme_selector;
 
-use crate::{parse_theme_css, read_themes_from_dir};
+use crate::{parse_theme_css, read_themes_from_path};
 
-pub fn open() -> io::Result<()> {
-    let theme_files = read_themes_from_dir("themes");
-    let selection = Select::with_theme(&ColorfulTheme::default())
-        .with_prompt("Select theme")
-        .default(0)
-        .items(&theme_files[..])
-        .interact()
-        .unwrap();
+pub fn open(path: &Path) -> io::Result<()> {
+    let theme_files = read_themes_from_path(path);
+    let selection = theme_selector(&theme_files)?;
+    let colors = parse_theme_css(&theme_files[selection].path)?;
 
-    let file = format!("themes/{}.css", theme_files[selection]);
-    let colors = parse_theme_css(file)?;
     let formatted: Vec<String> = colors
         .into_iter()
         .filter_map(|line| {
