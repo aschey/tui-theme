@@ -36,7 +36,7 @@ confique = "0.4"
 itertools = "0.14"
 clap = "4.5"
 fs-err = "3"
-include_dir = "0.7"
+include_dir = "0.7.4"
 
 crossterm = "0.28"
 anstyle-crossterm = "3"
