@@ -82,7 +82,6 @@ pub struct Weather {
     pub bar_value1: Style,
     pub bar_value2: Style,
     pub calendar_day: Style,
-    pub progress: Color,
     pub progress_value: Color,
     pub line_gauge: Color,
 }
@@ -161,7 +160,6 @@ pub fn init_theme(index: usize) {
                 .bg(ProfileVariant::new(Color::warning()).ansi_16(Color::Reset))
                 .bold(),
             calendar_day: Style::new().fg_danger().bold(),
-            progress: Color::warning(),
             progress_value: Color::accent(),
             line_gauge: Color::primary(),
         },

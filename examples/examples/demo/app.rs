@@ -136,6 +136,7 @@ impl App {
 impl Widget for &App {
     fn render(self, mut area: Rect, buf: &mut Buffer) {
         area.width = area.width.min(120);
+        area.height = area.height.min(30);
         let vertical = Layout::vertical([
             Constraint::Length(1),
             Constraint::Min(0),

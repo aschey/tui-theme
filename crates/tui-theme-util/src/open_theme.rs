@@ -32,5 +32,9 @@ pub fn open(path: &EmbedOrPath) -> io::Result<()> {
 }
 
 fn format_color(name: &str, hex: &str, number: &str) -> String {
-    format!("{name}|{}|{number}|p|0|0|0|100|a", &hex[1..])
+    format!(
+        "{}|{}|{number}|p|0|0|0|100|a",
+        name.replace("_", "-"),
+        &hex[1..]
+    )
 }

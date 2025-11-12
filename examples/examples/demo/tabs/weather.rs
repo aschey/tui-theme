@@ -1,13 +1,15 @@
 use itertools::Itertools;
+use palette::color_difference::Wcag21RelativeContrast;
 use palette::{FromColor, Okhsv};
 use ratatui::buffer::Buffer;
-use ratatui::layout::{Constraint, Direction, Layout, Margin, Rect};
+use ratatui::layout::{Constraint, Layout, Margin, Rect};
 use ratatui::symbols;
 use ratatui::widgets::calendar::{CalendarEventStore, Monthly};
 use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Clear, LineGauge, Padding, Widget};
 use time::OffsetDateTime;
 use tui_theme::{Color, Style};
 
+use crate::colors::ThemeColorsColorThemeExt;
 use crate::theme::{
     AppThemeStyle, WeatherColorTheme, WeatherColorThemeExt, WeatherStyleExt as _,
     enhanced_color_support,
@@ -51,12 +53,11 @@ impl Widget for WeatherTab {
         .areas(area);
         let [calendar, charts] =
             Layout::horizontal([Constraint::Length(23), Constraint::Min(0)]).areas(main);
-        let [simple, horizontal] =
+        let [simple, _] =
             Layout::vertical([Constraint::Length(29), Constraint::Min(0)]).areas(charts);
 
         render_calendar(calendar, buf);
         render_simple_barchart(simple, buf);
-        render_horizontal_barchart(horizontal, buf);
         render_gauge(self.download_progress, gauges, buf);
     }
 }
@@ -110,27 +111,6 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
         .render(area, buf);
 }
 
-fn render_horizontal_barchart(area: Rect, buf: &mut Buffer) {
-    let data = [
-        Bar::default().text_value("Winter 37-51".into()).value(51),
-        Bar::default().text_value("Spring 40-65".into()).value(65),
-        Bar::default().text_value("Summer 54-77".into()).value(77),
-        Bar::default()
-            .text_value("Fall 41-71".into())
-            .value(71)
-            .value_style(Style::new().bold()), // current season
-    ];
-    let group = BarGroup::default().label("GPU".into()).bars(&data);
-    BarChart::default()
-        .block(Block::new().padding(Padding::new(0, 0, 2, 0)))
-        .direction(Direction::Horizontal)
-        .data(group)
-        .bar_gap(1)
-        .bar_style(Style::new().fg_progress())
-        .value_style(Style::new().bg_progress().fg_progress_value())
-        .render(area, buf);
-}
-
 #[allow(clippy::cast_precision_loss)]
 pub fn render_gauge(progress: usize, area: Rect, buf: &mut Buffer) {
     let percent = (progress * 3).min(100) as f64;
@@ -138,7 +118,6 @@ pub fn render_gauge(progress: usize, area: Rect, buf: &mut Buffer) {
     render_line_gauge(percent, area, buf);
 }
 
-#[allow(clippy::cast_possible_truncation)]
 fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
     let label = if percent < 100.0 {
         format!("Downloading: {percent}%")
@@ -150,10 +129,19 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
         let progress_value = Color::progress_value().to_rgb_fg();
         let color = Okhsv::from_color(progress_value.into_linear());
         let hue = color.hue - (percent as f32 * 0.6);
-
-        let value = Okhsv::max_value();
-        let filled_color = Okhsv::new(hue, Okhsv::max_saturation(), value);
-        let unfilled_color = Okhsv::new(hue, Okhsv::max_saturation(), value * 0.5);
+        let luminance = Color::base1()
+            .to_rgb_bg()
+            .into_linear::<f32>()
+            .relative_luminance();
+        let value: f32 = Okhsv::max_value();
+        // for light schemes, ensure the value isn't too bright
+        let theme_mod: f32 = if luminance.luma <= 0.01 { 1.0 } else { 0.75 };
+        let filled_color = Okhsv::new(hue, Okhsv::max_saturation(), value * theme_mod);
+        let unfilled_color = Okhsv::new(
+            filled_color.hue,
+            filled_color.saturation,
+            filled_color.value * 0.5,
+        );
         (filled_color.into(), unfilled_color.into())
     } else {
         (Color::Magenta, Color::Reset)

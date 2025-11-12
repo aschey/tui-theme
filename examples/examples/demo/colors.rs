@@ -7,7 +7,10 @@ use tui_theme::palette::{
     Catppuccin, Everforest, Gruvbox, Kanagawa, Monokai, Nord, OneDark, RosePine, Solarized,
     Tailwind, TokyoNight,
 };
-use tui_theme::{Color, Dark, Light, Theme, deserialize_color};
+use tui_theme::{
+    Color, ColorScheme, Dark, Light, Theme, color_scheme,
+    deserialize_color,
+};
 
 #[derive(Theme, Config, Default, Clone, Debug)]
 pub struct ThemeColors {
@@ -51,8 +54,10 @@ pub const BASIC_ANSI_THEME: ThemeColors = ThemeColors {
     selected: Color::Yellow,
 };
 
+const CONFIG_PATH: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/theme.toml");
+
 pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
-    let file_config = match ThemeColors::builder().file("theme.toml").load() {
+    let file_config = match ThemeColors::builder().file(CONFIG_PATH).load() {
         Ok(config) => config,
         Err(e) => {
             panic!("{e:#?}")
@@ -68,6 +73,8 @@ pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
         bg.darken(factor)
     };
 
+    let scheme = color_scheme();
+
     let ansi = ThemeColors {
         theme_name: Cow::Borrowed("ansi"),
         base1: bg,
@@ -82,8 +89,8 @@ pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
         text_bright: fg.lighten(0.15),
         selected: Color::Yellow,
     };
-    let base1 = (Light(1), Dark(9));
-    let base2 = (Light(0), Dark(10));
+    let base1 = (Light(0), Dark(10));
+    let base2 = (Light(1), Dark(9));
     let primary = (Light(7), Dark(3));
     let accent = (Light(7), Dark(3));
     let success = (Light(7), Dark(3));
@@ -93,7 +100,6 @@ pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
     let text_muted = (Light(6), Dark(5));
     let text_bright = (Light(9), Dark(1));
     let selected = (Light(7), Dark(3));
-
     [
         file_config,
         ansi,
@@ -211,8 +217,16 @@ pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
         },
         ThemeColors {
             theme_name: Cow::Borrowed(Solarized::NAME),
-            base1: Solarized::BASE_BLUE[base1],
-            base2: Solarized::BASE_BLUE[base2],
+            base1: if scheme == ColorScheme::Dark {
+                Solarized::BASE_BLUE[base1]
+            } else {
+                Solarized::BROWN[base1]
+            },
+            base2: if scheme == ColorScheme::Dark {
+                Solarized::BASE_BLUE[base2]
+            } else {
+                Solarized::BROWN[base2]
+            },
             primary: Solarized::BLUE[primary],
             accent: Solarized::CYAN[accent],
             success: Solarized::GREEN[accent],
