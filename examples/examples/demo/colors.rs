@@ -2,15 +2,11 @@ use std::borrow::Cow;
 use std::sync::LazyLock;
 
 use confique::Config;
-use palette::color_difference::Wcag21RelativeContrast;
 use tui_theme::palette::{
     Catppuccin, Everforest, Gruvbox, Kanagawa, Monokai, Nord, OneDark, RosePine, Solarized,
     Tailwind, TokyoNight,
 };
-use tui_theme::{
-    Color, ColorScheme, Dark, Light, Theme, color_scheme,
-    deserialize_color,
-};
+use tui_theme::{Color, ColorScheme, Dark, Light, Theme, color_scheme, deserialize_color};
 
 #[derive(Theme, Config, Default, Clone, Debug)]
 pub struct ThemeColors {
@@ -65,9 +61,9 @@ pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
     };
     let bg = Color::terminal_background();
     let fg = Color::terminal_foreground();
-    let rel_luma = bg.to_rgb_bg().into_linear::<f32>().relative_luminance();
+    let rel_luma = bg.luminance_bg();
     let factor = 0.15;
-    let base2 = if rel_luma.luma <= 0.01 {
+    let base2 = if rel_luma <= 0.01 {
         bg.lighten(factor)
     } else {
         bg.darken(factor)

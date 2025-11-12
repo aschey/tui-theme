@@ -1,4 +1,5 @@
 use palette::bool_mask::LazySelect;
+use palette::color_difference::Wcag21RelativeContrast;
 use palette::num::{Arithmetics, MulSub, PartialCmp, Powf, Real};
 use palette::stimulus::IntoStimulus;
 use palette::{
@@ -23,6 +24,20 @@ impl Color {
 
     pub fn to_hex_bg(self) -> String {
         self.to_hex(false)
+    }
+
+    pub fn luminance_fg(&self) -> f32 {
+        self.to_rgb_fg()
+            .into_linear::<f32>()
+            .relative_luminance()
+            .luma
+    }
+
+    pub fn luminance_bg(&self) -> f32 {
+        self.to_rgb_bg()
+            .into_linear::<f32>()
+            .relative_luminance()
+            .luma
     }
 
     pub fn to_hex(self, is_fg: bool) -> String {

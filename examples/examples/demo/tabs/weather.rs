@@ -129,13 +129,10 @@ fn render_line_gauge(percent: f64, area: Rect, buf: &mut Buffer) {
         let progress_value = Color::progress_value().to_rgb_fg();
         let color = Okhsv::from_color(progress_value.into_linear());
         let hue = color.hue - (percent as f32 * 0.6);
-        let luminance = Color::base1()
-            .to_rgb_bg()
-            .into_linear::<f32>()
-            .relative_luminance();
+        let luma = Color::base1().luminance_bg();
         let value: f32 = Okhsv::max_value();
         // for light schemes, ensure the value isn't too bright
-        let theme_mod: f32 = if luminance.luma <= 0.01 { 1.0 } else { 0.75 };
+        let theme_mod: f32 = if luma <= 0.01 { 1.0 } else { 0.75 };
         let filled_color = Okhsv::new(hue, Okhsv::max_saturation(), value * theme_mod);
         let unfilled_color = Okhsv::new(
             filled_color.hue,

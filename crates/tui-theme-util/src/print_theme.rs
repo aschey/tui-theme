@@ -4,7 +4,6 @@ use std::io::{self, stdout};
 use anstyle_crossterm::to_crossterm;
 use crossterm::style::Stylize;
 use indexmap::{IndexMap, IndexSet};
-use palette::color_difference::Wcag21RelativeContrast;
 use tui_theme::profile::DetectorSettings;
 use tui_theme::{Color, NamedColor, Style};
 use tui_theme_util::{EmbedOrPath, theme_selector};
@@ -38,7 +37,7 @@ struct Cell {
 impl Cell {
     fn new(color: &Color) -> Self {
         let rgb_color = color.to_rgb_bg();
-        let color_luminance = rgb_color.into_linear::<f32>().relative_luminance().luma;
+        let color_luminance = color.luminance_bg();
         let fg = if color_luminance < 0.179 {
             Color::Rgb(220, 220, 220)
         } else {
