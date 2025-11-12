@@ -113,7 +113,6 @@ fn render_simple_barchart(area: Rect, buf: &mut Buffer) {
 #[allow(clippy::cast_precision_loss)]
 pub fn render_gauge(progress: usize, area: Rect, buf: &mut Buffer) {
     let percent = (progress * 3).min(100) as f64;
-
     render_line_gauge(percent, area, buf);
 }
 

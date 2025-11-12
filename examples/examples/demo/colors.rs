@@ -87,15 +87,15 @@ pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
     };
     let base1 = (Light(0), Dark(10));
     let base2 = (Light(1), Dark(9));
-    let primary = (Light(7), Dark(3));
-    let accent = (Light(7), Dark(3));
-    let success = (Light(7), Dark(3));
-    let warning = (Light(7), Dark(3));
-    let danger = (Light(7), Dark(3));
+    let primary = (Light(6), Dark(3));
+    let accent = (Light(6), Dark(3));
+    let success = (Light(6), Dark(3));
+    let warning = (Light(6), Dark(3));
+    let danger = (Light(6), Dark(3));
     let text = (Light(7), Dark(3));
     let text_muted = (Light(6), Dark(5));
     let text_bright = (Light(9), Dark(1));
-    let selected = (Light(7), Dark(3));
+    let selected = (Light(5), Dark(3));
     [
         file_config,
         ansi,
