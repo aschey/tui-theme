@@ -1,5 +1,4 @@
 use itertools::Itertools;
-use palette::color_difference::Wcag21RelativeContrast;
 use palette::{FromColor, Okhsv};
 use ratatui::buffer::Buffer;
 use ratatui::layout::{Constraint, Layout, Margin, Rect};
