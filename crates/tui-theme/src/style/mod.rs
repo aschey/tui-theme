@@ -3,9 +3,9 @@ mod stylize;
 
 use bitflags::bitflags;
 pub use stylize::*;
-use termprofile::TermProfile;
 
-use crate::{Color, term_profile};
+use crate::color::TermProfile;
+use crate::{Color, SetTheme};
 
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Clone, Copy, Debug, PartialEq, Eq)]
@@ -161,7 +161,7 @@ impl From<Style> for ratatui::style::Style {
         let ratatui_style = ratatui_style
             .add_modifier(val.add_modifier.into())
             .remove_modifier(val.sub_modifier.into());
-        let profile = term_profile();
+        let profile = TermProfile::current();
         profile.adapt_style(ratatui_style)
     }
 }
@@ -186,7 +186,7 @@ impl From<Style> for anstyle::Style {
             .bg_color(val.bg.and_then(Into::into))
             .underline_color(val.underline_color.and_then(Into::into));
 
-        let profile = term_profile();
+        let profile = TermProfile::current();
         profile.adapt_style(style)
     }
 }
@@ -242,7 +242,7 @@ impl From<Modifier> for ratatui::style::Modifier {
 impl From<ratatui::style::Modifier> for Modifier {
     fn from(value: ratatui::style::Modifier) -> Self {
         let mut modifiers = Modifier::empty();
-        if term_profile() == TermProfile::NoTty {
+        if TermProfile::current() == TermProfile::NoTty {
             return modifiers;
         }
 

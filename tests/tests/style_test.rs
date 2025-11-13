@@ -1,9 +1,8 @@
 use ratatui::style::{Styled, Stylize};
 use rstest::rstest;
-use tui_theme::profile::TermProfile;
 use tui_theme::{
-    Color, ColorPalette, ColorScheme, Modifier, Style, color_scheme, set_color_palette_local,
-    set_profile_local,
+    Color, ColorPalette, ColorPaletteColorThemeExt, ColorScheme, Modifier, SetTheme, Style,
+    TermProfile,
 };
 
 #[test]
@@ -30,7 +29,7 @@ fn set_style() {
 #[case(TermProfile::NoColor)]
 #[case(TermProfile::NoTty)]
 fn profile_color(#[case] profile: TermProfile) {
-    set_profile_local(profile);
+    profile.set_local();
     let color = Color::Rgb(120, 67, 84);
     let color_adapted: ratatui::style::Color =
         profile.adapt_color(color.into()).unwrap_or_default();
@@ -44,7 +43,7 @@ fn profile_color(#[case] profile: TermProfile) {
 #[case(TermProfile::NoColor)]
 #[case(TermProfile::NoTty)]
 fn profile_style(#[case] profile: TermProfile) {
-    set_profile_local(profile);
+    profile.set_local();
     let style = Style::new()
         .fg(Color::Rgb(120, 67, 84))
         .add_modifier(Modifier::UNDERLINED);
@@ -54,7 +53,7 @@ fn profile_style(#[case] profile: TermProfile) {
 
 #[test]
 fn parse_color() {
-    set_profile_local(TermProfile::Ansi256);
+    TermProfile::Ansi256.set_local();
     let color: Color = "chartreuse".parse().unwrap();
     let color_adapted = color.into_adaptive();
     assert!(matches!(color_adapted, Color::Indexed(_)));
@@ -63,16 +62,12 @@ fn parse_color() {
 #[test]
 fn terminal_colors() {
     let palette = ColorPalette {
-        fg: Color::White,
-        bg: Color::Black,
+        terminal_fg: Color::White,
+        terminal_bg: Color::Black,
         color_scheme: ColorScheme::Dark,
     };
-    set_color_palette_local(ColorPalette {
-        fg: Color::White,
-        bg: Color::Black,
-        color_scheme: ColorScheme::Dark,
-    });
-    assert_eq!(palette.fg, Color::terminal_foreground());
-    assert_eq!(palette.bg, Color::terminal_background());
-    assert_eq!(palette.color_scheme, color_scheme());
+    palette.set_local();
+    assert_eq!(palette.terminal_fg, Color::terminal_fg());
+    assert_eq!(palette.terminal_bg, Color::terminal_bg());
+    assert_eq!(palette.color_scheme, ColorScheme::current());
 }

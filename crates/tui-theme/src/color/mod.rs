@@ -7,39 +7,69 @@ use std::time::Duration;
 
 use ::palette::{Darken, Lighten};
 use palette::Srgb;
-use termprofile::{DetectorSettings, QueryTerminal, TermProfile, TermVars};
+use termprofile::{AdaptableColor, AdaptableStyle, DetectorSettings, QueryTerminal, TermVars};
 
 mod convert;
 mod parse;
 pub use parse::*;
+use tui_theme_derive::Theme;
 
-use crate::{__local_override, ColorScheme};
+use crate::{ColorScheme, SetTheme};
 
-#[derive(Clone)]
-struct CurrentProfile(TermProfile);
+/// Terminal color profile.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default, Theme)]
+pub enum TermProfile {
+    /// No terminal is attached. This may happen if the output is piped or if the program was not
+    /// ran from a TTY.
+    NoTty,
+    /// Text modifiers may be used, but no colors should be emitted.
+    NoColor,
+    /// 16 colors are supported.
+    Ansi16,
+    /// 256 colors are supported.
+    Ansi256,
+    /// Any RGB color is supported.
+    #[default]
+    TrueColor,
+}
 
-impl Default for CurrentProfile {
-    fn default() -> Self {
-        CurrentProfile(TermProfile::TrueColor)
+impl From<termprofile::TermProfile> for TermProfile {
+    fn from(value: termprofile::TermProfile) -> Self {
+        match value {
+            termprofile::TermProfile::NoTty => TermProfile::NoTty,
+            termprofile::TermProfile::NoColor => TermProfile::NoColor,
+            termprofile::TermProfile::Ansi16 => TermProfile::Ansi16,
+            termprofile::TermProfile::Ansi256 => TermProfile::Ansi256,
+            termprofile::TermProfile::TrueColor => TermProfile::TrueColor,
+        }
     }
 }
 
-__local_override!(CurrentProfile, GLOBAL_TERM_PROFILE, LOCAL_TERM_PROFILE);
+impl From<TermProfile> for termprofile::TermProfile {
+    fn from(value: TermProfile) -> Self {
+        match value {
+            TermProfile::NoTty => termprofile::TermProfile::NoTty,
+            TermProfile::NoColor => termprofile::TermProfile::NoColor,
+            TermProfile::Ansi16 => termprofile::TermProfile::Ansi16,
+            TermProfile::Ansi256 => termprofile::TermProfile::Ansi256,
+            TermProfile::TrueColor => termprofile::TermProfile::TrueColor,
+        }
+    }
+}
 
-__local_override!(ColorPalette, GLOBAL_COLOR_PALETTE, LOCAL_COLOR_PALETTE);
-
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Theme)]
 pub struct ColorPalette {
-    pub fg: Color,
-    pub bg: Color,
+    pub terminal_fg: Color,
+    pub terminal_bg: Color,
+    #[subtheme]
     pub color_scheme: ColorScheme,
 }
 
 impl Default for ColorPalette {
     fn default() -> Self {
         Self {
-            fg: Color::White,
-            bg: Color::Black,
+            terminal_fg: Color::White,
+            terminal_bg: Color::Black,
             color_scheme: ColorScheme::Dark,
         }
     }
@@ -48,12 +78,12 @@ impl Default for ColorPalette {
 impl From<terminal_colorsaurus::ColorPalette> for ColorPalette {
     fn from(value: terminal_colorsaurus::ColorPalette) -> Self {
         ColorPalette {
-            fg: Color::Rgb(
+            terminal_fg: Color::Rgb(
                 value.foreground.r as u8,
                 value.foreground.g as u8,
                 value.foreground.b as u8,
             ),
-            bg: Color::Rgb(
+            terminal_bg: Color::Rgb(
                 value.background.r as u8,
                 value.background.g as u8,
                 value.background.b as u8,
@@ -103,84 +133,58 @@ impl From<terminal_colorsaurus::Error> for PaletteError {
     }
 }
 
-pub fn load_profile<T, Q>(stream: &T, settings: DetectorSettings<Q>)
-where
-    T: IsTerminal,
-    Q: QueryTerminal,
-{
-    CurrentProfile(TermProfile::detect(stream, settings)).__override_set_global();
-}
-
-pub fn load_profile_local<T, Q>(stream: &T, settings: DetectorSettings<Q>)
-where
-    T: IsTerminal,
-    Q: QueryTerminal,
-{
-    CurrentProfile(TermProfile::detect(stream, settings)).__override_set_local();
-}
-
-pub fn load_profile_with_vars(vars: TermVars) {
-    CurrentProfile(TermProfile::detect_with_vars(vars)).__override_set_global();
-}
-
-pub fn load_profile_local_with_vars(vars: TermVars) {
-    CurrentProfile(TermProfile::detect_with_vars(vars)).__override_set_local();
-}
-
-pub fn set_profile(profile: TermProfile) {
-    CurrentProfile(profile).__override_set_global();
-}
-
-pub fn set_profile_local(profile: TermProfile) {
-    CurrentProfile(profile).__override_set_local();
-}
-
-pub fn load_color_palette() {
-    let palette =
-        terminal_colorsaurus::color_palette(terminal_colorsaurus::QueryOptions::default());
-    // Somewhat non-standard variable but can be useful for some terminals
-    // see https://github.com/bash/terminal-colorsaurus/issues/26
-    if matches!(
-        palette,
-        Err(terminal_colorsaurus::Error::UnsupportedTerminal(_))
-    ) && let Some((fg, bg)) = Color::parse_colorfgbg("COLORFGBG")
+impl TermProfile {
+    pub fn detect<T, Q>(stream: &T, settings: DetectorSettings<Q>) -> Self
+    where
+        T: IsTerminal,
+        Q: QueryTerminal,
     {
-        let palette = get_palette_from_override(fg, bg);
-        palette.__override_set_global();
-        return;
+        termprofile::TermProfile::detect(stream, settings).into()
     }
-    if let Ok(palette) = palette {
-        let palette: ColorPalette = palette.into();
-        palette.__override_set_global();
-    }
-}
 
-pub fn load_color_palette_local() {
-    let palette =
-        terminal_colorsaurus::color_palette(terminal_colorsaurus::QueryOptions::default());
-    // Somewhat non-standard variable but can be useful for some terminals
-    // see https://github.com/bash/terminal-colorsaurus/issues/26
-    if matches!(
-        palette,
-        Err(terminal_colorsaurus::Error::UnsupportedTerminal(_))
-    ) && let Some((fg, bg)) = Color::parse_colorfgbg("COLORFGBG")
+    pub fn detect_with_vars(vars: TermVars) -> Self {
+        termprofile::TermProfile::detect_with_vars(vars).into()
+    }
+
+    pub fn adapt_color<C>(&self, color: C) -> Option<C>
+    where
+        C: AdaptableColor,
     {
-        let palette = get_palette_from_override(fg, bg);
-        palette.__override_set_local();
-        return;
+        let profile: termprofile::TermProfile = (*self).into();
+        profile.adapt_color(color)
     }
-    if let Ok(palette) = palette {
-        let palette: ColorPalette = palette.into();
-        palette.__override_set_local();
+
+    pub fn adapt_style<S>(&self, style: S) -> S
+    where
+        S: AdaptableStyle,
+    {
+        let profile: termprofile::TermProfile = (*self).into();
+        profile.adapt_style(style)
+    }
+
+    pub fn supports(&self, profile: TermProfile) -> bool {
+        *self >= profile
     }
 }
 
-pub fn set_color_palette(palette: ColorPalette) {
-    palette.__override_set_global();
-}
-
-pub fn set_color_palette_local(palette: ColorPalette) {
-    palette.__override_set_global();
+impl ColorPalette {
+    pub fn detect() -> Self {
+        let palette =
+            terminal_colorsaurus::color_palette(terminal_colorsaurus::QueryOptions::default());
+        // Somewhat non-standard variable but can be useful for some terminals
+        // see https://github.com/bash/terminal-colorsaurus/issues/26
+        if matches!(
+            palette,
+            Err(terminal_colorsaurus::Error::UnsupportedTerminal(_))
+        ) && let Some((fg, bg)) = Color::parse_colorfgbg("COLORFGBG")
+        {
+            return get_palette_from_override(fg, bg);
+        }
+        if let Ok(palette) = palette {
+            return palette.into();
+        }
+        Self::default()
+    }
 }
 
 fn get_palette_from_override(fg: Color, bg: Color) -> ColorPalette {
@@ -192,22 +196,10 @@ fn get_palette_from_override(fg: Color, bg: Color) -> ColorPalette {
         }
     });
     ColorPalette {
-        fg,
-        bg,
+        terminal_fg: fg,
+        terminal_bg: bg,
         color_scheme: theme_mode,
     }
-}
-
-pub fn term_profile() -> TermProfile {
-    CurrentProfile::__override_current().0
-}
-
-pub fn is_supported(profile: TermProfile) -> bool {
-    term_profile() >= profile
-}
-
-pub fn color_palette() -> ColorPalette {
-    ColorPalette::__override_current()
 }
 
 fn override_color_scheme() -> Option<ColorScheme> {
@@ -220,10 +212,6 @@ fn override_color_scheme() -> Option<ColorScheme> {
         Ok("dark") => Some(ColorScheme::Dark),
         _ => None,
     }
-}
-
-pub fn color_scheme() -> ColorScheme {
-    color_palette().color_scheme
 }
 
 #[derive(Clone, Debug)]
@@ -320,16 +308,8 @@ macro_rules! color_op {
 }
 
 impl Color {
-    pub fn terminal_background() -> Self {
-        color_palette().bg
-    }
-
-    pub fn terminal_foreground() -> Self {
-        color_palette().fg
-    }
-
     pub fn is_compatible(&self) -> bool {
-        let color_support = term_profile();
+        let color_support = TermProfile::current();
         match self {
             Self::White
             | Self::Gray

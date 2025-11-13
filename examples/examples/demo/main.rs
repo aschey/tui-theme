@@ -23,11 +23,12 @@ use std::io::stdout;
 use app::App;
 use color_eyre::Result;
 use tui_theme::profile::DetectorSettings;
+use tui_theme::{ColorPalette, SetTheme, TermProfile};
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    tui_theme::load_color_palette();
-    tui_theme::load_profile(&stdout(), DetectorSettings::with_query()?);
+    ColorPalette::detect().set_global();
+    TermProfile::detect(&stdout(), DetectorSettings::with_query()?).set_global();
 
     let terminal = ratatui::init();
     let app_result = App::default().run(terminal);

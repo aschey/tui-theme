@@ -12,15 +12,15 @@ use std::ops::{Deref, DerefMut, Index};
 
 pub use color::*;
 pub use style::*;
-use termprofile::TermProfile;
 pub use theme::*;
 pub use tui_theme_derive::*;
 pub mod profile {
-    pub use termprofile::*;
+    pub use termprofile::{DetectorSettings, TermVars};
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Theme, Default)]
 pub enum ColorScheme {
+    #[default]
     Dark,
     Light,
 }
@@ -37,31 +37,27 @@ impl From<terminal_colorsaurus::ThemeMode> for ColorScheme {
 pub struct Adaptive<T> {
     dark: T,
     light: T,
-    choice: ColorScheme,
+    choice: Option<ColorScheme>,
 }
 
 impl<T> Adaptive<T> {
-    pub fn auto(dark: T, light: T) -> Self {
-        let theme = color_scheme();
-        Self::new(dark, light, theme)
-    }
-
-    pub fn new(dark: T, light: T, theme: ColorScheme) -> Self {
+    pub fn new(dark: Dark<T>, light: Light<T>) -> Self {
         Self {
-            dark,
-            light,
-            choice: theme,
+            dark: dark.0,
+            light: light.0,
+            choice: None,
         }
     }
 
     pub fn adapt(&self) -> &T {
-        match self.choice {
+        match self.choice.unwrap_or_else(ColorScheme::current) {
             ColorScheme::Dark => &self.dark,
             ColorScheme::Light => &self.light,
         }
     }
 }
 
+#[derive(Clone, Copy, Debug)]
 pub struct ProfileVariant<T> {
     default_value: T,
     ansi_256: Option<T>,
@@ -81,13 +77,28 @@ impl<T> ProfileVariant<T> {
         }
     }
 
+    pub fn ansi_256(mut self, value: T) -> Self {
+        self.ansi_256 = Some(value);
+        self
+    }
+
     pub fn ansi_16(mut self, value: T) -> Self {
         self.ansi_16 = Some(value);
         self
     }
 
+    pub fn ascii(mut self, value: T) -> Self {
+        self.ascii = Some(value);
+        self
+    }
+
+    pub fn no_tty(mut self, value: T) -> Self {
+        self.no_tty = Some(value);
+        self
+    }
+
     pub fn adapt(self) -> T {
-        let current_profile = term_profile();
+        let current_profile = TermProfile::current();
         if current_profile <= TermProfile::NoTty
             && let Some(no_tty) = self.no_tty
         {
@@ -117,10 +128,10 @@ impl<T> ProfileVariant<T> {
 pub struct ThemeArray<const N: usize>(pub [Color; N]);
 
 #[derive(Debug, Clone, Copy)]
-pub struct Dark(pub usize);
+pub struct Dark<T>(pub T);
 
 #[derive(Debug, Clone, Copy)]
-pub struct Light(pub usize);
+pub struct Light<T>(pub T);
 
 impl<const N: usize> Deref for ThemeArray<N> {
     type Target = [Color; N];
@@ -135,11 +146,11 @@ impl<const N: usize> DerefMut for ThemeArray<N> {
     }
 }
 
-impl<const N: usize> Index<(Light, Dark)> for ThemeArray<N> {
+impl<const N: usize> Index<(Light<usize>, Dark<usize>)> for ThemeArray<N> {
     type Output = Color;
 
-    fn index(&self, (light, dark): (Light, Dark)) -> &Self::Output {
-        if color_scheme() == ColorScheme::Light {
+    fn index(&self, (light, dark): (Light<usize>, Dark<usize>)) -> &Self::Output {
+        if ColorScheme::current() == ColorScheme::Light {
             &self.0[light.0]
         } else {
             &self.0[dark.0]
@@ -147,11 +158,11 @@ impl<const N: usize> Index<(Light, Dark)> for ThemeArray<N> {
     }
 }
 
-impl<const N: usize> Index<(Dark, Light)> for ThemeArray<N> {
+impl<const N: usize> Index<(Dark<usize>, Light<usize>)> for ThemeArray<N> {
     type Output = Color;
 
-    fn index(&self, (dark, light): (Dark, Light)) -> &Self::Output {
-        if color_scheme() == ColorScheme::Light {
+    fn index(&self, (dark, light): (Dark<usize>, Light<usize>)) -> &Self::Output {
+        if ColorScheme::current() == ColorScheme::Light {
             &self.0[light.0]
         } else {
             &self.0[dark.0]

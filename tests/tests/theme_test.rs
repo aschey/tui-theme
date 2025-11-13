@@ -1,5 +1,7 @@
 use ratatui::widgets::Borders;
-use tui_theme::{Color, SetTheme, Style, Theme, palette};
+use tui_theme::{
+    Adaptive, Color, ColorPalette, ColorScheme, Dark, Light, SetTheme, Style, Theme, palette,
+};
 
 #[derive(Theme, Default, Clone, Debug, PartialEq, Eq)]
 struct AppColorTheme {
@@ -113,4 +115,27 @@ fn set_nested() {
     assert_eq!(theme.style.secondary, Style::secondary());
     assert_eq!(theme.borders.primary, Borders::primary());
     assert_eq!(theme.borders.secondary, Borders::secondary());
+}
+
+#[test]
+fn adaptive() {
+    let borders1 = BorderTheme {
+        primary: Borders::TOP,
+        secondary: Borders::BOTTOM,
+    };
+
+    let borders2 = BorderTheme {
+        primary: Borders::TOP,
+        secondary: Borders::BOTTOM,
+    };
+
+    ColorPalette {
+        terminal_fg: Color::White,
+        terminal_bg: Color::Black,
+        color_scheme: ColorScheme::Dark,
+    }
+    .set_local();
+
+    Adaptive::new(Dark(borders1.clone()), Light(borders2)).set_local();
+    assert_eq!(borders1, BorderTheme::current());
 }

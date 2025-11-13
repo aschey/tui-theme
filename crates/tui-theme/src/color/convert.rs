@@ -7,7 +7,9 @@ use palette::{
     Oklch, Srgb, Xyz, Yxy,
 };
 
-use super::{Color, indexed_to_rgb, term_profile};
+use super::{Color, indexed_to_rgb};
+use crate::SetTheme;
+use crate::color::{ColorPaletteColorThemeExt, TermProfile};
 
 impl Color {
     pub fn to_rgb_fg(self) -> Srgb<u8> {
@@ -50,9 +52,9 @@ impl Color {
             Self::Rgb(r, g, b) => Srgb::new(r, g, b),
             Self::Reset => {
                 if is_fg {
-                    Self::terminal_foreground().to_rgb_fg()
+                    Self::terminal_fg().to_rgb_fg()
                 } else {
-                    Self::terminal_background().to_rgb_bg()
+                    Self::terminal_bg().to_rgb_bg()
                 }
             }
             Self::Black => indexed_to_rgb(0),
@@ -104,7 +106,7 @@ impl Color {
             Color::Indexed(index) => anstyle::Color::Ansi256(anstyle::Ansi256Color(index)),
             Color::Rgb(r, g, b) => anstyle::Color::Rgb(anstyle::RgbColor(r, g, b)),
         };
-        let profile = term_profile();
+        let profile = TermProfile::current();
         profile.adapt_color(value)
     }
 
@@ -130,7 +132,7 @@ impl Color {
             Color::White => ratatui::style::Color::White,
             Color::Indexed(idx) => ratatui::style::Color::Indexed(idx),
         };
-        let profile = term_profile();
+        let profile = TermProfile::current();
         profile.adapt_color(value)
     }
 }

@@ -6,7 +6,9 @@ use tui_theme::palette::{
     Catppuccin, Everforest, Gruvbox, Kanagawa, Monokai, Nord, OneDark, RosePine, Solarized,
     Tailwind, TokyoNight,
 };
-use tui_theme::{Color, ColorScheme, Dark, Light, Theme, color_scheme, deserialize_color};
+use tui_theme::{
+    Color, ColorPaletteColorThemeExt, ColorScheme, Dark, Light, SetTheme, Theme, deserialize_color,
+};
 
 #[derive(Theme, Config, Default, Clone, Debug)]
 pub struct ThemeColors {
@@ -59,8 +61,8 @@ pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
             panic!("{e:#?}")
         }
     };
-    let bg = Color::terminal_background();
-    let fg = Color::terminal_foreground();
+    let bg = Color::terminal_bg();
+    let fg = Color::terminal_fg();
     let rel_luma = bg.luminance_bg();
     let factor = 0.15;
     let base2 = if rel_luma <= 0.01 {
@@ -69,7 +71,7 @@ pub static THEMES: LazyLock<[ThemeColors; 13]> = LazyLock::new(|| {
         bg.darken(factor)
     };
 
-    let scheme = color_scheme();
+    let scheme = ColorScheme::current();
 
     let ansi = ThemeColors {
         theme_name: Cow::Borrowed("ansi"),

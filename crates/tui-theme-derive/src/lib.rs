@@ -73,8 +73,10 @@ fn get_subtheme_fields(fields: &Fields) -> Vec<(&Ident, &Type)> {
 
 #[manyhow(proc_macro_derive(Theme, attributes(subtheme)))]
 pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Result {
-    let Data::Struct(data_struct) = &input.data else {
-        bail!(input.span(), "Theme can only be derived on structs");
+    let data_struct = if let Data::Struct(data_struct) = &input.data {
+        Some(data_struct)
+    } else {
+        None
     };
     if input.generics.lifetimes().next().is_some() || input.generics.type_params().next().is_some()
     {
@@ -96,8 +98,12 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
     );
 
     let tui_theme = get_import("tui-theme");
-    let subtheme_fields = get_subtheme_fields(&data_struct.fields);
-    let other_fields = get_other_fields(&data_struct.fields);
+    let subtheme_fields = data_struct
+        .map(|d| get_subtheme_fields(&d.fields))
+        .unwrap_or_default();
+    let other_fields = data_struct
+        .map(|d| get_other_fields(&d.fields))
+        .unwrap_or_default();
 
     let subtheme_set_local: TokenStream = subtheme_fields
         .iter()
@@ -166,12 +172,12 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         })
         .collect();
 
-    let Data::Struct(data_struct) = &input.data else {
-        bail!(input.span(), "Theme can only be derived on structs");
-    };
-
-    let style_fields = get_style_fields(&data_struct.fields);
-    let color_fields = get_color_fields(&data_struct.fields);
+    let style_fields = data_struct
+        .map(|d| get_style_fields(&d.fields))
+        .unwrap_or_default();
+    let color_fields = data_struct
+        .map(|d| get_color_fields(&d.fields))
+        .unwrap_or_default();
 
     let style_trait_fns: TokenStream = style_fields
         .iter()
@@ -235,22 +241,25 @@ pub fn derive_theme(input: DeriveInput, _emitter: &mut Emitter) -> manyhow::Resu
         .collect();
 
     let impl_fns: TokenStream = data_struct
-        .fields
-        .iter()
-        .filter_map(|f| {
-            if let Some(ident) = &f.ident {
-                let ty = &f.ty;
-                Some(quote! {
-                    pub fn #ident() -> #ty {
-                        use #tui_theme::SetTheme;
-                        #struct_name::with_theme(|t| t.#ident.clone())
+        .map(|d| {
+            d.fields
+                .iter()
+                .filter_map(|f| {
+                    if let Some(ident) = &f.ident {
+                        let ty = &f.ty;
+                        Some(quote! {
+                            pub fn #ident() -> #ty {
+                                use #tui_theme::SetTheme;
+                                #struct_name::with_theme(|t| t.#ident.clone())
+                            }
+                        })
+                    } else {
+                        None
                     }
                 })
-            } else {
-                None
-            }
+                .collect()
         })
-        .collect();
+        .unwrap_or_default();
 
     let color_impl_fns: TokenStream = color_fields
         .iter()

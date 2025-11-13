@@ -5,7 +5,7 @@ use anstyle_crossterm::to_crossterm;
 use crossterm::style::Stylize;
 use indexmap::{IndexMap, IndexSet};
 use tui_theme::profile::DetectorSettings;
-use tui_theme::{Color, NamedColor, Style};
+use tui_theme::{Color, ColorPalette, NamedColor, SetTheme, Style, TermProfile};
 use tui_theme_util::{EmbedOrPath, theme_selector};
 
 use crate::{parse_theme_css, read_themes_from_path};
@@ -97,8 +97,8 @@ impl PrintableTheme {
 }
 
 pub fn print(theme_dir: &EmbedOrPath) -> io::Result<()> {
-    tui_theme::load_color_palette();
-    tui_theme::load_profile(&stdout(), DetectorSettings::new());
+    ColorPalette::detect().set_global();
+    TermProfile::detect(&stdout(), DetectorSettings::new()).set_global();
     let columns = crossterm::terminal::window_size().unwrap().columns;
 
     let mut theme_files = read_themes_from_path(theme_dir);
