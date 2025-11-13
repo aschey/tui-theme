@@ -15,7 +15,7 @@ pub use style::*;
 pub use theme::*;
 pub use tui_theme_derive::*;
 pub mod profile {
-    pub use termprofile::{DetectorSettings, QueryTerminal, TermVars};
+    pub use termprofile::{DetectorSettings, IsTerminal, QueryTerminal, TermVars};
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Theme, Default)]
